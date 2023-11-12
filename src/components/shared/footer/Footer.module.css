@@ -1,0 +1,20 @@
+.footer-wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100px; /* Height of the footer */
+    justify-content: space-between;
+    background-color: #9ab973;
+    margin-top: auto;
+}
+
+.footer-wrapper > .left-side {
+    display: flex;
+    padding-left: 1rem;
+    margin-top: 25px;
+}
+
+.footer-wrapper > .right-side {
+    display: flex;
+    padding-right: 1rem;
+    margin-top: 25px;
+}

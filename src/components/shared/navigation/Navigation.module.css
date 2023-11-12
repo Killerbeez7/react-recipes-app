@@ -1,0 +1,53 @@
+/* Nav styles */
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    padding: 38px 3% 38px 3%;
+}
+
+/* Nav left side */
+.left-side {
+    display: flex;
+}
+
+.nav-wrapper > .left-side > div {
+    margin-right: 9%;
+    font-size: 1.7em;
+    text-transform: uppercase;
+}
+
+/* Nav right side */
+
+.right-side {
+    display: flex;
+}
+
+.nav-wrapper > .right-side > div {
+    margin-left: 20px;
+    font-size: 1.7em;
+    text-transform: uppercase;
+}
+
+/*Nav link styles*/
+
+.nav-link-wrapper {
+    height: 2.4rem;
+    border-bottom: 1px solid transparent;
+    transition: border-bottom 0.5s;
+}
+
+.nav-link-wrapper a {
+    
+    color: #8a8a8a;
+    text-decoration: none;
+    transition: color 0.5s;
+}
+
+.nav-link-wrapper:hover {
+    border-bottom: 1px solid #8a8a8a;
+}
+
+.active-link {
+    font-weight: bold;
+    color: black;
+}

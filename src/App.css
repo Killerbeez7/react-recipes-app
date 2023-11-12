@@ -1,0 +1,230 @@
+@font-face {
+    font-family: Oswald-Regular;
+    src: url(/public/fonts/oswald/Oswald-Regular.ttf);
+}
+@font-face {
+    font-family: Oswald-Medium;
+    src: url(/public/fonts/oswald/Oswald-Medium.ttf);
+}
+@font-face {
+    font-family: Oswald-Bold;
+    src: url(/public/fonts/oswald/Oswald-Bold.ttf);
+}
+
+.body,
+html {
+    min-height: 100vh;
+    font-family: Oswald-Regular, sans-serif;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+/*Content description text*/
+
+.content-description-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.content-description-text {
+    display: inline-block;
+    padding: 0.5em 3em;
+    border-bottom: 0.16em solid #8a8a8a;
+    margin: 0 0.3em 0.3em 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: #8a8a8a;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+/* Content styles */
+
+.content-table-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 1% 3% 1% 3%;
+}
+
+.content-table-item-wrapper {
+    position: relative;
+    margin: 3%;
+}
+
+.content-img-background {
+    height: 350px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.img-text-wrapper {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    text-align: center;
+    padding-left: 35%;
+    padding-right: 35%;
+    font-size: 34px;
+}
+
+.img-text-wrapper .subtitle {
+    transition: 1s;
+    font-weight: 600;
+    color: transparent;
+}
+
+.img-text-wrapper:hover .subtitle {
+    font-weight: 600;
+    color: white;
+}
+
+.img-darken {
+    transition: 1s;
+    filter: brightness(10%);
+}
+
+/* new styles by me */
+
+.content-wrapper {
+    padding-bottom: 61px;
+}
+
+.recipe-list-wrapper {
+    display: grid;
+    padding: 3%;
+    margin: 0;
+}
+
+.recipe-list-item-wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    background-color: #bcb88a;
+    list-style: none;
+    margin-bottom: 20px;
+    padding: 1%;
+    max-width: 60%;
+    max-height: 200px;
+    border: 5px solid #8c5e58;
+    border-radius: 15px;
+}
+
+.recipe-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid;
+    font-family: 'RockwellMT', 'Bookman Old Style', Georgia, serif;
+    text-transform: uppercase;
+    color: #785426;
+    letter-spacing: 0.05em;
+}
+
+.recipe-description-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-image-wrapper {
+    min-height: 0;
+    width: 30%;
+    margin-right: 3%;
+    border-radius: 15px;
+}
+
+.recipe-img {
+    height: 100%;
+    width: 100%;
+}
+
+/*BUTTON STYLE*/
+
+a.add-btn {
+    font-size: 1.15rem;
+    display: inline-block;
+    padding: 0.5em 3em;
+    border: 0.16em solid #bbbbbb;
+    margin: 0 0.3em 0.3em 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: #bbbbbb;
+    text-align: center;
+    transition: all 0.15s;
+}
+
+a.add-btn:hover {
+    color: #6d6d6d;
+    border-color: #6d6d6d;
+}
+
+a.add-btn:active {
+    color: #bbbbbb;
+    border-color: #bbbbbb;
+}
+
+@media all and (max-width: 30em) {
+    a.add-btn {
+        display: block;
+        margin: 0.4em auto;
+    }
+}
+
+.contacts-details {
+    display: flex;
+    align-content: center;
+}
+
+.view-recipe-btn {
+    display: inline-block;
+    font-size: 1.15em;
+    margin: 0.5em 3em;
+    max-height: 30px;
+    width: 100px;
+
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    text-decoration: none;
+    text-align: center;
+    color: #6d6d6d;
+    transition: all 0.15s;
+    border: solid #6d6d6d;
+    border-radius: 20px;
+}
+
+a.view-recipe-btn:hover {
+    color: black;
+    border-color: 8c5e58;
+}
+
+.content-table-item-wrapper {
+    border-radius: 15px;
+}
+
+.content-img-background {
+    border-radius: 15px;
+}
+
+.register-form-wraper {
+    border: 5px solid #8c5e58;
+    border-radius: 30px;
+    padding: 50px;
+    margin: 50px 10% 50px 10%;
+}
