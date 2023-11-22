@@ -1,40 +1,40 @@
-import { createContext, useContext } from 'react';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { createContext, useContext } from "react";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [auth, setAuth] = useLocalStorage('auth', {});
+  const [auth, setAuth] = useLocalStorage("auth", {});
 
-    const userLogin = (authData) => {
-        setAuth(authData);
-    };
+  const userLogin = (authData) => {
+    setAuth(authData);
+  }; 
 
-    const userLogout = () => {
-        setAuth({});
-    };
+  const userLogout = () => {
+    setAuth({});
+  };
 
-    return (
-        <AuthContext.Provider value={{ user: auth, userLogin, userLogout }}>
-            {children}
-        </AuthContext.Provider>
-    );
+  return (
+    <AuthContext.Provider value={{ user: auth, userLogin, userLogout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 // Custom Hook
 export const useAuthContext = () => {
-    const context = useContext(AuthContext);
+  const context = useContext(AuthContext);
 
-    return context;
+  return context;
 };
 
 // With HOC
 export const withAuth = (Component) => {
-    const WrapperComponent = (props) => {
-        const context = useContext(AuthContext);
-        
-        return <Component {...props} auth={context}/>;
-    };
+  const WrapperComponent = (props) => {
+    const context = useContext(AuthContext);
 
-    return WrapperComponent;
+    return <Component {...props} auth={context} />;
+  };
+
+  return WrapperComponent;
 };

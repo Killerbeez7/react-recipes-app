@@ -27,7 +27,7 @@ function App() {
 
     const addComment = (recipeId, comment) => {
         setRecipes((state) => {
-            const recipe = state.find((x) => x._id == recipeId);
+            const recipe = state.find((x) => x._id === recipeId);
 
             const comments = recipe.comments || [];
             comments.push(comment);
@@ -54,6 +54,8 @@ function App() {
 
     const deleteRecipe = (recipeId) => {
         setRecipes((state) => state.filter((x) => x._id !== recipeId));
+        console.log('deleting...');
+        console.log(`recipe: ${recipeId}`);
     };
 
     useEffect(() => {
