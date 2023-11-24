@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { RecipeContext } from '../../../contexts/RecipeContext';
 import { useContext } from 'react';
+import { RecipeContext } from '../../../contexts/RecipeContext';
 
 import * as recipeService from '../../../services/recipeService';
 
