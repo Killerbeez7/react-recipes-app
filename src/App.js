@@ -42,21 +42,23 @@ function App() {
     const addRecipe = (recipeData) => {
         setRecipes((state) => [...state, recipeData]);
         navigate("/recipes/list");
-        console.log("adding...");
-        console.log(`recipe: ${recipeData._id}`);
+        // console.log("adding...");
+        // console.log(`recipe: ${recipeData._id}`);
     };
 
     const editRecipe = (recipeId, recipeData) => {
-        setRecipes((state) =>
-            state.map((x) => (x._id === recipeId ? recipeData : x))
+        setRecipes(
+            (state) => state.map((x) => (x._id === recipeId ? recipeData : x))
+            // console.log("editing...");
+            // console.log(`recipe: ${recipeId}`);
         );
     };
 
     const deleteRecipe = (recipeId) => {
         setRecipes((state) => state.filter((x) => x._id !== recipeId));
         navigate("/recipes/list");
-        console.log("deleting...");
-        console.log(`recipe: ${recipeId._id}`);
+        // console.log("deleting...");
+        // console.log(`recipe: ${recipeId}`);
     };
 
     useEffect(() => {

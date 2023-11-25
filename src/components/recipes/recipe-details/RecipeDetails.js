@@ -5,12 +5,14 @@ import * as recipeService from "../../../services/recipeService";
 
 import { useContext } from "react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 export const RecipeDetails = () => {
+    const { user } = useContext(AuthContext);
     const { deleteRecipe, addComment } = useContext(RecipeContext);
 
     const { recipeId } = useParams();
-    const [ currentRecipe, setCurrentRecipe ] = useState({});
+    const [currentRecipe, setCurrentRecipe] = useState({});
 
     const [comment, setComment] = useState({
         username: "",
@@ -23,11 +25,10 @@ export const RecipeDetails = () => {
     });
 
     useEffect(() => {
-        recipeService.getOne(recipeId)
-            .then((result) => {
-                setCurrentRecipe(result);
+        recipeService.getOne(recipeId).then((result) => {
+            setCurrentRecipe(result);
         });
-    });
+    }, []);
 
     const addCommentHandler = (e) => {
         e.preventDefault();
@@ -60,7 +61,9 @@ export const RecipeDetails = () => {
     };
 
     const deleteRecipeHandler = () => {
-        recipeService.remove(currentRecipe._id).then(deleteRecipe(currentRecipe._id));
+        recipeService
+            .remove(currentRecipe._id)
+            .then(deleteRecipe(currentRecipe._id));
     };
 
     return (
@@ -114,20 +117,27 @@ export const RecipeDetails = () => {
                     </div>
                 </div>
                 <div className="form-control">
-                    <Link
-                        className="view-recipe-btn"
-                        to={`/recipes/edit/${currentRecipe._id}`}
-                        recipe={currentRecipe}
-                    >
-                        Edit
-                    </Link>
-                    <Link
-                        className="view-recipe-btn"
-                        to={`/recipes/list`}
-                        onClick={() => deleteRecipeHandler(currentRecipe._id)}
-                    >
-                        Delete
-                    </Link>
+                    {user.email && (
+                        <span>
+                            <Link
+                                className="view-recipe-btn"
+                                to={`/recipes/edit/${currentRecipe._id}`}
+                                recipe={currentRecipe}
+                            >
+                                Edit
+                            </Link>
+
+                            <Link
+                                className="view-recipe-btn"
+                                to={`/recipes/list`}
+                                onClick={() =>
+                                    deleteRecipeHandler(currentRecipe._id)
+                                }
+                            >
+                                Delete
+                            </Link>
+                        </span>
+                    )}
                 </div>
                 <div className="comments-section">
                     <h3>Comments:</h3>
