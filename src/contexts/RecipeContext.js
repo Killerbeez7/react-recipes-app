@@ -1,6 +1,6 @@
-import { useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
-import { createContext } from "react";
+
 import * as recipeService from "../services/recipeService";
 
 export const RecipeContext = createContext();
@@ -8,15 +8,22 @@ export const RecipeContext = createContext();
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case "ADD_RECIPES":
-            return action.payload;
+            return action.payload.map((x) => ({ ...x, comments: [] }));
         case "ADD_RECIPE":
             return [...state, action.payload];
+        case "FETCH_RECIPE_DETAILS":
         case "EDIT_RECIPE":
             return state.map((x) =>
                 x._id === action.recipeId ? action.payload : x
             );
         case "DELETE_RECIPE":
-            return state.filter((x) => x._id !== action.payload);
+            return state.filter((x) => x._id !== action.recipeId);
+        case "ADD_COMMENT":
+            return state.map((x) =>
+                x._id === action.recipeId
+                    ? { ...x, comments: [...x.comments, action.payload] }
+                    : x
+            );
         default:
             return state;
     }
@@ -35,16 +42,24 @@ export const RecipeProvider = ({ children }) => {
         });
     }, []);
 
+    const selectRecipe = (recipeId) => {
+        return recipes.find((x) => x._id === recipeId) || {};
+    };
+
+    const fetchRecipeDetails = (recipeId, recipeDetails) => {
+        dispatch({
+            type: "FETCH_RECIPE_DETAILS",
+            payload: recipeDetails,
+            recipeId,
+        });
+    };
+
     const addComment = (recipeId, comment) => {
-        // setRecipes((state) => {
-        //     const recipe = state.find((x) => x._id === recipeId);
-        //     const comments = recipe.comments || [];
-        //     comments.push(comment);
-        //     return [
-        //         ...state.filter((x) => x._id !== recipeId),
-        //         { ...recipe, comments },
-        //     ];
-        // });
+        dispatch({
+            type: "ADD_COMMENT",
+            payload: comment,
+            recipeId,
+        });
     };
 
     const addRecipe = (recipeData) => {
@@ -67,7 +82,7 @@ export const RecipeProvider = ({ children }) => {
     const deleteRecipe = (recipeId) => {
         dispatch({
             type: "DELETE_RECIPE",
-            payload: recipeId,
+            recipeId,
         });
 
         navigate("/recipes/list");
@@ -80,6 +95,8 @@ export const RecipeProvider = ({ children }) => {
                 editRecipe,
                 deleteRecipe,
                 addComment,
+                selectRecipe,
+                fetchRecipeDetails,
             }}
         >
             {children}

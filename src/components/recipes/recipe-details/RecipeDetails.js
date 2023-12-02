@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import * as recipeService from "../../../services/recipeService";
+import * as commentService from "../../../services/commentService";
 
 import { useContext } from "react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
@@ -9,61 +10,49 @@ import { AuthContext } from "../../../contexts/AuthContext";
 
 export const RecipeDetails = () => {
     const { user } = useContext(AuthContext);
-    const { deleteRecipe, addComment } = useContext(RecipeContext);
+    const { deleteRecipe, addComment, fetchRecipeDetails, selectRecipe } =
+        useContext(RecipeContext);
 
     const { recipeId } = useParams();
-    const [currentRecipe, setCurrentRecipe] = useState({});
 
-    const [comment, setComment] = useState({
-        username: "",
-        comment: "",
-    });
-
-    const [error, setError] = useState({
-        username: "",
-        comment: "",
-    });
+    const currentRecipe = selectRecipe(recipeId);
 
     useEffect(() => {
-        recipeService.getOne(recipeId).then((result) => {
-            setCurrentRecipe(result);
-        });
+        (async () => {
+            const recipeDetails = await recipeService.getOne(recipeId);
+            const recipeComments = await commentService.getByRecipeId(recipeId);
+
+            fetchRecipeDetails(recipeId, {
+                ...recipeDetails,
+                comments: recipeComments.map(
+                    (x) => `${x.user.email}: ${x.text}`
+                ),
+            });
+        })();
     }, []);
 
     const addCommentHandler = (e) => {
         e.preventDefault();
 
-        const result = `${comment.username}: ${comment.comment}`;
+        const formData = new FormData(e.target);
 
-        addComment(recipeId, result);
-    };
+        const comment = formData.get("comment");
+        //TODO comment validation
 
-    const onChange = (e) => {
-        setComment((state) => ({
-            [e.target.name]: e.target.value,
-        }));
-    };
-
-    const validateComment = (e) => {
-        const comment = e.target.value;
-        let errorMessage = "";
-
-        if (comment.length < 4) {
-            errorMessage = "Comment must be longer than 4 characters";
-        } else if (comment.length > 30) {
-            errorMessage = "Comment must be shorter than 30 characters";
-        }
-
-        setError((state) => ({
-            ...state,
-            comment: errorMessage,
-        }));
+        commentService.create(recipeId, comment).then((result) => {
+            addComment(recipeId, comment);
+        });
     };
 
     const deleteRecipeHandler = () => {
-        recipeService
-            .remove(currentRecipe._id)
-            .then(deleteRecipe(currentRecipe._id));
+        const confirmation = window.confirm(
+            "Are you sure you want to delete this recipe?"
+        );
+        if (confirmation) {
+            recipeService
+                .remove(recipeId)
+                .then(deleteRecipe(recipeId));
+            }
     };
 
     return (
@@ -144,7 +133,7 @@ export const RecipeDetails = () => {
                     <hr />
                     <ul className="comments">
                         {currentRecipe.comments?.map((x) => (
-                            <li className="comment">
+                            <li key={x} className="comment">
                                 <p>{x}</p>
                             </li>
                         ))}
@@ -167,15 +156,7 @@ export const RecipeDetails = () => {
                                 name="comment"
                                 id="comment"
                                 placeholder="Comment..."
-                                onChange={onChange}
-                                onBlur={validateComment}
-                                value={comment.comment}
                             />
-                            {error.comment && (
-                                <div style={{ color: "red" }}>
-                                    {error.comment}
-                                </div>
-                            )}
                             <div>
                                 <input
                                     className="btn submit"

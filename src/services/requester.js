@@ -25,7 +25,7 @@ const request = async (method, url, data) => {
         }
         const response = await buildRequest;
         const result = await response.json();
-
+        console.log(response);
         return result;
     } catch (error) {
         console.log(error);
