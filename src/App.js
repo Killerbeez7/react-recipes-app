@@ -17,6 +17,7 @@ import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
 import { RecipeAdd } from "./components/recipes/recipe-add/RecipeAdd";
 import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
 import { RecipeDetails } from "./components/recipes/recipe-details/RecipeDetails";
+import { PrivateRoute } from "./components/common/PrivateRoute";
 import "./App.css";
 
 // const Register = lazy(() => import("./components/auth/register/Register"));
@@ -46,12 +47,16 @@ function App() {
                         <Route path="/logout" element={<Logout />} />
 
                         <Route path="/recipes/list" element={<RecipeList />} />
-
-                        <Route path="/recipes/add" element={<RecipeAdd />} />
-                        <Route
-                            path="/recipes/edit/:recipeId"
-                            element={<RecipeEdit />}
-                        />
+                        <Route element={<PrivateRoute/>}>
+                            <Route
+                                path="/recipes/add"
+                                element={<RecipeAdd />}
+                            />
+                            <Route
+                                path="/recipes/edit/:recipeId"
+                                element={<RecipeEdit />}
+                            />
+                        </Route>
                         <Route
                             path="/recipes/details/:recipeId"
                             element={<RecipeDetails />}
