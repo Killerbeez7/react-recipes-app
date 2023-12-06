@@ -1,0 +1,11 @@
+.recipe-details-wrapper {
+    display: "flex";
+    justify-content: "space-between";
+    
+    padding: 30px;
+    margin: 80px;
+    background-color: #bcb88a;
+    border: 5px solid #8c5e58;
+    border-radius: 15px;
+    width: 50%;
+}

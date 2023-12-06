@@ -8,6 +8,8 @@ import { useContext } from "react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { AuthContext } from "../../../contexts/AuthContext";
 
+import styles from "./RecipeDetails.module.css";
+
 export const RecipeDetails = () => {
     const { user } = useContext(AuthContext);
     const { deleteRecipe, addComment, fetchRecipeDetails, selectRecipe } =
@@ -49,33 +51,23 @@ export const RecipeDetails = () => {
             "Are you sure you want to delete this recipe?"
         );
         if (confirmation) {
-            recipeService
-                .remove(recipeId)
-                .then(deleteRecipe(recipeId));
-            }
+            recipeService.remove(recipeId).then(deleteRecipe(recipeId));
+        }
     };
 
     return (
         <>
-            <div
-                style={{
-                    padding: 50,
-                    margin: 80,
-                    backgroundColor: "lightgreen",
-                }}
-            >
+            <div className={styles["recipe-details-wrapper"]}>
                 <h1 style={{ paddingBottom: 30 }}>
                     Recipe: {currentRecipe.name}
                 </h1>
                 <hr />
                 <br />
                 <div
-                    className="recipe-details-wrapper"
-                    style={{ display: "flex", justifyContent: "space-between" }}
                 >
                     <div className="recipe-img-box">
                         <img
-                            src={`/${currentRecipe.imageUrl}`}
+                            src={`${currentRecipe.imageUrl}`}
                             alt=""
                             className="recipe-img"
                             style={{
@@ -86,12 +78,12 @@ export const RecipeDetails = () => {
                         />
                     </div>
                     <div className="recipe-details-box" style={{ padding: 30 }}>
-                        <h3>Description: {currentRecipe.description}</h3>
-                        <h3>
-                            Time for preparation: {currentRecipe.timeToCook}{" "}
+                        <p><strong>Description: </strong>{currentRecipe.description}</p>
+                        <p>
+                            <strong>Time for preparation: </strong>{currentRecipe.timeToCook}{" "}
                             minutes
-                        </h3>
-                        <h3>ingredients: {currentRecipe.ingredients}</h3>
+                        </p>
+                        <p><strong>ingredients: </strong>{currentRecipe.ingredients}</p>
                         <h2>Likes: </h2>
                     </div>
                     <div className="like-btn btn">

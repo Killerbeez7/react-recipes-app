@@ -1,4 +1,3 @@
-import styles from "./RecipeAdd.module.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -6,6 +5,7 @@ import { useContext } from "react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 
 import * as recipeService from "../../../services/recipeService";
+import styles from "./RecipeAdd.module.css";
 
 export const RecipeAdd = () => {
     const [errors, setErrors] = useState({});
