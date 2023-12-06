@@ -5,6 +5,8 @@ import { useContext } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 
+import styles from "./RecipeList.module.css"
+
 export const RecipeList = () => {
     const { user } = useContext(AuthContext);
     const { recipes } = useContext(RecipeContext);
@@ -18,7 +20,7 @@ export const RecipeList = () => {
                     </Link>
                 )}
             </form>
-            <ul className="recipe-list-wrapper" style={{ width: `${100}%` }}>
+            <ul className={styles["recipe-list-wrapper"]} style={{ width: `${100}%` }}>
                 {recipes.length > 0 ? (
                     recipes.map((x) => <RecipeItem key={x._id} recipe={x} />)
                 ) : (

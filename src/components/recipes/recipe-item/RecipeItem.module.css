@@ -1,0 +1,53 @@
+.cook-time {
+    display: flex;
+    justify-content: space-between;
+    font-style: italic;
+    margin-bottom: 5px;
+    /* margin-left: 5px; */
+    font-weight: 400;
+}
+
+
+.recipe-list-item-wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    
+    background-color: #bcb88a;
+    list-style: none;
+    margin-bottom: 20px;
+    padding: 1%;
+    max-width: 60%;
+    max-height: 180px;
+    border: 5px solid #8c5e58;
+    border-radius: 15px;
+}
+
+.recipe-name-wrapper {
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid;
+    font-family: 'RockwellMT', 'Bookman Old Style', Georgia, serif;
+    text-transform: uppercase;
+    color: #785426;
+    letter-spacing: 0.05em;
+}
+
+.recipe-description-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.recipe-image-wrapper {
+    max-height: 150px;
+    max-width: 150px;
+    min-height: 0;
+    width: 30%;
+    margin-right: 3%;
+    border-radius: 15px;
+}
+
+.recipe-img {
+    height: 100%;
+    width: 100%;
+}

@@ -1,19 +1,21 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import styles from "./RecipeAdd.module.css";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-import { useContext } from 'react';
-import { RecipeContext } from '../../../contexts/RecipeContext';
+import { useContext } from "react";
+import { RecipeContext } from "../../../contexts/RecipeContext";
 
-import * as recipeService from '../../../services/recipeService';
+import * as recipeService from "../../../services/recipeService";
 
 export const RecipeAdd = () => {
     const [errors, setErrors] = useState({});
     const [values, setValues] = useState({
-        name: '',
-        description: '',
-        timeToCook: '',
-        imageUrl: '',
-        steps: '',
+        name: "",
+        description: "",
+        imageUrl: "",
+        timeToCook: "",
+        ingredients: "",
+        steps: "",
     });
 
     const changeHandler = (e) => {
@@ -46,14 +48,8 @@ export const RecipeAdd = () => {
 
     return (
         <>
-            <div
-                style={{
-                    padding: 80,
-                    margin: 80,
-                    backgroundColor: 'lightgreen',
-                }}
-            >
-                <h1 style={{ color: 'blue' }}>add recipe</h1>
+            <div className={styles["form-container"]}>
+                <h1 className={styles["add-recipe-title"]}>add recipe</h1>
                 <form
                     id="create"
                     className="col-lg-6 offset-lg-3"
@@ -84,6 +80,18 @@ export const RecipeAdd = () => {
                         />
                     </div>
                     <div className="form-group">
+                        <label htmlFor="imageUrl">ImageUrl:</label>
+                        <input
+                            type="text"
+                            id="imageUrl"
+                            name="imageUrl"
+                            placeholder="image link"
+                            value={values.imageUrl}
+                            onChange={changeHandler}
+                            onBlur={(e) => minLength(e, 3)}
+                        />
+                    </div>
+                    <div className="form-group">
                         <label htmlFor="timeToCook">Time to cook:</label>
                         <input
                             type="text"
@@ -96,13 +104,13 @@ export const RecipeAdd = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="imageUrl">ImageUrl:</label>
+                        <label htmlFor="description">Ingredients:</label>
                         <input
                             type="text"
-                            id="imageUrl"
-                            name="imageUrl"
-                            placeholder="image link"
-                            value={values.imageUrl}
+                            id="ingredients"
+                            name="ingredients"
+                            placeholder="recipe ingredients"
+                            value={values.ingredients}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 3)}
                         />

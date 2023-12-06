@@ -1,45 +1,47 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import styles from "./RecipeItem.module.css";
 
 export const RecipeItem = ({ recipe }) => {
     return (
         <>
             <h3
-                style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    fontStyle: 'italic',
-                    marginBottom: 10,
-                }}
+                className={styles["cook-time"]}
             >
                 Time to cook: {recipe.timeToCook} min
             </h3>
             <li
-                className="recipe-list-item-wrapper"
-                style={{ maxHeight: 200, maxWidth: 750 }}
+                className={styles["recipe-list-item-wrapper"]}
             >
                 <div
-                    className="recipe-image-wrapper"
-                    style={{ maxHeight: 150, maxWidth: 150 }}
+                    className={styles["recipe-image-wrapper"]}
                 >
                     <img
                         alt=""
-                        src={`/${recipe.imageUrl}`}
-                        className="recipe-img"
-                        style={{ maxHeight: 150, maxWidth: 150 }}
+                        src={`${recipe.imageUrl}`}
+                        className={styles["recipe-img"]}
                     />
                 </div>
                 <div className="recipe-content-wrapper">
-                    <div className="recipe-name-wrapper">
+                    <div className={styles["recipe-name-wrapper"]}>
                         <h3>{recipe.name}</h3>
                     </div>
-                    <div className="recipe-description-wrapper">
-                        <h3>{recipe.description}</h3>
+                    <div className={styles["recipe-description-wrapper"]}>
+                        <p>
+                            <strong>Description: </strong>
+                            {recipe.description}
+                        </p>
                     </div>
                     <div className="recipe-description-wrapper">
-                        <h3>{recipe.ingredients}</h3>
+                        <p>
+                            <strong>Ingredients: </strong>
+                            {recipe.ingredients}
+                        </p>
                     </div>
                     <div className="recipe-description-wrapper">
-                        <h4>Steps: {recipe.steps}</h4>
+                        <p>
+                            <strong>Steps: </strong>
+                            {recipe.steps}
+                        </p>
                     </div>
                 </div>
 
