@@ -1,11 +1,53 @@
+.btn {
+    font-size: 1.15rem;
+    display: inline-block;
+    padding: 0.5em 3em;
+    border: 0.16em solid #bbbbbb;
+    margin: 0 0.3em 0.3em 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    color: #bbbbbb;
+    text-align: center;
+    transition: all 0.15s;
+}
+
+.btn:hover {
+    color: #6d6d6d;
+    border-color: #6d6d6d;
+}
 .recipe-details-wrapper {
     display: "flex";
     justify-content: "space-between";
-    
+
     padding: 30px;
     margin: 80px;
     background-color: #bcb88a;
     border: 5px solid #8c5e58;
     border-radius: 15px;
     width: 50%;
+}
+
+.create-comment {
+    background-color: "#c0b3dc";
+    padding: 20px;
+    margin: 20px;
+}
+
+.create-comment-text-area {
+    margin-right: 20px;
+    margin-top: 10;
+    border-radius: 8px;
+}
+
+.recipe-img {
+    width: 250px;
+    height: 250px;
+    display: "inline-block";
+}
+
+.recipe-details-box {
+    padding: 30px;
 }

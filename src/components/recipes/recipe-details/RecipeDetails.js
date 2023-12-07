@@ -58,48 +58,44 @@ export const RecipeDetails = () => {
     return (
         <>
             <div className={styles["recipe-details-wrapper"]}>
-                <h1 style={{ paddingBottom: 30 }}>
-                    Recipe: {currentRecipe.name}
-                </h1>
+                <h1>Recipe: {currentRecipe.name}</h1>
                 <hr />
                 <br />
-                <div
-                >
+                <div>
                     <div className="recipe-img-box">
                         <img
                             src={`${currentRecipe.imageUrl}`}
                             alt=""
-                            className="recipe-img"
-                            style={{
-                                width: 250,
-                                height: 250,
-                                display: "inline-block",
-                            }}
+                            className={styles["recipe-img"]}
                         />
                     </div>
-                    <div className="recipe-details-box" style={{ padding: 30 }}>
-                        <p><strong>Description: </strong>{currentRecipe.description}</p>
+                    <div className={styles["recipe-details-box"]}>
                         <p>
-                            <strong>Time for preparation: </strong>{currentRecipe.timeToCook}{" "}
-                            minutes
+                            <strong>Description: </strong>
+                            {currentRecipe.description}
                         </p>
-                        <p><strong>ingredients: </strong>{currentRecipe.ingredients}</p>
+                        <p>
+                            <strong>Time for preparation: </strong>
+                            {currentRecipe.timeToCook} minutes
+                        </p>
+                        <p>
+                            <strong>ingredients: </strong>
+                            {currentRecipe.ingredients}
+                        </p>
+                        <br></br>
                         <h2>Likes: </h2>
                     </div>
-                    <div className="like-btn btn">
-                        <button>
+                </div>
+                <div className="form-control">
+                    {user.email && (
+                        <span>
                             <Link
                                 to={`/recipes/details/${currentRecipe._id}`}
                                 className="view-recipe-btn"
                             >
                                 LIKE
                             </Link>
-                        </button>
-                    </div>
-                </div>
-                <div className="form-control">
-                    {user.email && (
-                        <span>
+
                             <Link
                                 className="view-recipe-btn"
                                 to={`/recipes/edit/${currentRecipe._id}`}
@@ -121,8 +117,8 @@ export const RecipeDetails = () => {
                     )}
                 </div>
                 <div className="comments-section">
-                    <h3>Comments:</h3>
                     <hr />
+                    <h3>Comments:</h3>
                     <ul className="comments">
                         {currentRecipe.comments?.map((x) => (
                             <li key={x} className="comment">
@@ -132,26 +128,19 @@ export const RecipeDetails = () => {
                     </ul>
                     {!currentRecipe.comments && <p>No comments yet!</p>}
                 </div>
-                <div
-                    className="create-comment"
-                    style={{
-                        backgroundColor: "#c0b3dc",
-                        padding: 20,
-                        margin: 20,
-                    }}
-                >
-                    <article className="create-comment">
+                <div className={styles["create-comment"]}>
+                    <article>
                         <label htmlFor="comment">Add new comment</label>
                         <form className="form" onSubmit={addCommentHandler}>
                             <textarea
-                                style={{ marginRight: 20, marginTop: 10 }}
+                                className={styles["create-comment-text-area"]}
                                 name="comment"
                                 id="comment"
                                 placeholder="Comment..."
                             />
                             <div>
                                 <input
-                                    className="btn submit"
+                                    className={styles['btn']}
                                     type="submit"
                                     value="Add comment"
                                 />
