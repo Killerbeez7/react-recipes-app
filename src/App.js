@@ -7,6 +7,7 @@ import { RecipeProvider } from "./contexts/RecipeContext";
 import { Navigation } from "./components/shared/navigation/Navigation";
 import { Home } from "./components/home/Home";
 import { About } from "./components/about/About";
+import { Gallery } from "./components/gallery/Gallery";
 import { Contacts } from "./components/contacts/Contacts";
 import { Footer } from "./components/shared/footer/Footer";
 import { NotFound } from "./components/not-found/NotFound";
@@ -32,6 +33,7 @@ function App() {
                 <RecipeProvider>
                     <Routes>
                         <Route path="/" element={<Home />} />
+                        <Route path="/gallery" element={<Gallery />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/contacts" element={<Contacts />} />
                         <Route path="/register" element={<Register />} />

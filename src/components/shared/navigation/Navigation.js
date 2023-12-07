@@ -26,6 +26,12 @@ export const Navigation = (props) => {
                 </div>
 
                 <div className={styles['nav-link-wrapper']}>
+                    <NavLink className={setNavStyle} to="/gallery">
+                        Gallery
+                    </NavLink>
+                </div>
+
+                <div className={styles['nav-link-wrapper']}>
                     <NavLink className={setNavStyle} to="/about">
                         About
                     </NavLink>
