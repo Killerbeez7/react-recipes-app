@@ -8,7 +8,7 @@ import { Navigation } from "./components/shared/navigation/Navigation";
 import { Home } from "./components/home/Home";
 import { About } from "./components/about/About";
 import { Gallery } from "./components/gallery/Gallery";
-import { Contacts } from "./components/contacts/Contacts";
+import { Forum } from "./components/forum/Forum";
 import { Footer } from "./components/shared/footer/Footer";
 import { NotFound } from "./components/not-found/NotFound";
 import { Register } from "./components/auth/register/Register";
@@ -36,7 +36,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/gallery" element={<Gallery />} />
                         <Route path="/about" element={<About />} />
-                        <Route path="/contacts" element={<Contacts />} />
+                        <Route path="/forum" element={<Forum />} />
                         <Route path="/register" element={<Register />} />
                         {/* <Route
                             path="/register"

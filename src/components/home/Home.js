@@ -16,22 +16,28 @@ export const Home = () => {
                             <li>gagagadfad</li>
                         </ul>
                     </div>
-                    <div className={styles[("sections", "cooking-tips")]}>
-                        <p className={styles["home-titles"]}>Cooking tips:</p>
-                        <ul>
-                            <li>dadasfasfas</li>
-                            <li>gagagadfad</li>
-                            <li>gagagadfad</li>
-                        </ul>
-                    </div>
-                    <div className={styles[("sections", "easy-recipes")]}>
-                        <p className={styles["home-titles"]}>Easy Recipes</p>
-                        <ul>
-                            <li>fafasfdaad</li>
-                            <li>gagagadfad</li>
-                            <li>gagagadfad</li>
-                        </ul>
-                    </div>
+                    <span className={styles["horizontal-row"]}>
+                        <div className={styles[("sections", "cooking-tips")]}>
+                            <p className={styles["home-titles"]}>
+                                Cooking tips:
+                            </p>
+                            <ul>
+                                <li>dadasfasfas</li>
+                                <li>gagagadfad</li>
+                                <li>gagagadfad</li>
+                            </ul>
+                        </div>
+                        <div className={styles[("sections", "easy-recipes")]}>
+                            <p className={styles["home-titles"]}>
+                                Easy Recipes
+                            </p>
+                            <ul>
+                                <li>fafasfdaad</li>
+                                <li>gagagadfad</li>
+                                <li>gagagadfad</li>
+                            </ul>
+                        </div>
+                    </span>
                     <div className={styles[("sections", "food-news")]}>
                         <p className={styles["home-titles"]}>Food News</p>
                         <ul>

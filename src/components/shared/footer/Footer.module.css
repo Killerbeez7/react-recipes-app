@@ -3,7 +3,7 @@
     width: 100%;
     min-height: 100px; /* Height of the footer */
     justify-content: space-between;
-    background-color: #9ab973;
+    background-color: rgb(90, 70, 50, 0.25);
     margin-top: auto;
 }
 

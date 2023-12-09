@@ -15,15 +15,21 @@
 
 .trending-recipes {
     background-color: lightcyan;
-
+    height: 350px;
+    margin-bottom: 50px;
 }
 
 .cooking-tips {
     background-color: lightslategray;
+    height: 220px;
+    width: 45%;
+    margin-bottom: 50px;
 }
 
 .easy-recipes {
     background-color: lightgray;
+    width: 45%;
+    height: 220px;
 }
 
 .food-news {
@@ -39,4 +45,11 @@
     font-style: italic;
     font-size: 24px;
     text-decoration: underline;
+}
+
+
+/* test */
+.horizontal-row {
+    display: flex;
+    justify-content: space-between;
 }
