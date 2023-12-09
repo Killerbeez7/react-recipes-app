@@ -13,14 +13,15 @@
     position: relative;
     flex-direction: row;
     
-    background-color: #bcb88a;
+    /* background-color: #bcb88a; */
+    background-color: rgb(250, 230, 220, 1);
     list-style: none;
     margin-bottom: 20px;
     padding: 1%;
-    max-width: 60%;
-    max-height: 180px;
-    border: 5px solid #8c5e58;
-    border-radius: 15px;
+    width: 100%;
+    height: 180px;
+    /* border: 5px solid #8c5e58; */
+    /* border-radius: 15px; */
 }
 
 .recipe-name-wrapper {

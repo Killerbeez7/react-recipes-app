@@ -3,29 +3,24 @@
     display: flex;
     justify-content: space-between;
     padding: 38px 3% 38px 3%;
+    font-size: 1.5em;
+    text-transform: uppercase;
 }
 
 /* Nav left side */
 .left-side {
     display: flex;
+    width: 40%;
+    justify-content: space-between;
 }
 
-.nav-wrapper > .left-side > div {
-    margin-right: 9%;
-    font-size: 1.7em;
-    text-transform: uppercase;
-}
 
 /* Nav right side */
 
 .right-side {
     display: flex;
-}
-
-.nav-wrapper > .right-side > div {
-    margin-left: 20px;
-    font-size: 1.7em;
-    text-transform: uppercase;
+    width: 23%;
+    justify-content: space-between;
 }
 
 /*Nav link styles*/
