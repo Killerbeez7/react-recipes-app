@@ -14,10 +14,11 @@ export const RecipeDetails = () => {
     const { user } = useContext(AuthContext);
     const { deleteRecipe, addComment, fetchRecipeDetails, selectRecipe } =
         useContext(RecipeContext);
-
     const { recipeId } = useParams();
 
     const currentRecipe = selectRecipe(recipeId);
+
+    const isOwner = currentRecipe._ownerId === user._id;
 
     useEffect(() => {
         (async () => {
@@ -87,35 +88,43 @@ export const RecipeDetails = () => {
                     </div>
                 </div>
                 <div className="form-control">
-                    {user.email && (
-                        <span>
-                            <Link
-                                to={`/recipes/details/${currentRecipe._id}`}
-                                className="view-recipe-btn"
-                            >
-                                LIKE
-                            </Link>
+                    <span>
+                        {user.email && (
+                            <span>
+                                <Link
+                                    to={`/recipes/details/${currentRecipe._id}`}
+                                    className="view-recipe-btn"
+                                >
+                                    LIKE
+                                </Link>
+                                {isOwner && (
+                                    <span>
+                                        <Link
+                                            className="view-recipe-btn"
+                                            to={`/recipes/edit/${currentRecipe._id}`}
+                                            recipe={currentRecipe}
+                                        >
+                                            Edit
+                                        </Link>
 
-                            <Link
-                                className="view-recipe-btn"
-                                to={`/recipes/edit/${currentRecipe._id}`}
-                                recipe={currentRecipe}
-                            >
-                                Edit
-                            </Link>
-
-                            <Link
-                                className="view-recipe-btn"
-                                to={`/recipes/list`}
-                                onClick={() =>
-                                    deleteRecipeHandler(currentRecipe._id)
-                                }
-                            >
-                                Delete
-                            </Link>
-                        </span>
-                    )}
+                                        <Link
+                                            className="view-recipe-btn"
+                                            to={`/recipes/list`}
+                                            onClick={() =>
+                                                deleteRecipeHandler(
+                                                    currentRecipe._id
+                                                )
+                                            }
+                                        >
+                                            Delete
+                                        </Link>
+                                    </span>
+                                )}
+                            </span>
+                        )}
+                    </span>
                 </div>
+
                 <div className="comments-section">
                     <hr />
                     <h3>Comments:</h3>
@@ -140,7 +149,7 @@ export const RecipeDetails = () => {
                             />
                             <div>
                                 <input
-                                    className={styles['btn']}
+                                    className={styles["btn"]}
                                     type="submit"
                                     value="Add comment"
                                 />

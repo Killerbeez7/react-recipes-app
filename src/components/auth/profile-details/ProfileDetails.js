@@ -8,7 +8,7 @@ export const ProfileDetails = () => {
 
     return (
         <>
-            <h1 className={styles["profile-details-title"]}>Hello {user.username}</h1>
+            <h1 className={styles["profile-details-title"]}>Hello {user.email}</h1>
         </>
     );
 };
