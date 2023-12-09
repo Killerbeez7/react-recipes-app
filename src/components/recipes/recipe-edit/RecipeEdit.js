@@ -15,6 +15,10 @@ export const RecipeEdit = () => {
     useEffect(() => {
         recipeService.getOne(recipeId).then((recipeData) => {
             setCurrentRecipe(recipeData);
+            console.log('current recipe:', currentRecipe);
+            console.log('recipe data', recipeData);
+            console.log(recipeData.imageUrl);
+            console.log(recipeData.name);
         });
     }, []);
 

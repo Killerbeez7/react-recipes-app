@@ -14,6 +14,7 @@ import { NotFound } from "./components/not-found/NotFound";
 import { Register } from "./components/auth/register/Register";
 import { Login } from "./components/auth/login/Login";
 import { Logout } from "./components/auth/logout/Logout";
+import { ProfileDetails } from "./components/auth/profile-details/ProfileDetails";
 import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
 import { RecipeAdd } from "./components/recipes/recipe-add/RecipeAdd";
 import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
@@ -45,6 +46,7 @@ function App() {
                                 </Suspense>
                             }
                         /> */}
+                        <Route path="/profile-details" element={<ProfileDetails />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/logout" element={<Logout />} />
 

@@ -48,7 +48,7 @@ export const Navigation = (props) => {
                 {user.email ? (
                     <>
                         <div className={styles['nav-link-wrapper']}>
-                            <NavLink to="/">{user.email}</NavLink>
+                            <NavLink className={setNavStyle} to="/profile-details">{user.email}</NavLink>
                         </div>
                         <div className={styles['nav-link-wrapper']}>
                             <NavLink to="/logout">logout</NavLink>

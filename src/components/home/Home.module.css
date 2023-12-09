@@ -1,0 +1,42 @@
+.main-wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.content-wrapper {
+    width: 70%;
+}
+
+.side-menu-wrapper {
+    width: 20%;
+    padding-left: 50px;
+    background-color: bisque;
+}
+
+.trending-recipes {
+    background-color: lightcyan;
+
+}
+
+.cooking-tips {
+    background-color: lightslategray;
+}
+
+.easy-recipes {
+    background-color: lightgray;
+}
+
+.food-news {
+    background-color: lightskyblue;
+}
+
+.cleaning-organizing {
+    background-color: lightseagreen;
+}
+
+.home-titles {
+    font-weight: 700;
+    font-style: italic;
+    font-size: 24px;
+    text-decoration: underline;
+}
