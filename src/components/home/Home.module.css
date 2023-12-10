@@ -9,19 +9,23 @@
 
 .side-menu-wrapper {
     width: 20%;
+    height: 2000px;
     padding-left: 50px;
+    margin-bottom: 50px;
     background-color: bisque;
+
 }
 
 .trending-recipes {
     background-color: lightcyan;
-    height: 350px;
+    height: 600px;
     margin-bottom: 50px;
+    text-align: center;
 }
 
 .cooking-tips {
     background-color: lightslategray;
-    height: 220px;
+    height: 350px;
     width: 45%;
     margin-bottom: 50px;
 }
@@ -29,15 +33,18 @@
 .easy-recipes {
     background-color: lightgray;
     width: 45%;
-    height: 220px;
+    height: 350px;
 }
 
 .food-news {
     background-color: lightskyblue;
+    height: 250px;
+    margin-bottom: 50px;
 }
 
 .cleaning-organizing {
     background-color: lightseagreen;
+    height: 300px;
 }
 
 .home-titles {

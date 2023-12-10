@@ -5,7 +5,7 @@ export const Home = () => {
     return (
         <>
             <main className={styles["main-wrapper"]}>
-                <content className={styles["content-wrapper"]}>
+                <div className={styles["content-wrapper"]}>
                     <div className={styles[("sections", "trending-recipes")]}>
                         <p className={styles["home-titles"]}>
                             Trending recipes:
@@ -16,7 +16,7 @@ export const Home = () => {
                             <li>gagagadfad</li>
                         </ul>
                     </div>
-                    <span className={styles["horizontal-row"]}>
+                    <div className={styles["horizontal-row"]}>
                         <div className={styles[("sections", "cooking-tips")]}>
                             <p className={styles["home-titles"]}>
                                 Cooking tips:
@@ -37,7 +37,7 @@ export const Home = () => {
                                 <li>gagagadfad</li>
                             </ul>
                         </div>
-                    </span>
+                    </div>
                     <div className={styles[("sections", "food-news")]}>
                         <p className={styles["home-titles"]}>Food News</p>
                         <ul>
@@ -58,8 +58,8 @@ export const Home = () => {
                             <li>gagagadfad</li>
                         </ul>
                     </div>
-                </content>
-                <sidemenu className={styles["side-menu-wrapper"]}>
+                </div>
+                <div className={styles["side-menu-wrapper"]}>
                     <div>
                         <h2>menu one</h2>
                         <p>babfababa</p>
@@ -72,7 +72,7 @@ export const Home = () => {
                         <p>babfababa</p>
                         <p>babfababa</p>
                     </div>
-                </sidemenu>
+                </div>
             </main>
         </>
     );

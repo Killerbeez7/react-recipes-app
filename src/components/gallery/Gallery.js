@@ -1,119 +1,120 @@
+import styles from "./Gallery.module.css";
+
 export const Gallery = () => {
     return (
         <>
             <>
-                <div className="content-description-wrapper">
-                    <div className="content-description-text">
+                <div className={styles["gallery-title-wrapper"]}>
+                    <div className={styles["gallery-title"]}>
                         Find the meal you want and learn how to cook it.
                     </div>
                 </div>
-                <div className="content-wrapper">
-                    <div className="content-table-wrapper">
-                        <div className="content-table-item-wrapper">
+                <div className={styles["content"]}>
+                    <div className={styles["table-wrapper"]}>
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/salad.jpg)',
+                                    backgroundImage: "url(/assets/salad.jpg)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">Green salads.</div>
+                            <div className={styles["overlay"]}>
+                                <p>Green salad</p>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/steak.jpg)',
+                                    backgroundImage: "url(/assets/steak.jpg)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">Steak.</div>
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Steak</div>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/fish.JPG)',
+                                    backgroundImage: "url(/assets/fish.JPG)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">Fish</div>
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Fish</div>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/pasta.JPG)',
+                                    backgroundImage: "url(/assets/pasta.JPG)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">Pasta.</div>
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Pasta</div>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/cake.jpeg)',
+                                    backgroundImage: "url(/assets/cake.jpeg)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">Cake.</div>
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Cake</div>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
                                     backgroundImage:
-                                        'url(/assets/icecream.JPG)',
+                                        "url(/assets/icecream.JPG)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">IceCream.</div>
-                            </div>
-                        </div>
-                        <div className="content-table-item-wrapper">
-                            <div
-                                className="content-img-background"
-                                style={{
-                                    backgroundImage:
-                                        'url(/assets/pizza.JPG)',
-                                }}
-                            />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">
-                                   Pizza.
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>
+                                    Ice Cream
                                 </div>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/juice.JPG)',
+                                    backgroundImage: "url(/assets/pizza.JPG)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">
-                                    Juice.
-                                </div>
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Pizza</div>
                             </div>
                         </div>
-                        <div className="content-table-item-wrapper">
+
+                        <div className={styles["table-item"]}>
                             <div
-                                className="content-img-background"
+                                className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: 'url(/assets/wine.JPG)',
+                                    backgroundImage: "url(/assets/juice.JPG)",
                                 }}
                             />
-                            <div className="img-text-wrapper">
-                                <div className="subtitle">
-                                    Wine.
-                                </div>
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Juice</div>
+                            </div>
+                        </div>
+
+                        <div className={styles["table-item"]}>
+                            <div
+                                className={styles["img-background"]}
+                                style={{
+                                    backgroundImage: "url(/assets/wine.JPG)",
+                                }}
+                            />
+                            <div className={styles["overlay"]}>
+                                <div className={styles["subtitle"]}>Wines</div>
                             </div>
                         </div>
                     </div>

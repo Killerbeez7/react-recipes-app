@@ -1,0 +1,68 @@
+.content {
+    padding-bottom: 60px;
+}
+
+/* Title styles */
+
+.gallery-title-wrapper {
+    margin: 0 auto;
+}
+
+.gallery-title {
+    padding: 0.3em 3em;
+    border-bottom: 0.1em solid #8a8a8a;
+    margin: 0.3em 0;
+    text-transform: uppercase;
+    color: #8a8a8a;
+    font-size: 1.4rem;
+}
+
+/* Table styles */
+
+.table-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 1% 3% 1% 3%;
+}
+
+.table-item {
+    position: relative;
+    margin: 5%;
+    height: 40vh;
+    box-shadow: 0 5px 10px rgb(40, 40, 40);
+}
+
+/* Table item styles */
+
+.img-background {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* fading effect styles */
+
+.overlay {
+    position: absolute;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    padding-left: 35%;
+    padding-right: 35%;
+    font-size: 32px;
+    color: transparent;
+    opacity: 0;
+    background-color: black;
+}
+
+.table-item:hover .overlay {
+    opacity: 0.6;
+    color: white;
+}

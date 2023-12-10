@@ -21,24 +21,27 @@ import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
 import { RecipeDetails } from "./components/recipes/recipe-details/RecipeDetails";
 import { PrivateRoute } from "./components/common/PrivateRoute";
 import "./App.css";
+// Error Boundary
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 // const Register = lazy(() => import("./components/auth/register/Register"));
 
 function App() {
     return (
-        <AuthProvider>
-            <div className="body">
-                <Navigation />
+        <ErrorBoundary>
+            <AuthProvider>
+                <div className="body">
+                    <Navigation />
 
-                {/* Main content */}
-                <RecipeProvider>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/gallery" element={<Gallery />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/forum" element={<Forum />} />
-                        <Route path="/register" element={<Register />} />
-                        {/* <Route
+                    {/* Main content */}
+                    <RecipeProvider>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/gallery" element={<Gallery />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/forum" element={<Forum />} />
+                            <Route path="/register" element={<Register />} />
+                            {/* <Route
                             path="/register"
                             element={
                                 <Suspense fallback={<span>Loading...</span>}>
@@ -46,34 +49,41 @@ function App() {
                                 </Suspense>
                             }
                         /> */}
-                        <Route path="/profile-details" element={<ProfileDetails />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/logout" element={<Logout />} />
-
-                        <Route path="/recipes/list" element={<RecipeList />} />
-                        <Route element={<PrivateRoute/>}>
                             <Route
-                                path="/recipes/add"
-                                element={<RecipeAdd />}
+                                path="/profile-details"
+                                element={<ProfileDetails />}
                             />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/logout" element={<Logout />} />
+
                             <Route
-                                path="/recipes/edit/:recipeId"
-                                element={<RecipeEdit />}
+                                path="/recipes/list"
+                                element={<RecipeList />}
                             />
-                        </Route>
-                        <Route
-                            path="/recipes/details/:recipeId"
-                            element={<RecipeDetails />}
-                        />
+                            <Route element={<PrivateRoute />}>
+                                <Route
+                                    path="/recipes/add"
+                                    element={<RecipeAdd />}
+                                />
+                                <Route
+                                    path="/recipes/edit/:recipeId"
+                                    element={<RecipeEdit />}
+                                />
+                            </Route>
+                            <Route
+                                path="/recipes/details/:recipeId"
+                                element={<RecipeDetails />}
+                            />
 
-                        <Route path="/*" element={<NotFound />} />
-                    </Routes>
-                </RecipeProvider>
-                {/* End of main content */}
+                            <Route path="/*" element={<NotFound />} />
+                        </Routes>
+                    </RecipeProvider>
+                    {/* End of main content */}
 
-                <Footer />
-            </div>
-        </AuthProvider>
+                    <Footer />
+                </div>
+            </AuthProvider>
+        </ErrorBoundary>
     );
 }
 
