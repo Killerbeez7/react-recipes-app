@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import * as recipeService from "../services/recipeService";
@@ -32,6 +32,8 @@ const recipeReducer = (state, action) => {
 export const RecipeProvider = ({ children }) => {
     const navigate = useNavigate();
     const [recipes, dispatch] = useReducer(recipeReducer, []);
+    //new logic for search
+    // const [filteredRecipes, setFilteredRecipes] = useState([])
 
     useEffect(() => {
         recipeService.getAll().then((result) => {
@@ -39,6 +41,8 @@ export const RecipeProvider = ({ children }) => {
                 type: "ADD_RECIPES",
                 payload: result,
             });
+            //new logic for search
+            // setFilteredRecipes(result)
         });
     }, []);
 

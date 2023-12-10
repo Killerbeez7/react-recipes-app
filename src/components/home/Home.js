@@ -1,12 +1,17 @@
 import styles from "./Home.module.css";
-// import classNames from "classnames";
+import cx from "classnames";
 
 export const Home = () => {
     return (
         <>
             <main className={styles["main-wrapper"]}>
                 <div className={styles["content-wrapper"]}>
-                    <div className={styles[("sections", "trending-recipes")]}>
+                    <div
+                        className={cx(
+                            styles["trending-recipes"],
+                            styles.sections
+                        )}
+                    >
                         <p className={styles["home-titles"]}>
                             Trending recipes:
                         </p>
@@ -17,7 +22,12 @@ export const Home = () => {
                         </ul>
                     </div>
                     <div className={styles["horizontal-row"]}>
-                        <div className={styles[("sections", "cooking-tips")]}>
+                        <div
+                            className={cx(
+                                styles["cooking-tips"],
+                                styles.sections
+                            )}
+                        >
                             <p className={styles["home-titles"]}>
                                 Cooking tips:
                             </p>
@@ -27,7 +37,12 @@ export const Home = () => {
                                 <li>gagagadfad</li>
                             </ul>
                         </div>
-                        <div className={styles[("sections", "easy-recipes")]}>
+                        <div
+                            className={cx(
+                                styles["easy-recipes"],
+                                styles.sections
+                            )}
+                        >
                             <p className={styles["home-titles"]}>
                                 Easy Recipes
                             </p>
@@ -38,7 +53,7 @@ export const Home = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className={styles[("sections", "food-news")]}>
+                    <div className={cx(styles["food-news"], styles.sections)}>
                         <p className={styles["home-titles"]}>Food News</p>
                         <ul>
                             <li>dasfadff</li>
@@ -47,7 +62,10 @@ export const Home = () => {
                         </ul>
                     </div>
                     <div
-                        className={styles[("sections", "cleaning-organizing")]}
+                        className={cx(
+                            styles["cleaning-organizing"],
+                            styles.sections
+                        )}
                     >
                         <p className={styles["home-titles"]}>
                             Cleaning & Organizing
@@ -59,7 +77,9 @@ export const Home = () => {
                         </ul>
                     </div>
                 </div>
-                <div className={styles["side-menu-wrapper"]}>
+                <div
+                    className={cx(styles["side-menu-wrapper"], styles.sections)}
+                >
                     <div>
                         <h2>menu one</h2>
                         <p>babfababa</p>

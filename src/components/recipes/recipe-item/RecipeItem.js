@@ -21,7 +21,7 @@ export const RecipeItem = ({ recipe }) => {
                         className={styles["recipe-img"]}
                     />
                 </div>
-                <div className="recipe-content-wrapper">
+                <div className={styles["recipe-content-wrapper"]}>
                     <div className={styles["recipe-name-wrapper"]}>
                         <h3>{recipe.name}</h3>
                     </div>
