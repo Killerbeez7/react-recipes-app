@@ -1,0 +1,7 @@
+.container {
+    padding: 80px;
+    margin: 100px;
+    background-color:rgb(255 217 197 / 30%);
+    border: 1px solid lightgray;
+    position: 'relative';
+}

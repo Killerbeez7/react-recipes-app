@@ -24,9 +24,9 @@
 
     padding: 30px;
     margin: 80px;
-    background-color: #bcb88a;
-    border: 5px solid #8c5e58;
-    border-radius: 15px;
+    background-color:rgb(255 217 197 / 30%);
+    border: 1px solid lightgray;
+    box-shadow: 0 5px 10px rgb(40, 40, 40, 0.3);
     width: 50%;
 }
 

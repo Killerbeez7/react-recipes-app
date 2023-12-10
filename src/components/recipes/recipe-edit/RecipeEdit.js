@@ -6,6 +6,8 @@ import { useContext } from 'react';
 
 import * as recipeService from '../../../services/recipeService';
 
+import styles from './RecipeEdit.module.css'
+
 export const RecipeEdit = () => {
     const [currentRecipe, setCurrentRecipe] = useState({});
 
@@ -39,14 +41,9 @@ export const RecipeEdit = () => {
     return (
         <>
             <div
-                style={{
-                    padding: 80,
-                    margin: 100,
-                    backgroundColor: 'lightgreen',
-                    position: 'relative',
-                }}
+                className={styles['container']}
             >
-                <h1 style={{ color: 'blue' }}>Edit Recipe</h1>
+                <h1>Edit Recipe</h1>
                 <form className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
                     <div className="form-group">
                         <label htmlFor="name">Recipe name:</label>
@@ -94,7 +91,7 @@ export const RecipeEdit = () => {
                             defaultValue={currentRecipe.steps}
                         />
                     </div>
-                    <input type="submit"></input>
+                    <input type="submit"/>
                     <Link className="view-recipe-btn" to={`/recipes/list`}>
                         Cancel
                     </Link>

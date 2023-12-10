@@ -12,18 +12,18 @@
     display: flex;
     position: relative;
     flex-direction: row;
-    
-    list-style: none;
-    background-color:rgb(255 217 197 / 30%);
-    
+
     padding: 1%;
     height: 150px;
     margin-bottom: 50px;
+    
+    border: 1px solid lightgray;
+    background-color:rgb(255 217 197 / 30%);
+    /* box-shadow: 0 5px 10px rgb(40, 40, 40, 0.3); */
 
     /* scale the element from end to end */
     width: calc(100vw - 20px);
     margin-left: calc(-50vw + 50% + 11px);
-    border: 1px solid lightgray;
 }
 
 .recipe-name-wrapper {

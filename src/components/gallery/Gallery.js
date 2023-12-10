@@ -18,9 +18,11 @@ export const Gallery = () => {
                                     backgroundImage: "url(/assets/salad.jpg)",
                                 }}
                             />
-                            <div className={styles["overlay"]}>
-                                <p>Green salad</p>
-                            </div>
+                            <a href="https://www.google.com/search?q=green+salads&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=xsN1ZaXdM8PAxc8Px6qM2AU&ved=0ahUKEwil2MOUg4WDAxVDYPEDHUcVA1sQ4dUDCBA&uact=5&oq=green+salads&gs_lp=Egxnd3Mtd2l6LXNlcnAiDGdyZWVuIHNhbGFkczILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMgsQABiABBiKBRiRAjIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyCxAAGIAEGIoFGJECMgUQABiABDIFEAAYgARIphNQAFjXEnAAeAGQAQCYAbIBoAHpCqoBBDAuMTG4AQPIAQD4AQHCAhAQLhiABBiKBRhDGMcBGNEDwgIKEAAYgAQYigUYQ8ICHxAuGIAEGIoFGEMYxwEY0QMYlwUY3AQY3gQY4ATYAQHCAgsQLhiABBiKBRiRAsICBRAuGIAEwgILEC4YgAQYxwEYrwHCAgoQLhiABBiKBRhDwgIIEAAYgAQYyQPCAgsQLhivARjHARiABMICCBAuGNQCGIAE4gMEGAAgQYgGAboGBggBEAEYFA&sclient=gws-wiz-serp">
+                                <div className={styles["overlay"]}>
+                                    <p>Green salad</p>
+                                </div>
+                            </a>
                         </div>
 
                         <div className={styles["table-item"]}>
@@ -30,9 +32,13 @@ export const Gallery = () => {
                                     backgroundImage: "url(/assets/steak.jpg)",
                                 }}
                             />
-                            <div className={styles["overlay"]}>
-                                <div className={styles["subtitle"]}>Steak</div>
-                            </div>
+                            <a href="https://www.google.com/search?q=steak+picture&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=S8R1ZYrdJaaLxc8P0oaD0AI&ved=0ahUKEwjKruvTg4WDAxWmRfEDHVLDACoQ4dUDCBA&uact=5&oq=steak+picture&gs_lp=Egxnd3Mtd2l6LXNlcnAiDXN0ZWFrIHBpY3R1cmUyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEdI0QhQ3QFY3QFwAXgCkAEAmAEAoAEAqgEAuAEDyAEA-AEBwgIKEAAYRxjWBBiwA-IDBBgAIEGIBgGQBgg&sclient=gws-wiz-serp">
+                                <div className={styles["overlay"]}>
+                                    <div className={styles["subtitle"]}>
+                                        Steak
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                         <div className={styles["table-item"]}>
                             <div
@@ -41,9 +47,13 @@ export const Gallery = () => {
                                     backgroundImage: "url(/assets/fish.JPG)",
                                 }}
                             />
-                            <div className={styles["overlay"]}>
-                                <div className={styles["subtitle"]}>Fish</div>
-                            </div>
+                            <a href="https://www.google.com/search?q=cooked+fish&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=asR1ZeTuOMK6xc8PtZuK2Ac&oq=coocked+fish&gs_lp=Egxnd3Mtd2l6LXNlcnAiDGNvb2NrZWQgZmlzaCoCCAAyCxAAGIAEGIoFGJECMgsQABiABBiKBRiRAjILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMgoQABiABBiKBRhDMgoQABiABBiKBRhDMgcQABiABBgKMgcQABiABBgKMgcQABiABBgKMgcQABiABBgKSNcgUABY4hhwAHgBkAEAmAH0AaABrw6qAQYwLjExLjG4AQPIAQD4AQHCAgwQABiABBiKBRhDGArCAg0QLhiABBiKBRhDGNQCwgIKEC4YgAQYigUYQ8ICBRAAGIAEwgILEC4YgAQYxwEY0QPCAhAQLhiABBiKBRhDGMcBGNEDwgIFEC4YgATCAgcQLhiABBgKwgINEC4YgAQYxwEYrwEYCsICDRAuGK8BGMcBGIAEGAriAwQYACBBiAYB&sclient=gws-wiz-serp">
+                                <div className={styles["overlay"]}>
+                                    <div className={styles["subtitle"]}>
+                                        Fish
+                                    </div>
+                                </div>
+                            </a>
                         </div>
                         <div className={styles["table-item"]}>
                             <div
