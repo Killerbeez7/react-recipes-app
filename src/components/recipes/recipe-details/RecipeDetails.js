@@ -59,7 +59,7 @@ export const RecipeDetails = () => {
     return (
         <>
             <div className={styles["recipe-details-wrapper"]}>
-                <h1>Recipe: {currentRecipe.name}</h1>
+                <h1 className={styles['recipe-title']}>Recipe: {currentRecipe.name}</h1>
                 <hr />
                 <br />
                 <div>
@@ -93,14 +93,14 @@ export const RecipeDetails = () => {
                             <span>
                                 <Link
                                     to={`/recipes/details/${currentRecipe._id}`}
-                                    className="view-recipe-btn"
+                                    className={styles.btn}
                                 >
                                     LIKE
                                 </Link>
                                 {isOwner && (
                                     <span>
                                         <Link
-                                            className="view-recipe-btn"
+                                            className={styles.btn}
                                             to={`/recipes/edit/${currentRecipe._id}`}
                                             recipe={currentRecipe}
                                         >
@@ -108,7 +108,7 @@ export const RecipeDetails = () => {
                                         </Link>
 
                                         <Link
-                                            className="view-recipe-btn"
+                                            className={styles.btn}
                                             to={`/recipes/list`}
                                             onClick={() =>
                                                 deleteRecipeHandler(
@@ -125,7 +125,7 @@ export const RecipeDetails = () => {
                     </span>
                 </div>
 
-                <div className="comments-section">
+                <div>
                     <hr />
                     <h3>Comments:</h3>
                     <ul className="comments">
@@ -138,8 +138,8 @@ export const RecipeDetails = () => {
                     {!currentRecipe.comments && <p>No comments yet!</p>}
                 </div>
                 <div className={styles["create-comment"]}>
-                    <article>
-                        <label htmlFor="comment">Add new comment</label>
+                    <article className={styles["comments-section"]}>
+                        <label htmlFor="comment"  className={styles["comments-title"]}>Add new comment</label>
                         <form className="form" onSubmit={addCommentHandler}>
                             <textarea
                                 className={styles["create-comment-text-area"]}
@@ -149,7 +149,7 @@ export const RecipeDetails = () => {
                             />
                             <div>
                                 <input
-                                    className={styles["btn"]}
+                                    className={styles["comment-btn"]}
                                     type="submit"
                                     value="Add comment"
                                 />

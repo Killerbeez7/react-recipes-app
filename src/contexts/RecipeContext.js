@@ -8,7 +8,11 @@ export const RecipeContext = createContext();
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case "ADD_RECIPES":
-            return action.payload.map((x) => ({ ...x, comments: [] }));
+            //new for search
+            return action.payload.map((x) =>
+                !x.comments ? { ...x, comments: [] } : x
+            );
+        // return action.payload.map((x) => ({ ...x, comments: [] }));
         case "ADD_RECIPE":
             return [...state, action.payload];
         case "FETCH_RECIPE_DETAILS":
@@ -24,6 +28,7 @@ const recipeReducer = (state, action) => {
                     ? { ...x, comments: [...x.comments, action.payload] }
                     : x
             );
+
         default:
             return state;
     }
@@ -32,8 +37,8 @@ const recipeReducer = (state, action) => {
 export const RecipeProvider = ({ children }) => {
     const navigate = useNavigate();
     const [recipes, dispatch] = useReducer(recipeReducer, []);
-    //new logic for search
-    // const [filteredRecipes, setFilteredRecipes] = useState([])
+    //search
+    const [filteredRecipes, setFilteredRecipes] = useState([]);
 
     useEffect(() => {
         recipeService.getAll().then((result) => {
@@ -41,8 +46,8 @@ export const RecipeProvider = ({ children }) => {
                 type: "ADD_RECIPES",
                 payload: result,
             });
-            //new logic for search
-            // setFilteredRecipes(result)
+            //search
+            setFilteredRecipes(result);
         });
     }, []);
 
@@ -71,8 +76,10 @@ export const RecipeProvider = ({ children }) => {
             type: "ADD_RECIPE",
             payload: recipeData,
         });
-
+        setFilteredRecipes(recipes);
         navigate("/recipes/list");
+        // to fix problem with state not updating 
+        window.location.reload();
     };
 
     const editRecipe = (recipeId, recipeData) => {
@@ -81,6 +88,9 @@ export const RecipeProvider = ({ children }) => {
             payload: recipeData,
             recipeId,
         });
+        setFilteredRecipes(recipes);
+        // to fix problem with state not updating 
+        window.location.reload();
     };
 
     const deleteRecipe = (recipeId) => {
@@ -88,19 +98,40 @@ export const RecipeProvider = ({ children }) => {
             type: "DELETE_RECIPE",
             recipeId,
         });
+        setFilteredRecipes(recipes);
 
         navigate("/recipes/list");
+        // to fix problem with state not updating 
+        window.location.reload();
     };
+
+    //search
+    const filterRecipes = (text, criteria = "all") => {
+        if (criteria === "all") {
+            setFilteredRecipes(recipes);
+        } else {
+            setFilteredRecipes(
+                recipes.filter((x) =>
+                    x[criteria].toLowerCase().includes(text.toLowerCase())
+                )
+            );
+        }
+    };
+
     return (
         <RecipeContext.Provider
             value={{
-                recipes,
+                //search
+                recipes: filteredRecipes,
+                // recipes
                 addRecipe,
                 editRecipe,
                 deleteRecipe,
                 addComment,
                 selectRecipe,
                 fetchRecipeDetails,
+                //search
+                filterRecipes,
             }}
         >
             {children}

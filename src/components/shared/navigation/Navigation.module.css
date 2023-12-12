@@ -2,7 +2,7 @@
 .nav-wrapper {
     display: flex;
     justify-content: space-between;
-    padding: 38px 3% 38px 3%;
+    padding: 20px 3% 20px 3%;
     font-size: 1.5em;
     text-transform: uppercase;
 }

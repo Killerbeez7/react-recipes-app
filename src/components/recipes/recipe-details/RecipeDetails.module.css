@@ -1,30 +1,36 @@
 .btn {
-    font-size: 1.15rem;
     display: inline-block;
-    padding: 0.5em 3em;
-    border: 0.16em solid #bbbbbb;
-    margin: 0 0.3em 0.3em 0;
-    box-sizing: border-box;
-    text-decoration: none;
+    font-size: 1.15em;
+    margin: 0.5em 3em;
+    max-height: 30px;
+    width: 100px;
     text-transform: uppercase;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    color: #bbbbbb;
+
+    text-decoration: none;
     text-align: center;
+    color: #888787;
     transition: all 0.15s;
+    border: 0.1em solid #888787;
+    border-radius: 20px;
 }
 
 .btn:hover {
     color: #6d6d6d;
     border-color: #6d6d6d;
 }
+
+
+.recipe-title {
+    text-align: center;
+}
+
 .recipe-details-wrapper {
     display: "flex";
     justify-content: "space-between";
 
     padding: 30px;
-    margin: 80px;
-    background-color:rgb(255 217 197 / 30%);
+    margin: 5% auto;
+    background-color: rgb(255 217 197 / 30%);
     border: 1px solid lightgray;
     box-shadow: 0 5px 10px rgb(40, 40, 40, 0.3);
     width: 50%;
@@ -37,17 +43,56 @@
 }
 
 .create-comment-text-area {
-    margin-right: 20px;
+    /* margin-right: 20px;
     margin-top: 10;
-    border-radius: 8px;
+    border-radius: 8px; */
+    margin: auto auto;
 }
 
 .recipe-img {
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 300px;
+    margin: 0 auto;
     display: "inline-block";
 }
 
 .recipe-details-box {
     padding: 30px;
+}
+
+.comments-section {
+    text-align: center;
+}
+
+.create-comment-text-area {
+    width: 400px;
+    height: 100px;
+}
+
+.comments-title {
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+
+
+.comment-btn {
+    display: inline-block;
+    font-size: 1.15em;
+    margin: 0.5em 3em;
+    max-height: 100px;
+    width: 200px;
+    text-transform: uppercase;
+
+    text-decoration: none;
+    text-align: center;
+    color: #888787;
+    transition: all 0.15s;
+    border: 0.1em solid #888787;
+    border-radius: 20px;
+}
+
+.comment-btn:hover {
+    color: #6d6d6d;
+    border-color: #6d6d6d;
 }

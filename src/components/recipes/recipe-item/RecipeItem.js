@@ -4,17 +4,11 @@ import styles from "./RecipeItem.module.css";
 export const RecipeItem = ({ recipe }) => {
     return (
         <>
-            <h3
-                className={styles["cook-time"]}
-            >
+            <h3 className={styles["cook-time"]}>
                 Time to cook: {recipe.timeToCook} min
             </h3>
-            <li
-                className={styles["recipe-list-item-wrapper"]}
-            >
-                <div
-                    className={styles["recipe-image-wrapper"]}
-                >
+            <li className={styles["recipe-list-item-wrapper"]}>
+                <div className={styles["recipe-image-wrapper"]}>
                     <img
                         alt=""
                         src={`${recipe.imageUrl}`}
@@ -44,13 +38,14 @@ export const RecipeItem = ({ recipe }) => {
                         </p>
                     </div>
                 </div>
-
-                <Link
-                    to={`/recipes/details/${recipe._id}`}
-                    className="view-recipe-btn"
-                >
-                    view
-                </Link>
+                <div>
+                    <Link
+                        to={`/recipes/details/${recipe._id}`}
+                        className={styles["view-recipe-btn"]}
+                    >
+                        view
+                    </Link>
+                </div>
             </li>
         </>
     );

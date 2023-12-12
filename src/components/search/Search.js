@@ -3,24 +3,28 @@ import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
 import styles from "./Search.module.css";
 import cx from "classnames";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { RecipeContext } from "../../contexts/RecipeContext";
 
 export const Search = () => {
+    const { filterRecipes } = useContext(RecipeContext);
     const [search, setSearch] = useState("");
     const [criteria, setCriteria] = useState("all");
 
     const onSearchChange = (e) => {
         setSearch(e.target.value);
+        filterRecipes(e.target.value, criteria);
     };
 
     const onSearchSubmit = (e) => {
         e.preventDefault();
-        console.log(search);
-        console.log(criteria);
+
+        filterRecipes(search, criteria);
     };
 
     const onSearchCriteriaChange = (e) => {
         setCriteria(e.target.value);
+        filterRecipes(search, e.target.value);
     };
 
     return (
@@ -59,10 +63,9 @@ export const Search = () => {
                     className={styles.criteria}
                     onChange={onSearchCriteriaChange}
                 >
-                    <option values="all">Not selected</option>
+                    <option value="all">Not selected</option>
                     <option value="name">Recipe name</option>
                     <option value="timeToCook">Time to cook</option>
-                    <option value="ingredients">ingredients</option>
                 </select>
             </div>
         </form>
