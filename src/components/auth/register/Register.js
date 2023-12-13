@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import * as authService from '../../../services/authService';
 
+import styles from "./Register.module.css"
+
 export const Register = () => {
     const { userLogin } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -34,10 +36,10 @@ export const Register = () => {
 
 
     return (
-        <div className="register-form-wraper">
+        <div className={styles["register-form-wrapper"]}>
             <h1>Sign Up</h1>
             <form onSubmit={onSubmit}>
-                <div>
+                <div className={styles.containers}>
                     <label htmlFor="email-sign-up">Email:</label>
                     <input
                         name="email"
@@ -46,7 +48,7 @@ export const Register = () => {
 
                     />
                 </div>
-                <div>
+                <div className={styles.containers}>
                     <label htmlFor="password-sign-up">Password:</label>
                     <input
                         name="password"
@@ -55,7 +57,7 @@ export const Register = () => {
 
                     />
                 </div>
-                <div>
+                <div className={styles.containers}>
                     <label htmlFor="confirm-password-sign-up">Confirm Password:</label>
                     <input
                         name="confirm-password"
@@ -65,7 +67,7 @@ export const Register = () => {
                     />
                 </div>
 
-                <div>
+                <div className={styles.containers}>
                     <label htmlFor="tac">Terms and Conditions:</label>
                     <input
                         type="checkbox"

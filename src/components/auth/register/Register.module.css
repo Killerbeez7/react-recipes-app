@@ -1,0 +1,9 @@
+.register-form-wrapper {
+    margin: auto auto;
+    padding: 3%;
+    border: 2px solid gray;
+    border-radius: 15px;
+    background-color: rgba(223, 213, 213, 0.707);
+    text-align: center;
+}
+

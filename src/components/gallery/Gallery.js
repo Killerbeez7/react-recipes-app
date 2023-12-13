@@ -44,7 +44,7 @@ export const Gallery = () => {
                             <div
                                 className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: "url(/assets/fish.JPG)",
+                                    backgroundImage: "url(/assets/fish.jpg)",
                                 }}
                             />
                             <a href="https://www.google.com/search?q=cooked+fish&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=asR1ZeTuOMK6xc8PtZuK2Ac&oq=coocked+fish&gs_lp=Egxnd3Mtd2l6LXNlcnAiDGNvb2NrZWQgZmlzaCoCCAAyCxAAGIAEGIoFGJECMgsQABiABBiKBRiRAjILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMgoQABiABBiKBRhDMgoQABiABBiKBRhDMgcQABiABBgKMgcQABiABBgKMgcQABiABBgKMgcQABiABBgKSNcgUABY4hhwAHgBkAEAmAH0AaABrw6qAQYwLjExLjG4AQPIAQD4AQHCAgwQABiABBiKBRhDGArCAg0QLhiABBiKBRhDGNQCwgIKEC4YgAQYigUYQ8ICBRAAGIAEwgILEC4YgAQYxwEY0QPCAhAQLhiABBiKBRhDGMcBGNEDwgIFEC4YgATCAgcQLhiABBgKwgINEC4YgAQYxwEYrwEYCsICDRAuGK8BGMcBGIAEGAriAwQYACBBiAYB&sclient=gws-wiz-serp">
@@ -59,7 +59,7 @@ export const Gallery = () => {
                             <div
                                 className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: "url(/assets/pasta.JPG)",
+                                    backgroundImage: "url(/assets/pasta.jpg)",
                                 }}
                             />
                             <div className={styles["overlay"]}>
@@ -82,7 +82,7 @@ export const Gallery = () => {
                                 className={styles["img-background"]}
                                 style={{
                                     backgroundImage:
-                                        "url(/assets/icecream.JPG)",
+                                        "url(/assets/icecream.jpg)",
                                 }}
                             />
                             <div className={styles["overlay"]}>
@@ -96,7 +96,7 @@ export const Gallery = () => {
                             <div
                                 className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: "url(/assets/pizza.JPG)",
+                                    backgroundImage: "url(/assets/pizza.jpg)",
                                 }}
                             />
                             <div className={styles["overlay"]}>
@@ -108,7 +108,7 @@ export const Gallery = () => {
                             <div
                                 className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: "url(/assets/juice.JPG)",
+                                    backgroundImage: "url(/assets/juice.jpg)",
                                 }}
                             />
                             <div className={styles["overlay"]}>
@@ -120,7 +120,7 @@ export const Gallery = () => {
                             <div
                                 className={styles["img-background"]}
                                 style={{
-                                    backgroundImage: "url(/assets/wine.JPG)",
+                                    backgroundImage: "url(/assets/wine.jpg)",
                                 }}
                             />
                             <div className={styles["overlay"]}>

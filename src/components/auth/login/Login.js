@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import * as authService from '../../../services/authService';
 
+import styles from "./Login.module.css"
+
 export const Login = () => {
     const { userLogin } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -24,9 +26,9 @@ export const Login = () => {
     };
 
     return (
-        <div className="register-form-wraper">
+        <div className={styles["login-form-wraper"]}>
             <h1>Sign In</h1>
-            <form id="login" onSubmit={onSubmit}>
+            <form id="login" className={styles.form} onSubmit={onSubmit}>
                 <div>
                     <label htmlFor="email-sign-in">Email:</label>
                     <input name="email" id="email-sign-in" type="text" />
