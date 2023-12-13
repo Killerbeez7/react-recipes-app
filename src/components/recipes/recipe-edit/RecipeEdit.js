@@ -17,14 +17,8 @@ export const RecipeEdit = () => {
     useEffect(() => {
         recipeService.getOne(recipeId).then((recipeData) => {
             setCurrentRecipe(recipeData);
-            console.log('current recipe:', currentRecipe);
-            console.log('recipe data', recipeData);
-            console.log(recipeData.imageUrl);
-            console.log(recipeData.name);
         });
     }, []);
-
-    const navigate = useNavigate();
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -33,8 +27,6 @@ export const RecipeEdit = () => {
 
         recipeService.edit(recipeId, recipeData).then((result) => {
             editRecipe(recipeId, result);
-
-            navigate(`/recipes/details/${recipeId}`);
         });
     };
 

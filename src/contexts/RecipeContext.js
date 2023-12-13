@@ -8,7 +8,6 @@ export const RecipeContext = createContext();
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case "ADD_RECIPES":
-            //new for search
             return action.payload.map((x) =>
                 !x.comments ? { ...x, comments: [] } : x
             );
@@ -89,6 +88,7 @@ export const RecipeProvider = ({ children }) => {
             recipeId,
         });
         setFilteredRecipes(recipes);
+        navigate(`/recipes/list`);
         // to fix problem with state not updating 
         window.location.reload();
     };
@@ -99,7 +99,6 @@ export const RecipeProvider = ({ children }) => {
             recipeId,
         });
         setFilteredRecipes(recipes);
-
         navigate("/recipes/list");
         // to fix problem with state not updating 
         window.location.reload();
@@ -121,9 +120,9 @@ export const RecipeProvider = ({ children }) => {
     return (
         <RecipeContext.Provider
             value={{
-                //search
+                //with search use "filteredRecipes"
                 recipes: filteredRecipes,
-                // recipes
+                // without search use "recipes"
                 addRecipe,
                 editRecipe,
                 deleteRecipe,

@@ -1,4 +1,14 @@
+.profile-details-form {
+    margin: auto auto;
+    border: 1px solid gray;
+    padding: 2%;
+    text-align: center;
+    border-radius: 3%;
+    font-style: italic;
+}
+
 .profile-details-title {
-    margin-left: 50px;
+    margin-bottom: 20px;
     font-weight: 400;
+    font-style: normal;
 }

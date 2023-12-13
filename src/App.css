@@ -223,3 +223,19 @@ a.add-btn:hover {
         font-size: 0.9rem;
     }
 } */
+
+.view-recipe-btn {
+    display: inline-block;
+    font-size: 1.15em;
+    margin: 0.5em 3em;
+    max-height: 30px;
+    width: 100px;
+
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    color: #888787;
+    transition: all 0.15s;
+    border: 0.1em solid #888787;
+    border-radius: 20px;
+}
