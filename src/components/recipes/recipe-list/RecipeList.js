@@ -18,7 +18,7 @@ export const RecipeList = () => {
 
             <form style={{ marginLeft: "3%" }}>
                 {user.email && (
-                    <Link to="/recipes/add" className="add-btn">
+                    <Link to="/recipes/add" className={styles["add-btn"]}>
                         Add recipe
                     </Link>
                 )}

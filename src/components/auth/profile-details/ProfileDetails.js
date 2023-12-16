@@ -1,17 +1,17 @@
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../contexts/AuthContext";
+// import * as authService from "../../../services/authService";
 
 import styles from "./ProfileDetails.module.css";
 
 export const ProfileDetails = () => {
     const { user } = useContext(AuthContext);
-
-    const userData = {...user}
-
     const [values, setValues] = useState({
         username: user.username,
         email: user.email,
     });
+
+    const userData = { ...user };
 
     const changeHandler = (e) => {
         setValues((state) => ({
@@ -23,15 +23,11 @@ export const ProfileDetails = () => {
     const onSubmit = (e) => {
         e.preventDefault();
 
-        userData['username'] = values['username']
-        userData['email'] = values['email']
+        userData["username"] = values["username"];
+        userData["email"] = values["email"];
 
-        console.log('1  USER:', userData);
-        console.log(`2 new username: ${values["username"]}`);
-        console.log(`3 new email: ${values["email"]}`);
-        console.log('4 NEW USER:', userData);
-        
-        //add POST request to update the user details on the server
+        // to fix edit user data
+        // authService.editUserData(user._id, userData);
     };
 
     return (
@@ -43,8 +39,8 @@ export const ProfileDetails = () => {
                 <h1 className={styles["profile-details-title"]}>
                     Profile settings
                 </h1>
+                <label>Change username</label>
                 <div>
-                    <p>change username</p>
                     <input
                         type="text"
                         id="username"
@@ -54,8 +50,8 @@ export const ProfileDetails = () => {
                     ></input>
                 </div>
                 <br></br>
+                <label>Change email</label>
                 <div>
-                    <p>change email</p>
                     <input
                         type="text"
                         id="email"
@@ -65,7 +61,7 @@ export const ProfileDetails = () => {
                     ></input>
                 </div>
                 <br></br>
-                <button>CHANGE</button>
+                <button className={styles["change-btn"]}>CHANGE</button>
             </form>
         </>
     );

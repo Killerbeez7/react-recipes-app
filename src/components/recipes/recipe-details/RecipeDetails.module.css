@@ -19,7 +19,6 @@
     border-color: #6d6d6d;
 }
 
-
 .recipe-title {
     text-align: center;
 }
@@ -30,10 +29,11 @@
 
     padding: 30px;
     margin: 5% auto;
-    background-color: rgb(255 217 197 / 30%);
+    background-color: rgb(255 217 197 / 5%);
     border: 1px solid lightgray;
     box-shadow: 0 5px 10px rgb(40, 40, 40, 0.3);
     width: 50%;
+    border-radius: 15px;
 }
 
 .create-comment {
@@ -74,7 +74,22 @@
     font-style: italic;
 }
 
+.btn {
+    display: inline-block;
+    font-size: 1.15em;
+    margin: 0.5em 3em;
+    max-height: 100px;
+    width: 100px;
+    text-transform: uppercase;
 
+    text-decoration: none;
+    text-align: center;
+    color: #888787;
+    background-color: white;
+    transition: all 0.15s;
+    border: 0.1em solid #888787;
+    border-radius: 15px;
+}
 
 .comment-btn {
     display: inline-block;
@@ -87,12 +102,19 @@
     text-decoration: none;
     text-align: center;
     color: #888787;
+    background-color: white;
     transition: all 0.15s;
     border: 0.1em solid #888787;
-    border-radius: 20px;
+    border-radius: 15px;
 }
 
-.comment-btn:hover {
+.btn:hover {
     color: #6d6d6d;
-    border-color: #6d6d6d;
+    border: 0.1em solid #888787;
+    background-color: rgb(230, 230, 230);
+}
+
+.form-control {
+    display: flex;
+    justify-content: center;
 }

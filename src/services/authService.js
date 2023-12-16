@@ -19,7 +19,10 @@ export const logout = async (accessToken) => {
     }
 };
 
-export const register = (email, password) =>
-    request.post(`${baseUrl}/register`, { email, password });
+export const register = (username, email, password) =>
+    request.post(`${baseUrl}/register`, { username, email, password });
 
-
+// to fix edit user data
+// export const editUserData = (userId, userData) => {
+//     request.put(`${baseUrl}/${userId}`, userData);
+// };

@@ -55,86 +55,85 @@ export const RecipeAdd = () => {
                     className="col-lg-6 offset-lg-3"
                     onSubmit={onSubmit}
                 >
-                    <div className="form-group">
-                        <label htmlFor="name">Recipe name:</label>
+                    <div className={styles['form-group']}>
                         <input
                             type="text"
                             id="name"
                             name="name"
-                            placeholder="recipe name"
+                            placeholder="Recipe name"
                             value={values.name}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 3)}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="description">Description:</label>
+                    <div className={styles['form-group']}>
                         <input
                             type="text"
                             id="description"
                             name="description"
-                            placeholder="recipe description"
+                            placeholder="Description"
                             value={values.description}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 3)}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="imageUrl">ImageUrl:</label>
+                    <div className={styles['form-group']}>
                         <input
                             type="text"
                             id="imageUrl"
                             name="imageUrl"
-                            placeholder="image link"
+                            placeholder="Image URL"
                             value={values.imageUrl}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 3)}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="timeToCook">Time to cook:</label>
+                    <div className={styles['form-group']}>
                         <input
                             type="text"
                             id="timeToCook"
                             name="timeToCook"
-                            placeholder="preparation time"
+                            placeholder="Preparation time"
                             value={values.timeToCook}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 1)}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="description">Ingredients:</label>
+                    <div className={styles['form-group']}>
                         <input
                             type="text"
                             id="ingredients"
                             name="ingredients"
-                            placeholder="recipe ingredients"
+                            placeholder="Ingredients"
                             value={values.ingredients}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 3)}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="steps">steps:</label>
+                    <div className={styles['form-group']}>
                         <input
                             type="text"
                             id="steps"
                             name="steps"
-                            placeholder="recipe steps"
+                            placeholder="Preparation steps"
                             value={values.steps}
                             onChange={changeHandler}
                             onBlur={(e) => minLength(e, 3)}
                         />
                     </div>
-                    <input
-                        type="submit"
-                        value="Add Recipe"
-                        disabled={!isFormValid}
-                    />
-                    <Link className="view-recipe-btn" to={`/recipes/list`}>
-                        Cancel
-                    </Link>
+                    <div className={styles["buttons-form"]}>
+                        <button
+                            type="submit"
+                            value="SUBMIT"
+                            className={styles.btn}
+                            disabled={!isFormValid}
+                        >
+                            Submit
+                        </button>
+                        <Link className={styles.btn} to={`/recipes/list`}>
+                            Cancel
+                        </Link>
+                    </div>
                 </form>
             </div>
         </>

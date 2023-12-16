@@ -17,47 +17,22 @@ html {
 
 /*BUTTON STYLE*/
 
-a.add-btn {
-    display: inline-block;
-    box-sizing: border-box;
-    
-    color: #888787;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    
-    font-size: 1.15rem;
-    padding: 0.5em 3em;
-    margin: 0 0.3em 0.3em 0;
+    a.add-btn:active {
+        color: #bbbbbb;
+        border-color: #bbbbbb;
+    }
 
-    border: 0.1em solid #888787;
-    border-radius: 20px;
-    
-    transition: all 0.15s;
-}
-
-a.add-btn:hover {
-    color: #6d6d6d;
-    border-color: #6d6d6d;
-    background-color: rgb(230, 230, 230, 0.7);
-}
-
-/* a.add-btn:active {
-    color: #bbbbbb;
-    border-color: #bbbbbb;
-} */
-
-/* @media all and (max-width: 30em) {
+@media all and (max-width: 30em) {
     a.add-btn {
         display: block;
         margin: 0.4em auto;
     }
-} */
+}
 
 
 
 
-.btn {
+/* .btn {
     background: #2a87a5;
     border: none;
     color: white;
@@ -68,11 +43,11 @@ a.add-btn:hover {
     justify-content: center;
     font: inherit;
     font-weight: bold;
-}
+} */
 
 /* Action buttons  */
 
-.btn:disabled,
+/* .btn:disabled,
 .btn.save:disabled {
     cursor: not-allowed;
     background: rgba(0, 0, 0, 0.5);
@@ -139,7 +114,7 @@ a.add-btn:hover {
 
 .edit-btn {
     background-color: #5cb85c;
-}
+} */
 
 /* Paggination  */
 .pagination {

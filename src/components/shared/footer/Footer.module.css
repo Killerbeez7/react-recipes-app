@@ -4,7 +4,7 @@
     min-height: 100px; /* Height of the footer */
     justify-content: space-between;
     background-color: rgb(90, 70, 50, 0.25);
-    margin-top: auto;
+    margin-top: 5%;
 }
 
 .footer-wrapper > .left-side {
@@ -18,3 +18,4 @@
     padding-right: 1rem;
     margin-top: 25px;
 }
+

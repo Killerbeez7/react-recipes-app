@@ -14,12 +14,19 @@ export const AuthProvider = ({ children }) => {
         setAuth({});
     };
 
+    // to fix edit user data
+    // const userEdit = (authData) => {
+    //     setAuth(authData)
+    // };
+
     return (
         <AuthContext.Provider
             value={{
                 user: auth,
                 userLogin,
                 userLogout,
+                // to fix edit user data
+                // userEdit,
                 isAuthenticated: !!auth.accessToken,
             }}
         >

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 
 import * as recipeService from "../../../services/recipeService";
@@ -40,11 +40,12 @@ export const RecipeDetails = () => {
         const formData = new FormData(e.target);
 
         const comment = formData.get("comment");
-        //TODO comment validation
 
         commentService.create(recipeId, comment).then((result) => {
             addComment(recipeId, comment);
         });
+
+        e.target["comment"].value = "";
     };
 
     const deleteRecipeHandler = () => {
@@ -59,7 +60,9 @@ export const RecipeDetails = () => {
     return (
         <>
             <div className={styles["recipe-details-wrapper"]}>
-                <h1 className={styles['recipe-title']}>Recipe: {currentRecipe.name}</h1>
+                <h1 className={styles["recipe-title"]}>
+                    Recipe: {currentRecipe.name}
+                </h1>
                 <hr />
                 <br />
                 <div>
@@ -87,44 +90,41 @@ export const RecipeDetails = () => {
                         <h2>Likes: </h2>
                     </div>
                 </div>
-                <div className="form-control">
-                    <span>
-                        {user.email && (
-                            <span>
-                                <Link
-                                    to={`/recipes/details/${currentRecipe._id}`}
-                                    className={styles.btn}
-                                >
-                                    LIKE
-                                </Link>
-                                {isOwner && (
-                                    <span>
-                                        <Link
-                                            className={styles.btn}
-                                            to={`/recipes/edit/${currentRecipe._id}`}
-                                            recipe={currentRecipe}
-                                        >
-                                            Edit
-                                        </Link>
+                <div className={styles["form-control"]}>
+                    {user.email && (
+                        <span>
+                            <Link
+                                to={`/recipes/details/${currentRecipe._id}`}
+                                className={styles.btn}
+                            >
+                                LIKE
+                            </Link>
+                            {isOwner && (
+                                <span>
+                                    <Link
+                                        className={styles.btn}
+                                        to={`/recipes/edit/${currentRecipe._id}`}
+                                        recipe={currentRecipe}
+                                    >
+                                        Edit
+                                    </Link>
 
-                                        <Link
-                                            className={styles.btn}
-                                            to={`/recipes/list`}
-                                            onClick={() =>
-                                                deleteRecipeHandler(
-                                                    currentRecipe._id
-                                                )
-                                            }
-                                        >
-                                            Delete
-                                        </Link>
-                                    </span>
-                                )}
-                            </span>
-                        )}
-                    </span>
+                                    <Link
+                                        className={styles.btn}
+                                        to={`/recipes/list`}
+                                        onClick={() =>
+                                            deleteRecipeHandler(
+                                                currentRecipe._id
+                                            )
+                                        }
+                                    >
+                                        Delete
+                                    </Link>
+                                </span>
+                            )}
+                        </span>
+                    )}
                 </div>
-
                 <div>
                     <hr />
                     <h3>Comments:</h3>
@@ -137,26 +137,35 @@ export const RecipeDetails = () => {
                     </ul>
                     {!currentRecipe.comments && <p>No comments yet!</p>}
                 </div>
-                <div className={styles["create-comment"]}>
-                    <article className={styles["comments-section"]}>
-                        <label htmlFor="comment"  className={styles["comments-title"]}>Add new comment</label>
-                        <form className="form" onSubmit={addCommentHandler}>
-                            <textarea
-                                className={styles["create-comment-text-area"]}
-                                name="comment"
-                                id="comment"
-                                placeholder="Comment..."
-                            />
-                            <div>
-                                <input
-                                    className={styles["comment-btn"]}
-                                    type="submit"
-                                    value="Add comment"
+                {user.email && (
+                    <div className={styles["create-comment"]}>
+                        <article className={styles["comments-section"]}>
+                            <label
+                                htmlFor="comment"
+                                className={styles["comments-title"]}
+                            >
+                                Add new comment
+                            </label>
+                            <form className="form" onSubmit={addCommentHandler}>
+                                <textarea
+                                    className={
+                                        styles["create-comment-text-area"]
+                                    }
+                                    name="comment"
+                                    id="comment"
+                                    placeholder="Comment..."
                                 />
-                            </div>
-                        </form>
-                    </article>
-                </div>
+                                <div>
+                                    <input
+                                        className={styles["comment-btn"]}
+                                        type="submit"
+                                        value="Add comment"
+                                    />
+                                </div>
+                            </form>
+                        </article>
+                    </div>
+                )}
             </div>
         </>
     );
