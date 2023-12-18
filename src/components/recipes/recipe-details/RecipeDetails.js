@@ -28,7 +28,7 @@ export const RecipeDetails = () => {
             fetchRecipeDetails(recipeId, {
                 ...recipeDetails,
                 comments: recipeComments.map(
-                    (x) => `${x.user.email}: ${x.text}`
+                    (x) => `${x.user.username}: ${x.text}`
                 ),
             });
         })();

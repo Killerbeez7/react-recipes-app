@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { RecipeContext } from '../../../contexts/RecipeContext';
 import { useContext } from 'react';
@@ -37,17 +37,17 @@ export const RecipeEdit = () => {
             >
                 <h1>Edit Recipe</h1>
                 <form className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
-                    <div className="form-group">
-                        <label htmlFor="name">Recipe name:</label>
+                    <div className={styles['form-group']}>
+                        <p className={styles.labels}>Recipe name</p>
                         <input
                             type="text"
                             id="name"
-                            name="name"
+                            name="name" 
                             defaultValue={currentRecipe.name}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="description">Description:</label>
+                    <div className={styles['form-group']}>
+                        <p>Description</p>
                         <input
                             type="text"
                             id="decription"
@@ -55,8 +55,8 @@ export const RecipeEdit = () => {
                             defaultValue={currentRecipe.description}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="timeToCook">Time to cook:</label>
+                    <div className={styles['form-group']}>
+                        <p>Time to cook </p>
                         <input
                             type="text"
                             id="timeToCook"
@@ -64,8 +64,8 @@ export const RecipeEdit = () => {
                             defaultValue={currentRecipe.timeToCook}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="image-url">Image URL: </label>
+                    <div className={styles['form-group']}>
+                        <p>Image URL: </p>
                         <input
                             type="text"
                             id="image-url"
@@ -73,8 +73,8 @@ export const RecipeEdit = () => {
                             defaultValue={currentRecipe.imageUrl}
                         />
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="steps">steps:</label>
+                    <div className={styles['form-group']}>
+                        <p>steps</p>
                         <input
                             type="text"
                             id="steps"
