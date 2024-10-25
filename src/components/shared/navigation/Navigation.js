@@ -1,10 +1,18 @@
-import { NavLink } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { useNavigate, NavLink } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContextFirebase";
+import { doSignOut } from "../../../firebase/auth";
+
 import styles from "./Navigation.module.css";
 
+
 export const Navigation = (props) => {
-    const { user } = useContext(AuthContext);
+    const { currentUser } = useAuth()
+    const navigate = useNavigate();
+
+    const logoutHandler = () => {
+        doSignOut()
+        navigate('/home')
+    }
 
     const setNavStyle = ({ isActive }) => {
         return isActive ? styles["active-link"] : undefined;
@@ -45,18 +53,18 @@ export const Navigation = (props) => {
             </div>
 
             <div className={styles["right-side"]}>
-                {user.email ? (
+                {currentUser ? (
                     <>
                         <div className={styles["nav-link-wrapper"]}>
                             <NavLink
                                 className={setNavStyle}
                                 to="/profile-details"
                             >
-                                {user.email}
+                                {currentUser.email}
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink to="/logout">logout</NavLink>
+                            <NavLink to="/home" onClick={logoutHandler}>logout</NavLink>
                         </div>
                     </>
                 ) : (

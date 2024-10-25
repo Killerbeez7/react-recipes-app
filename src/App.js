@@ -1,7 +1,6 @@
-// import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 // Context Providers
-import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider } from "./contexts/AuthContextFirebase";
 import { RecipeProvider } from "./contexts/RecipeContext";
 // Components
 import { Navigation } from "./components/shared/navigation/Navigation";
@@ -11,8 +10,8 @@ import { Gallery } from "./components/gallery/Gallery";
 import { Forum } from "./components/forum/Forum";
 import { Footer } from "./components/shared/footer/Footer";
 import { NotFound } from "./components/not-found/NotFound";
-import { Register } from "./components/auth/register/Register";
-import { Login } from "./components/auth/login/Login";
+import { RegisterFirebase } from "./components/auth/register/RegisterFirebase";
+import { LoginFirebase } from "./components/auth/login/LoginFirebase";
 import { Logout } from "./components/auth/logout/Logout";
 import { ProfileDetails } from "./components/auth/profile-details/ProfileDetails";
 import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
@@ -24,8 +23,6 @@ import "./App.css";
 // Error Boundary
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
-// const Register = lazy(() => import("./components/auth/register/Register"));
-
 function App() {
     return (
         <ErrorBoundary>
@@ -34,14 +31,14 @@ function App() {
                     <Navigation />
 
                     {/* Main content */}
-                    <RecipeProvider>
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/gallery" element={<Gallery />} />
-                            <Route path="/about" element={<About />} />
-                            <Route path="/forum" element={<Forum />} />
-                            <Route path="/register" element={<Register />} />
-                            {/* <Route
+                    {/* <RecipeProvider> */}
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/gallery" element={<Gallery />} />
+                        <Route path="/about" element={<About />} />
+                        <Route path="/forum" element={<Forum />} />
+                        <Route path="/register" element={<RegisterFirebase />} />
+                        {/* <Route
                             path="/register"
                             element={
                                 <Suspense fallback={<span>Loading...</span>}>
@@ -49,14 +46,14 @@ function App() {
                                 </Suspense>
                             }
                         /> */}
-                            <Route
+                        {/* <Route
                                 path="/profile-details"
                                 element={<ProfileDetails />}
-                            />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/logout" element={<Logout />} />
+                            /> */}
+                        <Route path="/login" element={<LoginFirebase />} />
+                        <Route path="/logout" element={<Logout />} />
 
-                            <Route
+                        {/* <Route
                                 path="/recipes/list"
                                 element={<RecipeList />}
                             />
@@ -73,11 +70,11 @@ function App() {
                             <Route
                                 path="/recipes/details/:recipeId"
                                 element={<RecipeDetails />}
-                            />
+                            /> */}
 
-                            <Route path="/*" element={<NotFound />} />
-                        </Routes>
-                    </RecipeProvider>
+                        <Route path="/*" element={<NotFound />} />
+                    </Routes>
+                    {/* </RecipeProvider> */}
                     {/* End of main content */}
 
                     <Footer />

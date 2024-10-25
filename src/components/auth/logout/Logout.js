@@ -4,19 +4,36 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../contexts/AuthContext';
 import * as authService from '../../../services/authService';
 
+import { doSignOut } from '../../../firebase/auth'
+import { useAuth } from '../../../contexts/AuthContextFirebase';
+
 export const Logout = () => {
     const navigate = useNavigate();
-    const { user, userLogout } = useContext(AuthContext);
+    const { userLoggedIn, } = useAuth
+    if (userLoggedIn) {
+        doSignOut()
+        navigate('/');
+    }
 
-    useEffect(() => {
-        authService
-            .logout(user.accessToken)
-            .then(() => {
-                userLogout();
-                navigate('/');
-            })
-            .catch(navigate('/'));
-    });
 
-    return null;
+    return null
 };
+
+
+
+// export const Logout = () => {
+//     const navigate = useNavigate();
+//     const { user, userLogout } = useContext(AuthContext);
+
+//     useEffect(() => {
+//         authService
+//             .logout(user.accessToken)
+//             .then(() => {
+//                 userLogout();
+//                 navigate('/');
+//             })
+//             .catch(navigate('/'));
+//     });
+
+//     return null;
+// };
