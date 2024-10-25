@@ -10,10 +10,12 @@ import { Gallery } from "./components/gallery/Gallery";
 import { Forum } from "./components/forum/Forum";
 import { Footer } from "./components/shared/footer/Footer";
 import { NotFound } from "./components/not-found/NotFound";
-import { RegisterFirebase } from "./components/auth/register/RegisterFirebase";
-import { LoginFirebase } from "./components/auth/login/LoginFirebase";
+// auth components
+import { SignUp } from "./components/auth/sign-up/SignUp";
+import { SignIn } from "./components/auth/sign-in/SignIn";
 import { Logout } from "./components/auth/logout/Logout";
 import { ProfileDetails } from "./components/auth/profile-details/ProfileDetails";
+// recipes components
 import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
 import { RecipeAdd } from "./components/recipes/recipe-add/RecipeAdd";
 import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
@@ -37,7 +39,7 @@ function App() {
                         <Route path="/gallery" element={<Gallery />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/forum" element={<Forum />} />
-                        <Route path="/register" element={<RegisterFirebase />} />
+                        <Route path="/sign-up" element={<SignUp />} />
                         {/* <Route
                             path="/register"
                             element={
@@ -50,7 +52,7 @@ function App() {
                                 path="/profile-details"
                                 element={<ProfileDetails />}
                             /> */}
-                        <Route path="/login" element={<LoginFirebase />} />
+                        <Route path="/sign-in" element={<SignIn />} />
                         <Route path="/logout" element={<Logout />} />
 
                         {/* <Route

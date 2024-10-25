@@ -70,12 +70,12 @@ export const Navigation = (props) => {
                 ) : (
                     <>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink className={setNavStyle} to="/login">
-                                login
+                            <NavLink className={setNavStyle} to="/sign-in">
+                                Sign In
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink className={setNavStyle} to="/register">
+                            <NavLink className={setNavStyle} to="/sign-up">
                                 try it free
                             </NavLink>
                         </div>

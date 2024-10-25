@@ -3,9 +3,9 @@ import { Navigate } from "react-router-dom";
 import { useAuth } from '../../../contexts/AuthContextFirebase'
 import { doSignInWithEmailAndPassword, doSignInWithGoogle } from '../../../firebase/auth'
 
-import styles from "./Login.module.css";
+import styles from "./SignIn.module.css";
 
-export const LoginFirebase = () => {
+export const SignIn = () => {
     const { userLoggedIn } = useAuth()
 
     const [email, setEmail] = useState('')
