@@ -1,11 +1,6 @@
-import { useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import { AuthContext } from '../../../contexts/AuthContext';
-import * as authService from '../../../services/authService';
-
 import { doSignOut } from '../../../firebase/auth'
-import { useAuth } from '../../../contexts/AuthContextFirebase';
+import { useAuth } from '../../../contexts/AuthContext';
 
 export const Logout = () => {
     const navigate = useNavigate();
@@ -15,25 +10,6 @@ export const Logout = () => {
         navigate('/');
     }
 
-
     return null
 };
 
-
-
-// export const Logout = () => {
-//     const navigate = useNavigate();
-//     const { user, userLogout } = useContext(AuthContext);
-
-//     useEffect(() => {
-//         authService
-//             .logout(user.accessToken)
-//             .then(() => {
-//                 userLogout();
-//                 navigate('/');
-//             })
-//             .catch(navigate('/'));
-//     });
-
-//     return null;
-// };

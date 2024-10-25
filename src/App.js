@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 // Context Providers
-import { AuthProvider } from "./contexts/AuthContextFirebase";
+import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
 // Components
 import { Navigation } from "./components/shared/navigation/Navigation";
@@ -33,29 +33,17 @@ function App() {
                     <Navigation />
 
                     {/* Main content */}
-                    {/* <RecipeProvider> */}
+                    <RecipeProvider>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/gallery" element={<Gallery />} />
                         <Route path="/about" element={<About />} />
                         <Route path="/forum" element={<Forum />} />
                         <Route path="/sign-up" element={<SignUp />} />
-                        {/* <Route
-                            path="/register"
-                            element={
-                                <Suspense fallback={<span>Loading...</span>}>
-                                    <Register />
-                                </Suspense>
-                            }
-                        /> */}
-                        {/* <Route
-                                path="/profile-details"
-                                element={<ProfileDetails />}
-                            /> */}
                         <Route path="/sign-in" element={<SignIn />} />
                         <Route path="/logout" element={<Logout />} />
 
-                        {/* <Route
+                        <Route
                                 path="/recipes/list"
                                 element={<RecipeList />}
                             />
@@ -72,11 +60,11 @@ function App() {
                             <Route
                                 path="/recipes/details/:recipeId"
                                 element={<RecipeDetails />}
-                            /> */}
+                            />
 
                         <Route path="/*" element={<NotFound />} />
                     </Routes>
-                    {/* </RecipeProvider> */}
+                    </RecipeProvider>
                     {/* End of main content */}
 
                     <Footer />

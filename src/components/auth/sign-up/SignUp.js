@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Navigate, } from "react-router-dom";
-import { useAuth } from '../../../contexts/AuthContextFirebase'
+import { useAuth } from '../../../contexts/AuthContext'
 import { doCreateUserWithEmailAndPassword } from '../../../firebase/auth'
 
 

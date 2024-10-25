@@ -1,55 +1,44 @@
-// import { createContext, useContext } from "react";
-// import { useLocalStorage } from "../hooks/useLocalStorage";
+import { createContext, useContext, useEffect, useState } from "react";
+import { auth } from "../firebase/firebaseConfig"
+import { onAuthStateChanged } from "firebase/auth";
 
-// export const AuthContext = createContext();
+const AuthContext = createContext();
 
-// export const AuthProvider = ({ children }) => {
-//     const [auth, setAuth] = useLocalStorage("auth", {});
+export const useAuth = () => {
+    return useContext(AuthContext)
+}
 
-//     const userLogin = (authData) => {
-//         setAuth(authData);
-//     };
+export const AuthProvider = ({ children }) => {
+    const [currentUser, setCurrentUser] = useState(null);
+    const [userLoggedIn, setUserLoggedIn] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-//     const userLogout = () => {
-//         setAuth({});
-//     };
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, initializeUser);
+        return unsubscribe
+    }, [])
 
-//     // to fix edit user data
-//     // const userEdit = (authData) => {
-//     //     setAuth(authData)
-//     // };
+    async function initializeUser(user) {
+        if (user) {
+            setCurrentUser({ ...user });
+            setUserLoggedIn(true);
+        } else {
+            setCurrentUser(null);
+            setUserLoggedIn(false);
+        }
+        setLoading(false);
+    }
 
-//     return (
-//         <AuthContext.Provider
-//             value={{
-//                 user: auth,
-//                 userLogin,
-//                 userLogout,
-//                 // to fix edit user data
-//                 // userEdit,
-//                 isAuthenticated: !!auth.accessToken,
-//             }}
-//         >
-//             {children}
-//         </AuthContext.Provider>
-//     );
-// };
+    const value = {
+        currentUser,
+        userLoggedIn,
+        loading
+    }
 
-// // Custom Hook
-// export const useAuthContext = () => {
-//     const context = useContext(AuthContext);
-
-//     return context;
-// };
-
-// // With HOC
-// export const withAuth = (Component) => {
-//     const WrapperComponent = (props) => {
-//         const context = useContext(AuthContext);
-
-//         return <Component {...props} auth={context} />;
-//     };
-
-//     return WrapperComponent;
-// };
+    return (
+        <AuthContext.Provider value={value}>
+            {!loading && children}
+        </AuthContext.Provider>
+    )
+}
 

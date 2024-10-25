@@ -1,5 +1,5 @@
 import { useNavigate, NavLink } from "react-router-dom";
-import { useAuth } from "../../../contexts/AuthContextFirebase";
+import { useAuth } from "../../../contexts/AuthContext";
 import { doSignOut } from "../../../firebase/auth";
 
 import styles from "./Navigation.module.css";
