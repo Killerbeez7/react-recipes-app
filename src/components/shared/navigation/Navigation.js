@@ -9,6 +9,7 @@ export const Navigation = (props) => {
     const { currentUser } = useAuth()
     const navigate = useNavigate();
 
+
     const logoutHandler = () => {
         doSignOut()
         navigate('/home')

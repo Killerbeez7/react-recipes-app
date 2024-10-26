@@ -1,19 +1,15 @@
-// RecipeAdd.js
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RecipeContext } from "../../../contexts/RecipeContext";
-import { database } from "../../../firebase/firebaseConfig"; // Import database
-import { ref, set, push } from "firebase/database"; // Import Realtime Database functions
 import styles from "./RecipeAdd.module.css";
 
 export const RecipeAdd = () => {
-    const [errors, setErrors] = useState({});
     const [values, setValues] = useState({
         title: "",
         description: "",
         ingredients: "",
         steps: "",
-        authorId: "",
+        authorId: "Unknown",
         imageUrl: "",
         likes: 0,
         timeToCook: ""
@@ -21,6 +17,7 @@ export const RecipeAdd = () => {
 
     const { addRecipe } = useContext(RecipeContext);
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const changeHandler = (e) => {
         setValues((state) => ({
@@ -29,35 +26,19 @@ export const RecipeAdd = () => {
         }));
     };
 
-    const minLength = (e, limit) => {
-        setErrors((state) => ({
-            ...state,
-            [e.target.name]: values[e.target.name].length < limit,
-        }));
-    };
-
-    const isFormValid = !Object.values(errors).some((x) => x);
-
     const onSubmit = async (e) => {
         e.preventDefault();
+        if (isSubmitting) return;
+
+        setIsSubmitting(true);
 
         try {
-            const recipeData = {
-                ...values,
-                authorId: values.authorId || "Unknown",
-                date: new Date().toISOString(),
-            };
-
-            // Push a new recipe entry to the "recipes" node in Realtime Database
-            const recipeRef = ref(database, "recipes");
-            const newRecipeRef = push(recipeRef);
-            await set(newRecipeRef, recipeData);
-
-            // Update the context and navigate
-            addRecipe({ id: newRecipeRef.key, ...recipeData });
+            await addRecipe(values);
             navigate(`/recipes/list`);
         } catch (error) {
             console.error("Error adding recipe:", error);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -65,6 +46,7 @@ export const RecipeAdd = () => {
         <div className={styles["form-container"]}>
             <h1 className={styles["add-recipe-title"]}>Add Recipe</h1>
             <form id="create" className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
+
                 <div className={styles['form-group']}>
                     <input
                         type="text"
@@ -73,7 +55,6 @@ export const RecipeAdd = () => {
                         placeholder="Recipe title"
                         value={values.title}
                         onChange={changeHandler}
-                        onBlur={(e) => minLength(e, 3)}
                     />
                 </div>
                 <div className={styles['form-group']}>
@@ -84,7 +65,6 @@ export const RecipeAdd = () => {
                         placeholder="Description"
                         value={values.description}
                         onChange={changeHandler}
-                        onBlur={(e) => minLength(e, 3)}
                     />
                 </div>
                 <div className={styles['form-group']}>
@@ -95,7 +75,6 @@ export const RecipeAdd = () => {
                         placeholder="Image URL"
                         value={values.imageUrl}
                         onChange={changeHandler}
-                        onBlur={(e) => minLength(e, 3)}
                     />
                 </div>
                 <div className={styles['form-group']}>
@@ -106,7 +85,6 @@ export const RecipeAdd = () => {
                         placeholder="Preparation time"
                         value={values.timeToCook}
                         onChange={changeHandler}
-                        onBlur={(e) => minLength(e, 1)}
                     />
                 </div>
                 <div className={styles['form-group']}>
@@ -117,7 +95,6 @@ export const RecipeAdd = () => {
                         placeholder="Ingredients"
                         value={values.ingredients}
                         onChange={changeHandler}
-                        onBlur={(e) => minLength(e, 3)}
                     />
                 </div>
                 <div className={styles['form-group']}>
@@ -128,20 +105,18 @@ export const RecipeAdd = () => {
                         placeholder="Preparation steps"
                         value={values.steps}
                         onChange={changeHandler}
-                        onBlur={(e) => minLength(e, 3)}
                     />
                 </div>
+
                 <div className={styles["buttons-form"]}>
                     <button
                         type="submit"
                         className={styles.btn}
-                        disabled={!isFormValid}
+                        disabled={isSubmitting}
                     >
                         Submit
                     </button>
-                    <Link className={styles.btn} to={`/recipes/list`}>
-                        Cancel
-                    </Link>
+                    <Link className={styles.btn} to={`/recipes/list`}>Cancel</Link>
                 </div>
             </form>
         </div>

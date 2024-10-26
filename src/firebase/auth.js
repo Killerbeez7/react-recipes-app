@@ -6,7 +6,7 @@ import {
 } from 'firebase/auth';
 import { ref, set, onValue } from 'firebase/database';
 
-// Create user profiles in the database
+
 export const addUserToDatabase = async (userId, name, email) => {
     try {
         await set(ref(database, 'users/' + userId), {
@@ -18,7 +18,7 @@ export const addUserToDatabase = async (userId, name, email) => {
     }
 };
 
-// Get user data from the database
+
 export const getUserFromDatabase = (userId, callback) => {
     const userRef = ref(database, 'users/' + userId);
     onValue(userRef, (snapshot) => {
@@ -27,12 +27,12 @@ export const getUserFromDatabase = (userId, callback) => {
     });
 };
 
-// Create user with email and password and add to database
+
 export const doCreateUserWithEmailAndPassword = async (email, password, name) => {
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user; // Get user details
-        await addUserToDatabase(user.uid, name, email); // Add user to database
+        const user = userCredential.user;
+        await addUserToDatabase(user.uid, name, email);
         return user;
     } catch (error) {
         console.error("Error creating user:", error);
@@ -40,17 +40,17 @@ export const doCreateUserWithEmailAndPassword = async (email, password, name) =>
     }
 };
 
-// Sign in with email and password
+
 export const doSignInWithEmailAndPassword = async (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
 }
 
-// Sign in with Google
+
 export const doSignInWithGoogle = async () => {
     try {
         const result = await signInWithPopup(auth, googleProvider);
-        const user = result.user; // Get user details
-        await addUserToDatabase(user.uid, user.displayName, user.email); // Add user to database
+        const user = result.user;
+        await addUserToDatabase(user.uid, user.displayName, user.email);
         return result;
     } catch (error) {
         console.error("Error with Google Sign-In:", error);

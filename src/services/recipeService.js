@@ -1,14 +1,37 @@
-import * as request from "./requester";
+import { ref, set, get, push, update, remove, child } from "firebase/database";
+import { database } from "../firebase/firebaseConfig";
 
-const baseUrl = "http://localhost:3030/data/recipes";
+// Define the base path for recipes in your database
+const recipesRef = ref(database, 'recipes');
 
-export const getAll = () => request.get(baseUrl);
+// Function to fetch all recipes
+export const getAll = async () => {
+    const snapshot = await get(recipesRef);
+    return snapshot.exists() ? Object.values(snapshot.val()) : [];
+};
 
-export const getOne = (recipeId) => request.get(`${baseUrl}/${recipeId}`);
+// Function to fetch a single recipe by ID
+export const getOne = async (recipeId) => {
+    const recipeRef = child(recipesRef, recipeId);
+    const snapshot = await get(recipeRef);
+    return snapshot.exists() ? snapshot.val() : null;
+};
 
-export const create = (recipeData) => request.post(baseUrl, recipeData);
+// Function to create a new recipe
+export const create = async (recipeData) => {
+    const newRecipeRef = push(recipesRef);
+    await set(newRecipeRef, recipeData);
+    return { id: newRecipeRef.key, ...recipeData };
+};
 
-export const edit = (recipeId, recipeData) =>
-    request.put(`${baseUrl}/${recipeId}`, recipeData);
+// Function to edit an existing recipe by ID
+export const edit = async (recipeId, recipeData) => {
+    const recipeRef = child(recipesRef, recipeId);
+    await update(recipeRef, recipeData);
+};
 
-export const remove = (recipeId) => request.del(`${baseUrl}/${recipeId}`);
+// Function to delete a recipe by ID
+export const del = async (recipeId) => {
+    const recipeRef = child(recipesRef, recipeId);
+    await remove(recipeRef);
+};
