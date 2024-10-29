@@ -1,57 +1,67 @@
-import { useEffect, useContext, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEffect, useContext, useState, useNavigate } from "react";
+import { useParams, Link } from "react-router-dom";
 import * as recipeService from "../../../services/recipeService";
+// import * as commentService from "../../../services/commentService";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./RecipeDetails.module.css";
 
 export const RecipeDetails = () => {
     const { currentUser } = useAuth();
-    const { deleteRecipe, recipes } = useContext(RecipeContext);
+    const { deleteRecipe, addComment, fetchRecipeDetails, selectRecipe } = useContext(RecipeContext);
     const { recipeId } = useParams();
     const navigate = useNavigate();
 
+    const currentRecipe = selectRecipe(recipeId); // This should work correctly now
     const [loading, setLoading] = useState(true);
-    const [currentRecipe, setCurrentRecipe] = useState(null);
 
-    useEffect(() => {
-        const foundRecipe = recipes.find((recipe) => recipe.id === recipeId);
-        if (foundRecipe) {
-            setCurrentRecipe(foundRecipe);
-            setLoading(false);
-        } else {
-            // Fetch the recipe from the server if it's not in the local state
-            (async () => {
-                try {
-                    setLoading(true);
-                    const recipeDetails = await recipeService.getOne(recipeId);
-                    if (recipeDetails) {
-                        setCurrentRecipe({ id: recipeId, ...recipeDetails });
-                    } else {
-                        setCurrentRecipe(null);
-                    }
-                } catch (error) {
-                    console.error("Failed to fetch recipe details:", error);
-                    setCurrentRecipe(null);
-                } finally {
-                    setLoading(false);
-                }
-            })();
+    const isOwner = currentRecipe?._ownerId === currentUser?._id;
+
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             const recipeDetails = await recipeService.getOne(recipeId);
+    //             const recipeComments = await commentService.getByRecipeId(recipeId);
+    //             fetchRecipeDetails(recipeId, {
+    //                 ...recipeDetails,
+    //                 comments: recipeComments.map(
+    //                     (x) => `${x.user.username}: ${x.text}`
+    //                 ),
+    //             });
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     })();
+    // }, [recipeId, fetchRecipeDetails]);
+
+    const addCommentHandler = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const comment = formData.get("comment").trim();
+
+        if (!comment) {
+            alert("Comment cannot be empty!");
+            return;
         }
-    }, [recipeId, recipes]);
+
+        // commentService.create(recipeId, comment).then(() => {
+        //     addComment(recipeId, comment);
+        // });
+
+        e.target["comment"].value = "";
+    };
 
     const deleteRecipeHandler = () => {
         if (window.confirm("Are you sure you want to delete this recipe?")) {
             recipeService.del(recipeId).then(() => {
                 deleteRecipe(recipeId);
-                navigate("/recipes/list");
             });
         }
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
+    // if (loading) {
+    //     return <p>Loading...</p>;
+    // }
 
     if (!currentRecipe) {
         return <p>Recipe not found.</p>;
@@ -65,13 +75,13 @@ export const RecipeDetails = () => {
                 <p><strong>Description:</strong> {currentRecipe.description}</p>
                 <p><strong>Time for preparation:</strong> {currentRecipe.timeToCook} minutes</p>
                 <p><strong>Ingredients:</strong> {currentRecipe.ingredients}</p>
-                <p><strong>Ingredients:</strong> {currentRecipe.steps}</p>
+                <h2>Likes:</h2>
             </div>
             <div className={styles["form-control"]}>
                 {currentUser?.email && (
                     <span>
                         <Link to="#" className={styles.btn}>LIKE</Link>
-                        {currentRecipe._ownerId === currentUser?._id && (
+                        {isOwner && (
                             <span>
                                 <Link className={styles.btn} to={`/recipes/edit/${recipeId}`}>Edit</Link>
                                 <Link className={styles.btn} to="#" onClick={deleteRecipeHandler}>Delete</Link>
@@ -95,9 +105,9 @@ export const RecipeDetails = () => {
                 </ul>
             </div>
             {currentUser?.email && (
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <textarea name="comment" placeholder="Comment..." disabled></textarea>
-                    <input type="submit" value="Add comment" disabled />
+                <form onSubmit={addCommentHandler}>
+                    <textarea name="comment" placeholder="Comment..."></textarea>
+                    <input type="submit" value="Add comment" />
                 </form>
             )}
         </div>

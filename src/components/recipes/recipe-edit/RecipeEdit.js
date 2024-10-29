@@ -1,94 +1,137 @@
-import { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-
+import { useState, useEffect, useContext } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { RecipeContext } from '../../../contexts/RecipeContext';
-import { useContext } from 'react';
-
 import * as recipeService from '../../../services/recipeService';
-
-import styles from './RecipeEdit.module.css'
+import styles from './RecipeEdit.module.css';
 
 export const RecipeEdit = () => {
-    const [currentRecipe, setCurrentRecipe] = useState({});
-
     const { editRecipe } = useContext(RecipeContext);
     const { recipeId } = useParams();
+    const navigate = useNavigate();
+
+    const [currentRecipe, setCurrentRecipe] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        recipeService.getOne(recipeId).then((recipeData) => {
-            setCurrentRecipe(recipeData);
-        });
-    }, []);
+        // Fetch the recipe details based on the recipeId from the URL params
+        (async () => {
+            try {
+                const recipeData = await recipeService.getOne(recipeId);
+                if (recipeData) {
+                    setCurrentRecipe({ id: recipeId, ...recipeData });
+                } else {
+                    alert("Recipe not found");
+                    navigate('/recipes/list');
+                }
+            } catch (error) {
+                console.error("Error fetching recipe details:", error);
+                alert("There was an error fetching the recipe details. Please try again later.");
+            } finally {
+                setLoading(false);
+            }
+        })();
+    }, [recipeId, navigate]);
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
 
-        const recipeData = Object.fromEntries(new FormData(e.target));
+        const formData = new FormData(e.target);
+        const recipeData = Object.fromEntries(formData);
 
-        recipeService.edit(recipeId, recipeData).then((result) => {
-            editRecipe(recipeId, result);
-        });
+        // Basic validation to ensure the required fields are filled in
+        if (!recipeData.title || !recipeData.description || !recipeData.timeToCook) {
+            alert("Please fill in all required fields");
+            return;
+        }
+
+        // Additional validation to ensure data types are correct
+        if (isNaN(recipeData.timeToCook) || Number(recipeData.timeToCook) <= 0) {
+            alert("Time to cook must be a positive number");
+            return;
+        }
+
+        try {
+            await recipeService.edit(recipeId, recipeData);
+            editRecipe(recipeId, recipeData);
+            navigate(`/recipes/details/${recipeId}`);
+        } catch (error) {
+            console.error("Error updating the recipe:", error);
+            alert("There was an error updating the recipe. Please try again.");
+        }
     };
 
+    if (loading) {
+        return <p>Loading...</p>;
+    }
+
+    if (!currentRecipe) {
+        return <p>Recipe not found.</p>;
+    }
+
     return (
-        <>
-            <div
-                className={styles['container']}
-            >
-                <h1>Edit Recipe</h1>
-                <form className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
-                    <div className={styles['form-group']}>
-                        <p className={styles.labels}>Recipe name</p>
-                        <input
-                            type="text"
-                            id="name"
-                            name="name" 
-                            defaultValue={currentRecipe.name}
-                        />
-                    </div>
-                    <div className={styles['form-group']}>
-                        <p>Description</p>
-                        <input
-                            type="text"
-                            id="decription"
-                            name="description"
-                            defaultValue={currentRecipe.description}
-                        />
-                    </div>
-                    <div className={styles['form-group']}>
-                        <p>Time to cook </p>
-                        <input
-                            type="text"
-                            id="timeToCook"
-                            name="timeToCook"
-                            defaultValue={currentRecipe.timeToCook}
-                        />
-                    </div>
-                    <div className={styles['form-group']}>
-                        <p>Image URL: </p>
-                        <input
-                            type="text"
-                            id="image-url"
-                            name="image-url"
-                            defaultValue={currentRecipe.imageUrl}
-                        />
-                    </div>
-                    <div className={styles['form-group']}>
-                        <p>steps</p>
-                        <input
-                            type="text"
-                            id="steps"
-                            name="steps"
-                            placeholder="recipe steps"
-                            defaultValue={currentRecipe.steps}
-                        />
-                    </div>
-                    <input type="submit"/>
-                    <Link className="view-recipe-btn" to={`/recipes/list`}>
-                        Cancel
-                    </Link>
-                </form>
-            </div>
-        </>
+        <div className={styles['container']}>
+            <h1>Edit Recipe</h1>
+            <form className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
+                <div className={styles['form-group']}>
+                    <p>Title</p>
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        defaultValue={currentRecipe.title}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <p>Description</p>
+                    <textarea
+                        id="description"
+                        name="description"
+                        defaultValue={currentRecipe.description}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <p>Time to cook (minutes)</p>
+                    <input
+                        type="number"
+                        id="timeToCook"
+                        name="timeToCook"
+                        defaultValue={currentRecipe.timeToCook}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <p>Image URL:</p>
+                    <input
+                        type="text"
+                        id="imageUrl"
+                        name="imageUrl"
+                        defaultValue={currentRecipe.imageUrl}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <p>Ingredients</p>
+                    <textarea
+                        id="ingredients"
+                        name="ingredients"
+                        defaultValue={currentRecipe.ingredients}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <p>Steps</p>
+                    <textarea
+                        id="steps"
+                        name="steps"
+                        defaultValue={currentRecipe.steps}
+                    />
+                </div>
+                <input type="submit" value="Save Changes" />
+                <button type="button" onClick={() => {
+                    if (window.confirm("Are you sure you want to cancel? Unsaved changes will be lost.")) {
+                        navigate(`/recipes/details/${recipeId}`);
+                    }
+                }}>
+                    Cancel
+                </button>
+            </form>
+        </div>
     );
 };

@@ -27,7 +27,6 @@ export const RecipeList = () => {
                     recipes.map((recipe) => (
                         <div>
                             <RecipeItem key={recipe.id} recipe={recipe} />
-                            <p>{recipe.id}!!!!!!!!!!!!!!!!1</p>
                         </div>
                     ))
                 ) : (

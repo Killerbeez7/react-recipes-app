@@ -9,13 +9,15 @@ export const RecipeContext = createContext();
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case "ADD_RECIPES":
-            return action.payload;
+            return action.payload; // New reference each time new recipes are added
         case "EDIT_RECIPE":
-            return state.map((x) => (x.id === action.recipeId ? action.payload : x));
+            return state.map((recipe) =>
+                recipe.id === action.recipeId ? { ...recipe, ...action.payload } : recipe
+            ); // Ensures a new object reference for updated recipe
         case "DELETE_RECIPE":
-            return state.filter((x) => x.id !== action.recipeId);
+            return state.filter((recipe) => recipe.id !== action.recipeId); // Creates a new filtered array
         case "ADD_RECIPE":
-            return [...state, action.payload];
+            return [...state, action.payload]; // New array with the new recipe added
         default:
             return state;
     }
@@ -41,14 +43,22 @@ export const RecipeProvider = ({ children }) => {
 
     const addRecipe = async (recipeData) => {
         const newRecipe = await recipeService.create(recipeData);
-        dispatch({ type: 'ADD_RECIPE', payload: newRecipe });
-        return newRecipe;
+        navigate(`/recipes/details/${newRecipe.id}`);
+        // const newRecipe = await recipeService.create(recipeData);
+        // dispatch({ type: 'ADD_RECIPE', payload: newRecipe });
+        // return newRecipe;
     };
 
     const editRecipe = async (recipeId, recipeData) => {
         await recipeService.edit(recipeId, recipeData);
+        
+        // Fetch the updated recipe after successful edit
+        const updatedRecipe = await recipeService.getOne(recipeId);
+        dispatch({ type: "EDIT_RECIPE", recipeId, payload: updatedRecipe });
+    
         navigate(`/recipes/list`);
     };
+    
 
     const deleteRecipe = async (recipeId) => {
         await recipeService.del(recipeId);
