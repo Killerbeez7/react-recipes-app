@@ -18,6 +18,11 @@ export const RecipeEdit = () => {
             try {
                 const recipeData = await recipeService.getOne(recipeId);
                 if (recipeData) {
+                    // Remove data prefix if the imageUrl contains data URL
+if (recipeData.imageUrl && recipeData.imageUrl.startsWith("data:")) {
+    const commaIndex = recipeData.imageUrl.indexOf(",");
+    recipeData.imageUrl = recipeData.imageUrl.slice(commaIndex + 1);
+}
                     setCurrentRecipe({ id: recipeId, ...recipeData });
                 } else {
                     alert("Recipe not found");
@@ -78,7 +83,7 @@ export const RecipeEdit = () => {
                         type="text"
                         id="title"
                         name="title"
-                        defaultValue={currentRecipe.title}
+                        value={currentRecipe.title} onChange={(e) => setCurrentRecipe({ ...currentRecipe, title: e.target.value })}
                     />
                 </div>
                 <div className={styles['form-group']}>
@@ -124,11 +129,7 @@ export const RecipeEdit = () => {
                     />
                 </div>
                 <input type="submit" value="Save Changes" />
-                <button type="button" onClick={() => {
-                    if (window.confirm("Are you sure you want to cancel? Unsaved changes will be lost.")) {
-                        navigate(`/recipes/details/${recipeId}`);
-                    }
-                }}>
+                <button type="button" onClick={() => navigate(`/recipes/details/${recipeId}`)}>
                     Cancel
                 </button>
             </form>

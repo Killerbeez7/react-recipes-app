@@ -6,7 +6,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./RecipeAdd.module.css";
 
 export const RecipeAdd = () => {
-    const {currentUser} = useAuth()
+    const { currentUser } = useAuth();
     const [values, setValues] = useState({
         title: "",
         description: "",
@@ -33,6 +33,23 @@ export const RecipeAdd = () => {
         e.preventDefault();
         if (isSubmitting) return;
 
+        // Basic validation to ensure the required fields are filled in
+        if (!values.title || !values.description || !values.timeToCook) {
+            alert("Please fill in all required fields");
+            return;
+        }
+
+        // Additional validation to ensure data types are correct
+        if (isNaN(values.timeToCook) || Number(values.timeToCook) <= 0) {
+            alert("Time to cook must be a positive number");
+            return;
+        }
+
+        if (values.imageUrl && !isValidUrl(values.imageUrl)) {
+            alert("Please provide a valid URL for the image");
+            return;
+        }
+
         setIsSubmitting(true);
 
         try {
@@ -40,8 +57,18 @@ export const RecipeAdd = () => {
             navigate(`/recipes/list`);
         } catch (error) {
             console.error("Error adding recipe:", error);
+            alert("There was an error adding the recipe. Please try again.");
         } finally {
             setIsSubmitting(false);
+        }
+    };
+
+    const isValidUrl = (string) => {
+        try {
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
         }
     };
 
@@ -49,7 +76,6 @@ export const RecipeAdd = () => {
         <div className={styles["form-container"]}>
             <h1 className={styles["add-recipe-title"]}>Add Recipe</h1>
             <form id="create" className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
-
                 <div className={styles['form-group']}>
                     <input
                         type="text"
