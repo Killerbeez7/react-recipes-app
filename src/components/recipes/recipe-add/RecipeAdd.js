@@ -1,15 +1,18 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RecipeContext } from "../../../contexts/RecipeContext";
+import { useAuth } from "../../../contexts/AuthContext";
+
 import styles from "./RecipeAdd.module.css";
 
 export const RecipeAdd = () => {
+    const {currentUser} = useAuth()
     const [values, setValues] = useState({
         title: "",
         description: "",
         ingredients: "",
         steps: "",
-        authorId: "Unknown",
+        authorId: currentUser.uid,
         imageUrl: "",
         likes: 0,
         timeToCook: ""

@@ -14,6 +14,8 @@ const recipeReducer = (state, action) => {
             return state.map((x) => (x.id === action.recipeId ? action.payload : x));
         case "DELETE_RECIPE":
             return state.filter((x) => x.id !== action.recipeId);
+        case "ADD_RECIPE":
+            return [...state, action.payload];
         default:
             return state;
     }
@@ -28,16 +30,19 @@ export const RecipeProvider = ({ children }) => {
 
         const unsubscribe = onValue(recipesRef, (snapshot) => {
             const recipesData = snapshot.val();
-            const recipesArray = recipesData ? Object.values(recipesData) : [];
+            const recipesArray = recipesData
+                ? Object.entries(recipesData).map(([id, data]) => ({ id, ...data }))
+                : [];
             dispatch({ type: "ADD_RECIPES", payload: recipesArray });
         });
 
-        return () => unsubscribe(); // Cleanup listener on unmount
+        return () => unsubscribe();
     }, []);
 
     const addRecipe = async (recipeData) => {
-        await recipeService.create(recipeData);
-        navigate("/recipes/list"); // Navigate after adding the recipe
+        const newRecipe = await recipeService.create(recipeData);
+        dispatch({ type: 'ADD_RECIPE', payload: newRecipe });
+        return newRecipe;
     };
 
     const editRecipe = async (recipeId, recipeData) => {
@@ -50,6 +55,10 @@ export const RecipeProvider = ({ children }) => {
         navigate("/recipes/list");
     };
 
+    const selectRecipe = (recipeId) => {
+        return recipes.find((recipe) => recipe.id === recipeId);
+    };
+
     return (
         <RecipeContext.Provider
             value={{
@@ -57,6 +66,7 @@ export const RecipeProvider = ({ children }) => {
                 addRecipe,
                 editRecipe,
                 deleteRecipe,
+                selectRecipe,  // Provide `selectRecipe` to the context consumers
             }}
         >
             {children}

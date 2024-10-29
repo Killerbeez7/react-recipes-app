@@ -1,172 +1,114 @@
-// import { useEffect, useState } from "react";
-// import { useParams, Link } from "react-router-dom";
-
-// import * as recipeService from "../../../services/recipeService";
+import { useEffect, useContext, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+import * as recipeService from "../../../services/recipeService";
 // import * as commentService from "../../../services/commentService";
+import { RecipeContext } from "../../../contexts/RecipeContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import styles from "./RecipeDetails.module.css";
 
-// import { useContext } from "react";
-// import { RecipeContext } from "../../../contexts/RecipeContext";
-// // import { AuthContext } from "../../../contexts/AuthContext";
+export const RecipeDetails = () => {
+    const { currentUser } = useAuth();
+    const { deleteRecipe, addComment, fetchRecipeDetails, selectRecipe } = useContext(RecipeContext);
+    const { recipeId } = useParams();
 
-// import styles from "./RecipeDetails.module.css";
+    const currentRecipe = selectRecipe(recipeId); // This should work correctly now
+    const [loading, setLoading] = useState(true);
 
-// export const RecipeDetails = () => {
-//     const { user } = useContext(AuthContext);
-//     const { deleteRecipe, addComment, fetchRecipeDetails, selectRecipe } =
-//         useContext(RecipeContext);
-//     const { recipeId } = useParams();
+    const isOwner = currentRecipe?._ownerId === currentUser?._id;
 
-//     const currentRecipe = selectRecipe(recipeId);
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             const recipeDetails = await recipeService.getOne(recipeId);
+    //             const recipeComments = await commentService.getByRecipeId(recipeId);
+    //             fetchRecipeDetails(recipeId, {
+    //                 ...recipeDetails,
+    //                 comments: recipeComments.map(
+    //                     (x) => `${x.user.username}: ${x.text}`
+    //                 ),
+    //             });
+    //         } finally {
+    //             setLoading(false);
+    //         }
+    //     })();
+    // }, [recipeId, fetchRecipeDetails]);
 
-//     const isOwner = currentRecipe._ownerId === user._id;
+    const addCommentHandler = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const comment = formData.get("comment").trim();
 
-//     useEffect(() => {
-//         (async () => {
-//             const recipeDetails = await recipeService.getOne(recipeId);
-//             const recipeComments = await commentService.getByRecipeId(recipeId);
+        if (!comment) {
+            alert("Comment cannot be empty!");
+            return;
+        }
 
-//             fetchRecipeDetails(recipeId, {
-//                 ...recipeDetails,
-//                 comments: recipeComments.map(
-//                     (x) => `${x.user.username}: ${x.text}`
-//                 ),
-//             });
-//         })();
-//     }, []);
+        // commentService.create(recipeId, comment).then(() => {
+        //     addComment(recipeId, comment);
+        // });
 
-//     const addCommentHandler = (e) => {
-//         e.preventDefault();
+        e.target["comment"].value = "";
+    };
 
-//         const formData = new FormData(e.target);
+    const deleteRecipeHandler = () => {
+        if (window.confirm("Are you sure you want to delete this recipe?")) {
+            recipeService.del(recipeId).then(() => {
+                deleteRecipe(recipeId);
+            });
+        }
+    };
 
-//         const comment = formData.get("comment");
+    // if (loading) {
+    //     return <p>Loading...</p>;
+    // }
 
-//         commentService.create(recipeId, comment).then((result) => {
-//             addComment(recipeId, comment);
-//         });
+    if (!currentRecipe) {
+        return <p>Recipe not found.</p>;
+    }
 
-//         e.target["comment"].value = "";
-//     };
-
-//     const deleteRecipeHandler = () => {
-//         const confirmation = window.confirm(
-//             "Are you sure you want to delete this recipe?"
-//         );
-//         if (confirmation) {
-//             recipeService.remove(recipeId).then(deleteRecipe(recipeId));
-//         }
-//     };
-
-//     return (
-//         <>
-//             <div className={styles["recipe-details-wrapper"]}>
-//                 <h1 className={styles["recipe-title"]}>
-//                     Recipe: {currentRecipe.name}
-//                 </h1>
-//                 <hr />
-//                 <br />
-//                 <div>
-//                     <div className="recipe-img-box">
-//                         <img
-//                             src={`${currentRecipe.imageUrl}`}
-//                             alt=""
-//                             className={styles["recipe-img"]}
-//                         />
-//                     </div>
-//                     <div className={styles["recipe-details-box"]}>
-//                         <p>
-//                             <strong>Description: </strong>
-//                             {currentRecipe.description}
-//                         </p>
-//                         <p>
-//                             <strong>Time for preparation: </strong>
-//                             {currentRecipe.timeToCook} minutes
-//                         </p>
-//                         <p>
-//                             <strong>ingredients: </strong>
-//                             {currentRecipe.ingredients}
-//                         </p>
-//                         <br></br>
-//                         <h2>Likes: </h2>
-//                     </div>
-//                 </div>
-//                 <div className={styles["form-control"]}>
-//                     {user.email && (
-//                         <span>
-//                             <Link
-//                                 to={`/recipes/details/${currentRecipe._id}`}
-//                                 className={styles.btn}
-//                             >
-//                                 LIKE
-//                             </Link>
-//                             {isOwner && (
-//                                 <span>
-//                                     <Link
-//                                         className={styles.btn}
-//                                         to={`/recipes/edit/${currentRecipe._id}`}
-//                                         recipe={currentRecipe}
-//                                     >
-//                                         Edit
-//                                     </Link>
-
-//                                     <Link
-//                                         className={styles.btn}
-//                                         to={`/recipes/list`}
-//                                         onClick={() =>
-//                                             deleteRecipeHandler(
-//                                                 currentRecipe._id
-//                                             )
-//                                         }
-//                                     >
-//                                         Delete
-//                                     </Link>
-//                                 </span>
-//                             )}
-//                         </span>
-//                     )}
-//                 </div>
-//                 <div>
-//                     <hr />
-//                     <h3>Comments:</h3>
-//                     <ul className="comments">
-//                         {currentRecipe.comments?.map((x) => (
-//                             <li key={x} className="comment">
-//                                 <p>{x}</p>
-//                             </li>
-//                         ))}
-//                     </ul>
-//                     {!currentRecipe.comments && <p>No comments yet!</p>}
-//                 </div>
-//                 {user.email && (
-//                     <div className={styles["create-comment"]}>
-//                         <article className={styles["comments-section"]}>
-//                             <label
-//                                 htmlFor="comment"
-//                                 className={styles["comments-title"]}
-//                             >
-//                                 Add new comment
-//                             </label>
-//                             <form className="form" onSubmit={addCommentHandler}>
-//                                 <textarea
-//                                     className={
-//                                         styles["create-comment-text-area"]
-//                                     }
-//                                     name="comment"
-//                                     id="comment"
-//                                     placeholder="Comment..."
-//                                 />
-//                                 <div>
-//                                     <input
-//                                         className={styles["comment-btn"]}
-//                                         type="submit"
-//                                         value="Add comment"
-//                                     />
-//                                 </div>
-//                             </form>
-//                         </article>
-//                     </div>
-//                 )}
-//             </div>
-//         </>
-//     );
-// };
+    return (
+        <div className={styles["recipe-details-wrapper"]}>
+            <h1 className={styles["recipe-title"]}>Recipe: {currentRecipe.title}</h1>
+            <div>
+                <img src={currentRecipe.imageUrl} alt="" className={styles["recipe-img"]} />
+                <p><strong>Description:</strong> {currentRecipe.description}</p>
+                <p><strong>Time for preparation:</strong> {currentRecipe.timeToCook} minutes</p>
+                <p><strong>Ingredients:</strong> {currentRecipe.ingredients}</p>
+                <h2>Likes:</h2>
+            </div>
+            <div className={styles["form-control"]}>
+                {currentUser?.email && (
+                    <span>
+                        <Link to="#" className={styles.btn}>LIKE</Link>
+                        {isOwner && (
+                            <span>
+                                <Link className={styles.btn} to={`/recipes/edit/${recipeId}`}>Edit</Link>
+                                <Link className={styles.btn} to="#" onClick={deleteRecipeHandler}>Delete</Link>
+                            </span>
+                        )}
+                    </span>
+                )}
+            </div>
+            <div>
+                <h3>Comments:</h3>
+                <ul className="comments">
+                    {currentRecipe.comments?.length > 0 ? (
+                        currentRecipe.comments.map((comment, index) => (
+                            <li key={index} className="comment">
+                                <p>{comment}</p>
+                            </li>
+                        ))
+                    ) : (
+                        <p>No comments yet!</p>
+                    )}
+                </ul>
+            </div>
+            {currentUser?.email && (
+                <form onSubmit={addCommentHandler}>
+                    <textarea name="comment" placeholder="Comment..."></textarea>
+                    <input type="submit" value="Add comment" />
+                </form>
+            )}
+        </div>
+    );
+};

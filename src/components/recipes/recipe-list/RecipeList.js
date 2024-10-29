@@ -25,7 +25,10 @@ export const RecipeList = () => {
             <ul className={styles["recipe-list-wrapper"]} style={{ width: `${100}%` }}>
                 {recipes.length > 0 ? (
                     recipes.map((recipe) => (
-                        <RecipeItem key={recipe.id} recipe={recipe} />
+                        <div>
+                            <RecipeItem key={recipe.id} recipe={recipe} />
+                            <p>{recipe.id}!!!!!!!!!!!!!!!!1</p>
+                        </div>
                     ))
                 ) : (
                     <h1>No recipes yet!</h1>

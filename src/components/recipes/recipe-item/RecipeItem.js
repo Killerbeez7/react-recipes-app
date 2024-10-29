@@ -39,11 +39,12 @@ export const RecipeItem = ({ recipe }) => {
             </div>
             <div>
                 <Link
-                    to={`/recipes/details/${recipe.id}`} // Changed _id to id
+                    to={`/recipes/details/${recipe.id}`} // Use `recipe.id` which now exists in the state
                     className={styles["view-recipe-btn"]}
                 >
                     View
                 </Link>
+
             </div>
         </li>
     );

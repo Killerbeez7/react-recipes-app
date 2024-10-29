@@ -61,7 +61,7 @@ export const Navigation = (props) => {
                                 className={setNavStyle}
                                 to="/profile-details"
                             >
-                                {currentUser.email}
+                                {currentUser.displayName ? currentUser.displayName : currentUser.email}
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
