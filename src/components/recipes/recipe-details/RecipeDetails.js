@@ -106,7 +106,7 @@ export const RecipeDetails = () => {
                 {currentUser?.email && (
                     <span>
                         <Link to="#" className={styles.btn}>LIKE</Link>
-                        {currentRecipe._ownerId === currentUser?._id && (
+                        {currentUser?.uid === currentRecipe.authorId && (
                             <span>
                                 <Link className={styles.btn} to={`/recipes/edit/${recipeId}`}>Edit</Link>
                                 <Link className={styles.btn} to="#" onClick={deleteRecipeHandler}>Delete</Link>
