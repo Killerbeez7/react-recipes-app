@@ -5,21 +5,23 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./RecipeDetails.module.css";
 
 export const RecipeDetails = () => {
-    const { addComment, deleteRecipe, recipes } = useContext(RecipeContext);
+    const { addComment, deleteComment, editComment, recipes, deleteRecipe } = useContext(RecipeContext);
     const { currentUser } = useAuth();
     const { recipeId } = useParams();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
+    const [editCommentId, setEditCommentId] = useState(null);
+    const [editCommentText, setEditCommentText] = useState("");
 
     const currentRecipe = recipes.find((recipe) => recipe.id === recipeId);
 
     useEffect(() => {
-        if (!currentRecipe) {
-            setLoading(true);
-        } else {
+        if (currentRecipe) {
             setLoading(false);
+        } else {
+            setLoading(true);
         }
     }, [currentRecipe]);
 
@@ -53,6 +55,32 @@ export const RecipeDetails = () => {
             setNewComment("");
         } catch (error) {
             console.error("Error adding comment:", error);
+        }
+    };
+
+    const handleEditComment = async (e) => {
+        e.preventDefault();
+        if (!editCommentText.trim()) {
+            alert("Comment cannot be empty");
+            return;
+        }
+
+        try {
+            await editComment(recipeId, editCommentId, { text: editCommentText });
+            setEditCommentId(null);
+            setEditCommentText("");
+        } catch (error) {
+            console.error("Error editing comment:", error);
+        }
+    };
+
+    const handleDeleteComment = async (commentId) => {
+        if (window.confirm("Are you sure you want to delete this comment?")) {
+            try {
+                await deleteComment(recipeId, commentId);
+            } catch (error) {
+                console.error("Error deleting comment:", error);
+            }
         }
     };
 
@@ -92,7 +120,26 @@ export const RecipeDetails = () => {
                 <ul className="comments">
                     {currentRecipe.comments && Object.entries(currentRecipe.comments).map(([key, comment]) => (
                         <li key={key} className="comment">
-                            <p><strong>{comment.username}:</strong> {comment.text}</p>
+                            {editCommentId === key ? (
+                                <form onSubmit={handleEditComment}>
+                                    <textarea
+                                        value={editCommentText}
+                                        onChange={(e) => setEditCommentText(e.target.value)}
+                                    />
+                                    <button type="submit">Save</button>
+                                    <button type="button" onClick={() => setEditCommentId(null)}>Cancel</button>
+                                </form>
+                            ) : (
+                                <p><strong>{comment.username}:</strong> {comment.text}</p>
+                            )}
+                            {comment.userId === currentUser?.uid && (
+                                <div>
+                                    <button onClick={() => { setEditCommentId(key); setEditCommentText(comment.text); }}>
+                                        Edit
+                                    </button>
+                                    <button onClick={() => handleDeleteComment(key)}>Delete</button>
+                                </div>
+                            )}
                         </li>
                     ))}
                 </ul>

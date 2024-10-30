@@ -1,8 +1,10 @@
 import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
-import { onValue, ref, push, set } from "firebase/database";
+import { onValue, ref, push, set, update, remove } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
+
+
 
 export const RecipeContext = createContext();
 
@@ -84,6 +86,24 @@ export const RecipeProvider = ({ children }) => {
         }
     };
 
+    const editComment = async (recipeId, commentId, updatedComment) => {
+        try {
+            const commentRef = ref(database, `recipes/${recipeId}/comments/${commentId}`);
+            await update(commentRef, updatedComment);
+        } catch (error) {
+            console.error("Error editing comment:", error);
+        }
+    };
+
+    const deleteComment = async (recipeId, commentId) => {
+        try {
+            const commentRef = ref(database, `recipes/${recipeId}/comments/${commentId}`);
+            await remove(commentRef);
+        } catch (error) {
+            console.error("Error deleting comment:", error);
+        }
+    };
+
     return (
         <RecipeContext.Provider
             value={{
@@ -93,6 +113,8 @@ export const RecipeProvider = ({ children }) => {
                 deleteRecipe,
                 selectRecipe,
                 addComment,
+                editComment,
+                deleteComment,
             }}
         >
             {children}
