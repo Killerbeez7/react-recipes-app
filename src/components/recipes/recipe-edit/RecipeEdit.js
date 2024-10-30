@@ -13,16 +13,10 @@ export const RecipeEdit = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Fetch the recipe details based on the recipeId from the URL params
         (async () => {
             try {
                 const recipeData = await recipeService.getOne(recipeId);
                 if (recipeData) {
-                    // Remove data prefix if the imageUrl contains data URL
-if (recipeData.imageUrl && recipeData.imageUrl.startsWith("data:")) {
-    const commaIndex = recipeData.imageUrl.indexOf(",");
-    recipeData.imageUrl = recipeData.imageUrl.slice(commaIndex + 1);
-}
                     setCurrentRecipe({ id: recipeId, ...recipeData });
                 } else {
                     alert("Recipe not found");
@@ -43,13 +37,11 @@ if (recipeData.imageUrl && recipeData.imageUrl.startsWith("data:")) {
         const formData = new FormData(e.target);
         const recipeData = Object.fromEntries(formData);
 
-        // Basic validation to ensure the required fields are filled in
         if (!recipeData.title || !recipeData.description || !recipeData.timeToCook) {
             alert("Please fill in all required fields");
             return;
         }
 
-        // Additional validation to ensure data types are correct
         if (isNaN(recipeData.timeToCook) || Number(recipeData.timeToCook) <= 0) {
             alert("Time to cook must be a positive number");
             return;
