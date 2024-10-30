@@ -1,51 +1,58 @@
 import { useEffect, useContext, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import * as recipeService from "../../../services/recipeService";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./RecipeDetails.module.css";
 
 export const RecipeDetails = () => {
+    const { addComment, deleteRecipe, recipes } = useContext(RecipeContext);
     const { currentUser } = useAuth();
-    const { deleteRecipe, recipes } = useContext(RecipeContext);
     const { recipeId } = useParams();
     const navigate = useNavigate();
 
     const [loading, setLoading] = useState(true);
-    const [currentRecipe, setCurrentRecipe] = useState(null);
+    const [newComment, setNewComment] = useState("");
+
+    const currentRecipe = recipes.find((recipe) => recipe.id === recipeId);
 
     useEffect(() => {
-        const foundRecipe = recipes.find((recipe) => recipe.id === recipeId);
-        if (foundRecipe) {
-            setCurrentRecipe(foundRecipe);
-            setLoading(false);
+        if (!currentRecipe) {
+            setLoading(true);
         } else {
-            // Fetch the recipe from the server if it's not in the local state
-            (async () => {
-                try {
-                    setLoading(true);
-                    const recipeDetails = await recipeService.getOne(recipeId);
-                    if (recipeDetails) {
-                        setCurrentRecipe({ id: recipeId, ...recipeDetails });
-                    } else {
-                        setCurrentRecipe(null);
-                    }
-                } catch (error) {
-                    console.error("Failed to fetch recipe details:", error);
-                    setCurrentRecipe(null);
-                } finally {
-                    setLoading(false);
-                }
-            })();
+            setLoading(false);
         }
-    }, [recipeId, recipes]);
+    }, [currentRecipe]);
 
     const deleteRecipeHandler = () => {
         if (window.confirm("Are you sure you want to delete this recipe?")) {
-            recipeService.del(recipeId).then(() => {
-                deleteRecipe(recipeId);
+            deleteRecipe(recipeId).then(() => {
                 navigate("/recipes/list");
             });
+        }
+    };
+
+    const handleAddComment = async (e) => {
+        e.preventDefault();
+        if (!newComment.trim()) {
+            alert("Comment cannot be empty");
+            return;
+        }
+        if (!currentUser) {
+            alert("You need to be logged in to add a comment.");
+            return;
+        }
+
+        const comment = {
+            text: newComment,
+            userId: currentUser.uid,
+            username: currentUser.email,
+        };
+
+        try {
+            await addComment(recipeId, comment);
+            setNewComment("");
+        } catch (error) {
+            console.error("Error adding comment:", error);
         }
     };
 
@@ -65,7 +72,7 @@ export const RecipeDetails = () => {
                 <p><strong>Description:</strong> {currentRecipe.description}</p>
                 <p><strong>Time for preparation:</strong> {currentRecipe.timeToCook} minutes</p>
                 <p><strong>Ingredients:</strong> {currentRecipe.ingredients}</p>
-                <p><strong>Ingredients:</strong> {currentRecipe.steps}</p>
+                <p><strong>Steps:</strong> {currentRecipe.steps}</p>
             </div>
             <div className={styles["form-control"]}>
                 {currentUser?.email && (
@@ -83,21 +90,22 @@ export const RecipeDetails = () => {
             <div>
                 <h3>Comments:</h3>
                 <ul className="comments">
-                    {currentRecipe.comments?.length > 0 ? (
-                        currentRecipe.comments.map((comment, index) => (
-                            <li key={index} className="comment">
-                                <p>{comment}</p>
-                            </li>
-                        ))
-                    ) : (
-                        <p>No comments yet!</p>
-                    )}
+                    {currentRecipe.comments && Object.entries(currentRecipe.comments).map(([key, comment]) => (
+                        <li key={key} className="comment">
+                            <p><strong>{comment.username}:</strong> {comment.text}</p>
+                        </li>
+                    ))}
                 </ul>
             </div>
             {currentUser?.email && (
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <textarea name="comment" placeholder="Comment..." disabled></textarea>
-                    <input type="submit" value="Add comment" disabled />
+                <form onSubmit={handleAddComment}>
+                    <textarea
+                        name="comment"
+                        placeholder="Add a comment..."
+                        value={newComment}
+                        onChange={(e) => setNewComment(e.target.value)}
+                    ></textarea>
+                    <input type="submit" value="Add comment" />
                 </form>
             )}
         </div>

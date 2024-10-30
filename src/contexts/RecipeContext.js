@@ -1,7 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
-import { onValue, ref } from "firebase/database";
+import { onValue, ref, push, set } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 
 export const RecipeContext = createContext();
@@ -9,15 +9,21 @@ export const RecipeContext = createContext();
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case "ADD_RECIPES":
-            return action.payload; // New reference each time new recipes are added
+            return action.payload;
         case "EDIT_RECIPE":
             return state.map((recipe) =>
                 recipe.id === action.recipeId ? { ...recipe, ...action.payload } : recipe
-            ); // Ensures a new object reference for updated recipe
+            );
         case "DELETE_RECIPE":
-            return state.filter((recipe) => recipe.id !== action.recipeId); // Creates a new filtered array
+            return state.filter((recipe) => recipe.id !== action.recipeId);
         case "ADD_RECIPE":
-            return [...state, action.payload]; // New array with the new recipe added
+            return [...state, action.payload];
+        case 'ADD_COMMENT':
+            return state.map(recipe =>
+                recipe.id === action.payload.recipeId
+                    ? { ...recipe, comments: [...(recipe.comments || []), action.payload.comment] }
+                    : recipe
+            );
         default:
             return state;
     }
@@ -44,21 +50,17 @@ export const RecipeProvider = ({ children }) => {
     const addRecipe = async (recipeData) => {
         const newRecipe = await recipeService.create(recipeData);
         navigate(`/recipes/details/${newRecipe.id}`);
-        // const newRecipe = await recipeService.create(recipeData);
-        // dispatch({ type: 'ADD_RECIPE', payload: newRecipe });
-        // return newRecipe;
     };
 
     const editRecipe = async (recipeId, recipeData) => {
         await recipeService.edit(recipeId, recipeData);
-        
-        // Fetch the updated recipe after successful edit
+
         const updatedRecipe = await recipeService.getOne(recipeId);
         dispatch({ type: "EDIT_RECIPE", recipeId, payload: updatedRecipe });
-    
+
         navigate(`/recipes/list`);
     };
-    
+
 
     const deleteRecipe = async (recipeId) => {
         await recipeService.del(recipeId);
@@ -69,6 +71,19 @@ export const RecipeProvider = ({ children }) => {
         return recipes.find((recipe) => recipe.id === recipeId);
     };
 
+    const addComment = async (recipeId, comment) => {
+        try {
+            const commentsRef = ref(database, `recipes/${recipeId}/comments`);
+            const newCommentRef = push(commentsRef);
+
+            await set(newCommentRef, comment);
+
+            console.log("Comment added successfully with unique ID:", newCommentRef.key);
+        } catch (error) {
+            console.error("Error adding comment:", error);
+        }
+    };
+
     return (
         <RecipeContext.Provider
             value={{
@@ -76,7 +91,8 @@ export const RecipeProvider = ({ children }) => {
                 addRecipe,
                 editRecipe,
                 deleteRecipe,
-                selectRecipe,  // Provide `selectRecipe` to the context consumers
+                selectRecipe,
+                addComment,
             }}
         >
             {children}
