@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
 import { onValue, ref, push, set, update, remove } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
+// import { useAuth } from "./AuthContext";
 
 
 
@@ -26,6 +27,16 @@ const recipeReducer = (state, action) => {
                     ? { ...recipe, comments: [...(recipe.comments || []), action.payload.comment] }
                     : recipe
             );
+        case 'TOGGLE_LIKE':
+            return state.map(recipe =>
+                recipe.id === action.recipeId
+                    ? {
+                        ...recipe,
+                        likes: action.payload.likes,
+                        likeCount: action.payload.likeCount,
+                    }
+                    : recipe
+            );
         default:
             return state;
     }
@@ -33,6 +44,7 @@ const recipeReducer = (state, action) => {
 
 export const RecipeProvider = ({ children }) => {
     const navigate = useNavigate();
+    // const { currentUser } = useAuth
     const [recipes, dispatch] = useReducer(recipeReducer, []);
 
     useEffect(() => {
@@ -104,6 +116,35 @@ export const RecipeProvider = ({ children }) => {
         }
     };
 
+    const toggleLike = async (recipeId, user) => {
+        const recipe = recipes.find((recipe) => recipe.id === recipeId);
+        if (!recipe || !user) {
+            alert("You need to be logged in to like this recipe.");
+            return;
+        }
+
+        const likes = recipe.likes || {};
+        const userHasLiked = likes[user.uid];
+
+        if (userHasLiked) {
+            // Unlike the recipe
+            delete likes[user.uid];
+        } else {
+            // Like the recipe
+            likes[user.uid] = true;
+        }
+
+        const likeCount = Object.keys(likes).length;
+
+        try {
+            const recipeRef = ref(database, `recipes/${recipeId}`);
+            await update(recipeRef, { likes, likeCount });
+            dispatch({ type: 'TOGGLE_LIKE', recipeId, payload: { likes, likeCount } });
+        } catch (error) {
+            console.error("Error toggling like:", error);
+        }
+    };
+
     return (
         <RecipeContext.Provider
             value={{
@@ -115,6 +156,7 @@ export const RecipeProvider = ({ children }) => {
                 addComment,
                 editComment,
                 deleteComment,
+                toggleLike,
             }}
         >
             {children}

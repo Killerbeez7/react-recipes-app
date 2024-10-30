@@ -5,7 +5,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./RecipeDetails.module.css";
 
 export const RecipeDetails = () => {
-    const { addComment, deleteComment, editComment, recipes, deleteRecipe } = useContext(RecipeContext);
+    const { addComment, deleteComment, editComment, recipes, deleteRecipe, toggleLike } = useContext(RecipeContext);
     const { currentUser } = useAuth();
     const { recipeId } = useParams();
     const navigate = useNavigate();
@@ -84,6 +84,10 @@ export const RecipeDetails = () => {
         }
     };
 
+    const handleToggleLike = () => {
+        toggleLike(recipeId, currentUser);
+    };
+
     if (loading) {
         return <p>Loading...</p>;
     }
@@ -91,6 +95,9 @@ export const RecipeDetails = () => {
     if (!currentRecipe) {
         return <p>Recipe not found.</p>;
     }
+
+    const userHasLiked = currentUser && currentRecipe.likes && currentRecipe.likes[currentUser.uid];
+    const likeCount = currentRecipe.likeCount || 0;
 
     return (
         <div className={styles["recipe-details-wrapper"]}>
@@ -103,9 +110,12 @@ export const RecipeDetails = () => {
                 <p><strong>Steps:</strong> {currentRecipe.steps}</p>
             </div>
             <div className={styles["form-control"]}>
+                <span>{likeCount} {likeCount === 1 ? "like" : "likes"}</span>
                 {currentUser?.email && (
                     <span>
-                        <Link to="#" className={styles.btn}>LIKE</Link>
+                        <button onClick={handleToggleLike} className={styles.btn}>
+                            {userHasLiked ? "Unlike" : "Like"}
+                        </button>
                         {currentUser?.uid === currentRecipe.authorId && (
                             <span>
                                 <Link className={styles.btn} to={`/recipes/edit/${recipeId}`}>Edit</Link>
