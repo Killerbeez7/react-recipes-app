@@ -25,6 +25,7 @@ import "./App.css";
 // Error Boundary
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
+
 function App() {
     return (
         <ErrorBoundary>
@@ -34,16 +35,17 @@ function App() {
 
                     {/* Main content */}
                     <RecipeProvider>
-                    <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/gallery" element={<Gallery />} />
-                        <Route path="/about" element={<About />} />
-                        <Route path="/forum" element={<Forum />} />
-                        <Route path="/sign-up" element={<SignUp />} />
-                        <Route path="/sign-in" element={<SignIn />} />
-                        <Route path="/logout" element={<Logout />} />
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/gallery" element={<Gallery />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/forum" element={<Forum />} />
+                            <Route path="/auth/sign-up" element={<SignUp />} />
+                            <Route path="/auth/sign-in" element={<SignIn />} />
+                            <Route path="/auth/logout" element={<Logout />} />
+                            <Route path="/auth/:userId/details" element={<ProfileDetails />} />
 
-                        <Route
+                            <Route
                                 path="/recipes/list"
                                 element={<RecipeList />}
                             />
@@ -62,8 +64,8 @@ function App() {
                                 element={<RecipeDetails />}
                             />
 
-                        <Route path="/*" element={<NotFound />} />
-                    </Routes>
+                            <Route path="/*" element={<NotFound />} />
+                        </Routes>
                     </RecipeProvider>
                     {/* End of main content */}
 

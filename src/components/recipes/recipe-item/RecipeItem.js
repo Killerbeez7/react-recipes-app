@@ -9,14 +9,14 @@ export const RecipeItem = ({ recipe }) => {
             </h3>
             <div className={styles["recipe-image-wrapper"]}>
                 <img
-                    alt={recipe.title} // Improved alt text for accessibility
+                    alt={recipe.title}
                     src={recipe.imageUrl}
                     className={styles["recipe-img"]}
                 />
             </div>
             <div className={styles["recipe-content-wrapper"]}>
                 <div className={styles["recipe-name-wrapper"]}>
-                    <h3>{recipe.title}</h3> {/* Changed 'name' to 'title' */}
+                    <h3>{recipe.title}</h3>
                 </div>
                 <div className={styles["recipe-description-wrapper"]}>
                     <p>
@@ -39,7 +39,7 @@ export const RecipeItem = ({ recipe }) => {
             </div>
             <div>
                 <Link
-                    to={`/recipes/details/${recipe.id}`} // Use `recipe.id` which now exists in the state
+                    to={`/recipes/details/${recipe.id}`}
                     className={styles["view-recipe-btn"]}
                 >
                     View

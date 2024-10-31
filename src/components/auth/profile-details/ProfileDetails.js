@@ -1,67 +1,104 @@
-// import { useContext, useState } from "react";
-// // import * as authService from "../../../services/authService";
+import { useState, useEffect } from "react";
+import { useAuth } from "../../../contexts/AuthContext";
+import { ref, update, get } from "firebase/database";
+import { updateProfile } from "firebase/auth";
+import { auth, database } from "../../../firebase/firebaseConfig";
+import { useNavigate } from "react-router-dom";
 
-// import styles from "./ProfileDetails.module.css";
+import styles from "./ProfileDetails.module.css";
 
-// export const ProfileDetails = () => {
-//     const { user } = useContext(AuthContext);
-//     const [values, setValues] = useState({
-//         username: user.username,
-//         email: user.email,
-//     });
+export const ProfileDetails = () => {
+    const { currentUser, setCurrentUser } = useAuth();
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
 
-//     const userData = { ...user };
+    useEffect(() => {
+        if (currentUser) {
+            const userRef = ref(database, `users/${currentUser.uid}`);
+            get(userRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    const userData = snapshot.val();
+                    setUsername(userData.username);
+                    setEmail(userData.email);
+                }
+                setIsLoading(false);
+            }).catch((error) => {
+                console.error("Error fetching user data:", error);
+                setIsLoading(false);
+            });
+        }
+    }, [currentUser]);
 
-//     const changeHandler = (e) => {
-//         setValues((state) => ({
-//             ...state,
-//             [e.target.name]: e.target.value,
-//         }));
-//     };
+    const handleInputChange = (setter) => (e) => {
+        setter(e.target.value);
+    };
 
-//     const onSubmit = (e) => {
-//         e.preventDefault();
+    const handleSaveChanges = async (e) => {
+        e.preventDefault();
 
-//         userData["username"] = values["username"];
-//         userData["email"] = values["email"];
+        if (!username.trim()) {
+            alert("Username cannot be empty");
+            return;
+        }
 
-//         // to fix edit user data
-//         // authService.editUserData(user._id, userData);
-//     };
+        try {
+            const user = auth.currentUser;
+            if (user) {
+                await updateProfile(user, {
+                    displayName: username,
+                });
 
-//     return (
-//         <>
-//             <form
-//                 className={styles["profile-details-form"]}
-//                 onSubmit={onSubmit}
-//             >
-//                 <h1 className={styles["profile-details-title"]}>
-//                     Profile settings
-//                 </h1>
-//                 <label>Change username</label>
-//                 <div>
-//                     <input
-//                         type="text"
-//                         id="username"
-//                         name="username"
-//                         placeholder={user.username}
-//                         onChange={changeHandler}
-//                     ></input>
-//                 </div>
-//                 <br></br>
-//                 <label>Change email</label>
-//                 <div>
-//                     <input
-//                         type="text"
-//                         id="email"
-//                         name="email"
-//                         placeholder={user.email}
-//                         onChange={changeHandler}
-//                     ></input>
-//                 </div>
-//                 <br></br>
-//                 <button className={styles["change-btn"]}>CHANGE</button>
-//             </form>
-//         </>
-//     );
-// };
+                const userRef = ref(database, `users/${user.uid}`);
+                await update(userRef, { username: username });
+
+                setCurrentUser({ ...user, displayName: username });
+
+                console.log("Username updated successfully.");
+                navigate(-1);
+            } else {
+                console.error("User not found in Firebase Authentication.");
+            }
+        } catch (error) {
+            console.error("Error updating profile:", error);
+            alert("There was an error updating your profile. Please try again.");
+        }
+    };
+
+    if (isLoading) {
+        return <p>Loading...</p>;
+    }
+
+    return (
+        <div className={styles["profile-details-wrapper"]}>
+            <h1 className={styles["profile-title"]}>Profile Details</h1>
+            <form onSubmit={handleSaveChanges}>
+                <div className={styles.containers}>
+                    <label htmlFor="username">Username</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={username}
+                        onChange={handleInputChange(setUsername)}
+                    />
+                </div>
+                <div className={styles.containers}>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={email}
+                        disabled
+                    />
+                </div>
+
+                <button type="submit" className={styles["save-btn"]}>
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    );
+};

@@ -1,12 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../firebase/firebaseConfig"
+import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
-    return useContext(AuthContext)
-}
+    return useContext(AuthContext);
+};
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
@@ -14,31 +14,24 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, initializeUser);
-        return unsubscribe
-    }, [])
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user ? { ...user } : null);
+            setUserLoggedIn(!!user);
+            setLoading(false);
+        });
 
-    async function initializeUser(user) {
-        if (user) {
-            setCurrentUser({ ...user });
-            setUserLoggedIn(true);
-        } else {
-            setCurrentUser(null);
-            setUserLoggedIn(false);
-        }
-        setLoading(false);
-    }
+        return unsubscribe;
+    }, []);
 
     const value = {
         currentUser,
+        setCurrentUser, // Allow manual updates
         userLoggedIn,
-        loading
-    }
+    };
 
     return (
         <AuthContext.Provider value={value}>
             {!loading && children}
         </AuthContext.Provider>
-    )
-}
-
+    );
+};

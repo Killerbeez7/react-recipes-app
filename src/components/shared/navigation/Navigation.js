@@ -6,9 +6,10 @@ import styles from "./Navigation.module.css";
 
 
 export const Navigation = (props) => {
-    const { currentUser } = useAuth()
+    const { currentUser, username } = useAuth()
     const navigate = useNavigate();
 
+    const userId = currentUser?.uid;
 
     const logoutHandler = () => {
         doSignOut()
@@ -59,9 +60,9 @@ export const Navigation = (props) => {
                         <div className={styles["nav-link-wrapper"]}>
                             <NavLink
                                 className={setNavStyle}
-                                to="/profile-details"
+                                to={`/auth/${userId}/details`}
                             >
-                                {currentUser.displayName ? currentUser.displayName : currentUser.email}
+                                {currentUser?.displayName || currentUser?.email}
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
@@ -71,12 +72,12 @@ export const Navigation = (props) => {
                 ) : (
                     <>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink className={setNavStyle} to="/sign-in">
+                            <NavLink className={setNavStyle} to="/auth/sign-in">
                                 Sign In
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink className={setNavStyle} to="/sign-up">
+                            <NavLink className={setNavStyle} to="/auth/sign-up">
                                 try it free
                             </NavLink>
                         </div>
