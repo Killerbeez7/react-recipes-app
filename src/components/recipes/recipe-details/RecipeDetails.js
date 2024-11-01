@@ -1,8 +1,11 @@
 import { useEffect, useContext, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
+import { RecipeContext } from "../../../contexts/RecipeContext";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { formatDistanceToNow, parseISO } from "date-fns";
+
 import styles from "./RecipeDetails.module.css";
+import clx from 'classnames';
 
 export const RecipeDetails = () => {
     const [loading, setLoading] = useState(true);
@@ -20,7 +23,7 @@ export const RecipeDetails = () => {
         deleteRecipe,
         toggleLike
     } = useContext(RecipeContext);
-    
+
     const navigate = useNavigate();
     const currentRecipe = recipes.find((recipe) => recipe.id === recipeId);
 
@@ -32,6 +35,8 @@ export const RecipeDetails = () => {
         }
     }, [currentRecipe]);
 
+    // ------------------------------------------- Recipes ---------------------------------------------
+
     const deleteRecipeHandler = () => {
         if (window.confirm("Are you sure you want to delete this recipe?")) {
             deleteRecipe(recipeId).then(() => {
@@ -39,7 +44,9 @@ export const RecipeDetails = () => {
             });
         }
     };
-// ----------------------------------------------- Comments ----------------------------------------------------------
+
+    // ------------------------------------------- Comments --------------------------------------------
+
     const handleAddComment = async (e) => {
         e.preventDefault();
         if (!newComment.trim()) {
@@ -54,7 +61,7 @@ export const RecipeDetails = () => {
         const comment = {
             text: newComment,
             userId: currentUser.uid,
-            username: currentUser.email,
+            username: currentUser.displayName,
         };
 
         try {
@@ -91,7 +98,7 @@ export const RecipeDetails = () => {
         }
     };
 
-// ------------------------------------------------------ Likes ----------------------------------------------------------
+    // ------------------------------------------- Likes ------------------------------------------------
 
     const handleToggleLike = () => {
         toggleLike(recipeId, currentUser);
@@ -134,11 +141,11 @@ export const RecipeDetails = () => {
                     </span>
                 )}
             </div>
-            <div>
+            <div className={styles["comments-section-wrapper"]} >
                 <h3>Comments:</h3>
-                <ul className="comments">
+                <ul className={styles["comments-section"]}>
                     {currentRecipe.comments && Object.entries(currentRecipe.comments).map(([key, comment]) => (
-                        <li key={key} className="comment">
+                        <li key={key} className={styles["comment-item"]}>
                             {editCommentId === key ? (
                                 <form onSubmit={handleEditComment}>
                                     <textarea
@@ -149,16 +156,26 @@ export const RecipeDetails = () => {
                                     <button type="button" onClick={() => setEditCommentId(null)}>Cancel</button>
                                 </form>
                             ) : (
-                                <p><strong>{comment.username}:</strong> {comment.text}</p>
+                                <span>
+                                    <p><strong>{comment.username}:</strong> {comment.text}</p>
+                                    {comment.createdAt && (
+                                        <p className="comment-time">
+                                            <em>{formatDistanceToNow(parseISO(comment.createdAt), { addSuffix: true })}</em>  {/* Show time since comment creation */}
+                                        </p>
+                                    )}
+                                </span>
                             )}
                             {comment.userId === currentUser?.uid && (
                                 <div>
-                                    <button onClick={() => { setEditCommentId(key); setEditCommentText(comment.text); }}>
+                                    <button className={clx(styles["comment-btn"],"btn")} onClick={() => { setEditCommentId(key); setEditCommentText(comment.text); }}>
                                         Edit
                                     </button>
-                                    <button onClick={() => handleDeleteComment(key)}>Delete</button>
+                                    <button className={clx(styles["comment-btn"],"btn")} onClick={() => handleDeleteComment(key)}>
+                                        Delete
+                                    </button>
                                 </div>
                             )}
+
                         </li>
                     ))}
                 </ul>
@@ -166,6 +183,7 @@ export const RecipeDetails = () => {
             {currentUser?.email && (
                 <form onSubmit={handleAddComment}>
                     <textarea
+                        className={styles["comment-text-area"]}
                         name="comment"
                         placeholder="Add a comment..."
                         value={newComment}

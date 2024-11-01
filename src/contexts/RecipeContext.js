@@ -89,11 +89,10 @@ export const RecipeProvider = ({ children }) => {
 
     const addComment = async (recipeId, comment) => {
         try {
-            await commentService.create(recipeId, comment)
+            await commentService.create(recipeId, comment);
         } catch (error) {
             console.log("Error adding comment:", error);
-            alert("Failed to add comment. Please try again.")
-
+            alert("Failed to add comment. Please try again.");
         }
     };
 

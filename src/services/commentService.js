@@ -1,18 +1,32 @@
 import { database } from '../firebase/firebaseConfig';
 import { ref, push, update, remove, set, get, child } from 'firebase/database';
+import { formatISO } from 'date-fns';  // Import date-fns for timestamp creation
 
 
 export const create = async (recipeId, comment) => {
     try {
         const commentsRef = ref(database, `recipes/${recipeId}/comments`);
         const newCommentRef = push(commentsRef);
-        await set(newCommentRef, comment);
-            return { id: newCommentRef.key, ...comment };
+        const timestamp = formatISO(new Date());  // Add current timestamp
+        const commentWithTimestamp = { ...comment, createdAt: timestamp };  // Add timestamp to comment
+        await set(newCommentRef, commentWithTimestamp);
+        return { id: newCommentRef.key, ...commentWithTimestamp };
     } catch (error) {
         console.error("Error adding comment:", error);
         throw error;
     }
 };
+// export const create = async (recipeId, comment) => {
+//     try {
+//         const commentsRef = ref(database, `recipes/${recipeId}/comments`);
+//         const newCommentRef = push(commentsRef);
+//         await set(newCommentRef, comment);
+//             return { id: newCommentRef.key, ...comment };
+//     } catch (error) {
+//         console.error("Error adding comment:", error);
+//         throw error;
+//     }
+// };
 
 export const edit = async (recipeId, commentId, updatedComment) => {
     try {
