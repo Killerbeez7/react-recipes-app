@@ -5,16 +5,23 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./RecipeDetails.module.css";
 
 export const RecipeDetails = () => {
-    const { addComment, deleteComment, editComment, recipes, deleteRecipe, toggleLike } = useContext(RecipeContext);
-    const { currentUser } = useAuth();
-    const { recipeId } = useParams();
-    const navigate = useNavigate();
-
     const [loading, setLoading] = useState(true);
     const [newComment, setNewComment] = useState("");
     const [editCommentId, setEditCommentId] = useState(null);
     const [editCommentText, setEditCommentText] = useState("");
 
+    const { currentUser } = useAuth();
+    const { recipeId } = useParams();
+    const {
+        addComment,
+        editComment,
+        deleteComment,
+        recipes,
+        deleteRecipe,
+        toggleLike
+    } = useContext(RecipeContext);
+    
+    const navigate = useNavigate();
     const currentRecipe = recipes.find((recipe) => recipe.id === recipeId);
 
     useEffect(() => {
@@ -110,7 +117,7 @@ export const RecipeDetails = () => {
                 <p><strong>Steps:</strong> {currentRecipe.steps}</p>
             </div>
             <div className={styles["form-control"]}>
-                <span>{likeCount} {likeCount === 1 ? "like" : "likes"}</span>
+                <span className={styles["likes-display"]}>{likeCount} {likeCount === 1 ? "like" : "likes"}</span>
                 {currentUser?.email && (
                     <span>
                         <button onClick={handleToggleLike} className={styles.btn}>

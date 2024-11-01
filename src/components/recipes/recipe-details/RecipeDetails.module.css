@@ -117,4 +117,17 @@
 .form-control {
     display: flex;
     justify-content: center;
+    position: relative;
+    margin: 1rem 0;
+}
+
+.likes-display {
+    position: absolute;
+
+    top: 0.7rem;
+    left: 4.5rem;
+
+    color: #6d6d6d;
+    font-size: 1.1rem;
+    font-style:italic;
 }
