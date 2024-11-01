@@ -2,10 +2,8 @@ import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
 import * as commentService from "../services/commentService";
-import { onValue, ref, push, set, update, remove } from "firebase/database";
+import { onValue, ref, update } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
-// import { useAuth } from "./AuthContext";
-
 
 
 export const RecipeContext = createContext();
@@ -45,7 +43,6 @@ const recipeReducer = (state, action) => {
 
 export const RecipeProvider = ({ children }) => {
     const navigate = useNavigate();
-    // const { currentUser } = useAuth
     const [recipes, dispatch] = useReducer(recipeReducer, []);
 
     useEffect(() => {
