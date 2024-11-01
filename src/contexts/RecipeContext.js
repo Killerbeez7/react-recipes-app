@@ -1,6 +1,7 @@
 import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
+import * as commentService from "../services/commentService";
 import { onValue, ref, push, set, update, remove } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 // import { useAuth } from "./AuthContext";
@@ -21,12 +22,12 @@ const recipeReducer = (state, action) => {
             return state.filter((recipe) => recipe.id !== action.recipeId);
         case "ADD_RECIPE":
             return [...state, action.payload];
-        case 'ADD_COMMENT':
-            return state.map(recipe =>
-                recipe.id === action.payload.recipeId
-                    ? { ...recipe, comments: [...(recipe.comments || []), action.payload.comment] }
-                    : recipe
-            );
+        // case 'ADD_COMMENT':
+        //     return state.map(recipe =>
+        //         recipe.id === action.payload.recipeId
+        //             ? { ...recipe, comments: [...(recipe.comments || []), action.payload.comment] }
+        //             : recipe
+        //     );
         case 'TOGGLE_LIKE':
             return state.map(recipe =>
                 recipe.id === action.recipeId
@@ -61,6 +62,8 @@ export const RecipeProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
+    // ------------------------------------------------- Recipes ---------------------------------------------------------
+
     const addRecipe = async (recipeData) => {
         const newRecipe = await recipeService.create(recipeData);
         navigate(`/recipes/details/${newRecipe.id}`);
@@ -85,34 +88,34 @@ export const RecipeProvider = ({ children }) => {
         return recipes.find((recipe) => recipe.id === recipeId);
     };
 
+    // ------------------------------------------------- Comments ---------------------------------------------------
+
     const addComment = async (recipeId, comment) => {
         try {
-            const commentsRef = ref(database, `recipes/${recipeId}/comments`);
-            const newCommentRef = push(commentsRef);
-
-            await set(newCommentRef, comment);
-
-            console.log("Comment added successfully with unique ID:", newCommentRef.key);
+            await commentService.create(recipeId, comment)
         } catch (error) {
-            console.error("Error adding comment:", error);
+            console.log("Error adding comment:", error);
+            alert("Failed to add comment. Please try again.")
+
         }
     };
 
     const editComment = async (recipeId, commentId, updatedComment) => {
         try {
-            const commentRef = ref(database, `recipes/${recipeId}/comments/${commentId}`);
-            await update(commentRef, updatedComment);
+            await commentService.edit(recipeId, commentId, updatedComment)
         } catch (error) {
-            console.error("Error editing comment:", error);
+            console.log("Error editing comment:", error);
+            alert("Failed to edit comment. Please try again")
         }
+
     };
 
     const deleteComment = async (recipeId, commentId) => {
         try {
-            const commentRef = ref(database, `recipes/${recipeId}/comments/${commentId}`);
-            await remove(commentRef);
+            commentService.del(recipeId, commentId)
         } catch (error) {
-            console.error("Error deleting comment:", error);
+            console.log("Error deleting comment:", error);
+            alert("Failed to delete comment. Please try again")
         }
     };
 
@@ -148,11 +151,13 @@ export const RecipeProvider = ({ children }) => {
     return (
         <RecipeContext.Provider
             value={{
+                //recipes
                 recipes,
                 addRecipe,
                 editRecipe,
                 deleteRecipe,
                 selectRecipe,
+                //comments
                 addComment,
                 editComment,
                 deleteComment,

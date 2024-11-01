@@ -39,7 +39,7 @@ export const RecipeDetails = () => {
             });
         }
     };
-
+// ----------------------------------------------- Comments ----------------------------------------------------------
     const handleAddComment = async (e) => {
         e.preventDefault();
         if (!newComment.trim()) {
@@ -90,6 +90,8 @@ export const RecipeDetails = () => {
             }
         }
     };
+
+// ------------------------------------------------------ Likes ----------------------------------------------------------
 
     const handleToggleLike = () => {
         toggleLike(recipeId, currentUser);
