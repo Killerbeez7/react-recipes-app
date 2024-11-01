@@ -1,19 +1,23 @@
-import { useEffect, useContext, useState } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
 import { RecipeContext } from "../../../contexts/RecipeContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useEffect, useContext, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { database } from "../../../firebase/firebaseConfig";
 import { formatDistanceToNow, parseISO } from "date-fns";
+import { ref, update } from "firebase/database";
 
 import styles from "./RecipeDetails.module.css";
 import clx from 'classnames';
 
+
 export const RecipeDetails = () => {
     const [loading, setLoading] = useState(true);
+    const [isSaved, setIsSaved] = useState(false);
     const [newComment, setNewComment] = useState("");
     const [editCommentId, setEditCommentId] = useState(null);
     const [editCommentText, setEditCommentText] = useState("");
 
-    const { currentUser } = useAuth();
+    const { currentUser, setCurrentUser } = useAuth();
     const { recipeId } = useParams();
     const {
         addComment,
@@ -34,6 +38,11 @@ export const RecipeDetails = () => {
             setLoading(true);
         }
     }, [currentRecipe]);
+
+    useEffect(() => {
+        if (!currentUser || !currentUser.savedRecipes) return;
+        setIsSaved(!!currentUser.savedRecipes[recipeId]);
+    }, [currentUser, recipeId]);
 
     // ------------------------------------------- Recipes ---------------------------------------------
 
@@ -115,8 +124,36 @@ export const RecipeDetails = () => {
     const userHasLiked = currentUser && currentRecipe.likes && currentRecipe.likes[currentUser.uid];
     const likeCount = currentRecipe.likeCount || 0;
 
+    // --------------------------------------------- Favorite recipes --------------------------------------------
+
+
+    const handleSaveRecipe = async () => {
+        if (!currentUser) {
+            alert("You need to be logged in to save recipes.");
+            return;
+        }
+
+        const userRef = ref(database, `users/${currentUser.uid}`);
+        const updatedSavedRecipes = { ...currentUser.savedRecipes };
+        if (isSaved) {
+            delete updatedSavedRecipes[recipeId]; // Remove recipe if already saved
+        } else {
+            updatedSavedRecipes[recipeId] = true; // Add recipe if not saved
+        }
+
+        try {
+            await update(userRef, { savedRecipes: updatedSavedRecipes });
+            setIsSaved(!isSaved);
+            setCurrentUser(prev => ({ ...prev, savedRecipes: updatedSavedRecipes }));
+        } catch (error) {
+            console.error("Error saving recipe:", error);
+            alert("Failed to save recipe. Please try again.");
+        }
+    };
+
     return (
         <div className={styles["recipe-details-wrapper"]}>
+            <i id="save-star" onClick={handleSaveRecipe} className={isSaved ? "fa-solid fa-star" : "fa-regular fa-star"}></i>
             <h1 className={styles["recipe-title"]}>Recipe: {currentRecipe.title}</h1>
             <div>
                 <img src={currentRecipe.imageUrl} alt="" className={styles["recipe-img"]} />
@@ -167,31 +204,32 @@ export const RecipeDetails = () => {
                             )}
                             {comment.userId === currentUser?.uid && (
                                 <div>
-                                    <button className={clx(styles["comment-btn"],"btn")} onClick={() => { setEditCommentId(key); setEditCommentText(comment.text); }}>
+                                    <button className={clx(styles["comment-btn"], "btn")} onClick={() => { setEditCommentId(key); setEditCommentText(comment.text); }}>
                                         Edit
                                     </button>
-                                    <button className={clx(styles["comment-btn"],"btn")} onClick={() => handleDeleteComment(key)}>
+                                    <button className={clx(styles["comment-btn"], "btn")} onClick={() => handleDeleteComment(key)}>
                                         Delete
                                     </button>
                                 </div>
                             )}
-
                         </li>
                     ))}
                 </ul>
             </div>
-            {currentUser?.email && (
-                <form onSubmit={handleAddComment}>
-                    <textarea
-                        className={styles["comment-text-area"]}
-                        name="comment"
-                        placeholder="Add a comment..."
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                    ></textarea>
-                    <input type="submit" value="Add comment" />
-                </form>
-            )}
-        </div>
+            {
+                currentUser?.email && (
+                    <form onSubmit={handleAddComment}>
+                        <textarea
+                            className={styles["comment-text-area"]}
+                            name="comment"
+                            placeholder="Add a comment..."
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        ></textarea>
+                        <input type="submit" value="Add comment" />
+                    </form>
+                )
+            }
+        </div >
     );
 };

@@ -12,6 +12,7 @@ export const addUserToDatabase = async (userId, name, email) => {
         await set(ref(database, 'users/' + userId), {
             username: name || 'Anonymous',
             email: email,
+            savedRecipes: []  // Add savedRecipes field
         });
     } catch (error) {
         console.error("Error adding user to database:", error);
