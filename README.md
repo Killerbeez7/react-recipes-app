@@ -1,15 +1,3 @@
-Important!!!
-If there is a problem with action.payload when you start the app, go to (http://localhost:3000/logout)
-to manualy logout and refresh to continue. Couldn't fix it, but i am plannig to deploy the project to Firebase and switch to realtime database which would do the job i guess.
-comming soon:
--change profile details
--add near by resturants tab connected with goole maps
--fix problem with img disapearing after edit recipe
--UI/UX
--adding forum & shop tabs
-
-
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
