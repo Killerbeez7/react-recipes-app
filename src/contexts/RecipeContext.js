@@ -2,7 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
 import * as commentService from "../services/commentService";
-import { onValue, ref, update } from "firebase/database";
+import { ref, onValue, query, orderByChild, startAt, endAt, update, get } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 
 
@@ -11,6 +11,8 @@ export const RecipeContext = createContext();
 const recipeReducer = (state, action) => {
     switch (action.type) {
         case "ADD_RECIPES":
+            return action.payload;
+        case "SET_RECIPES":
             return action.payload;
         case "EDIT_RECIPE":
             return state.map((recipe) =>
@@ -46,18 +48,45 @@ export const RecipeProvider = ({ children }) => {
     const [recipes, dispatch] = useReducer(recipeReducer, []);
 
     useEffect(() => {
-        const recipesRef = ref(database, 'recipes');
-
+        const recipesRef = ref(database, "recipes");
         const unsubscribe = onValue(recipesRef, (snapshot) => {
             const recipesData = snapshot.val();
             const recipesArray = recipesData
                 ? Object.entries(recipesData).map(([id, data]) => ({ id, ...data }))
                 : [];
-            dispatch({ type: "ADD_RECIPES", payload: recipesArray });
+            dispatch({ type: "SET_RECIPES", payload: recipesArray });
         });
 
         return () => unsubscribe();
     }, []);
+
+
+    // ------------------------------------------------- Filter ---------------------------------------------------------
+    const filterRecipes = async (search, criteria) => {
+        let filteredRecipes = [];
+        const recipesRef = ref(database, "recipes");
+        const snapshot = await get(recipesRef);
+
+        if (snapshot.exists()) {
+            const allRecipes = Object.entries(snapshot.val()).map(([id, data]) => ({ id, ...data }));
+
+            // Check if search is a number for timeToCook filtering
+            if (!isNaN(search) && search.trim() !== "") {
+                const maxTime = Number(search.trim());
+                filteredRecipes = allRecipes.filter(recipe =>
+                    recipe.timeToCook <= maxTime
+                );
+            } else {
+                // Default to title search if not a number
+                const normalizedSearch = search.toLowerCase().trim();
+                filteredRecipes = allRecipes.filter(recipe =>
+                    recipe.title.toLowerCase().includes(normalizedSearch)
+                );
+            }
+        }
+
+        dispatch({ type: "SET_RECIPES", payload: filteredRecipes });
+    };
 
     // ------------------------------------------------- Recipes ---------------------------------------------------------
 
@@ -158,6 +187,8 @@ export const RecipeProvider = ({ children }) => {
                 editComment,
                 deleteComment,
                 toggleLike,
+                //filter
+                filterRecipes,
             }}
         >
             {children}

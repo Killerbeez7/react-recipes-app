@@ -1,41 +1,58 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass, faXmark } from "@fortawesome/free-solid-svg-icons";
-import styles from "./Search.module.css";
-import cx from "classnames";
-
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { RecipeContext } from "../../contexts/RecipeContext";
+import styles from "./Search.module.css";
+import cx from "classnames"; // For class merging if needed
 
 export const Search = () => {
     const { filterRecipes } = useContext(RecipeContext);
     const [search, setSearch] = useState("");
-    const [criteria, setCriteria] = useState("all");
+    const [criteria, setCriteria] = useState("title");
+
+    useEffect(() => {
+        const handleGlobalClick = (e) => {
+            const target = e.target;
+
+            // Exclude clicks on the search button
+            if (target.tagName === "A" || (target.tagName === "BUTTON" && !target.dataset.noReset)) {
+                onResetSearch();
+            }
+        };
+
+        document.addEventListener("click", handleGlobalClick);
+
+        return () => {
+            document.removeEventListener("click", handleGlobalClick);
+        };
+    }, []);
 
     const onSearchChange = (e) => {
         setSearch(e.target.value);
-        filterRecipes(e.target.value, criteria);
     };
 
     const onSearchSubmit = (e) => {
         e.preventDefault();
-
         filterRecipes(search, criteria);
     };
 
     const onSearchCriteriaChange = (e) => {
         setCriteria(e.target.value);
-        filterRecipes(search, e.target.value);
+    };
+
+    const onResetSearch = () => {
+        setSearch(""); // Clear search input
+        setCriteria("title"); // Default back to title
+        filterRecipes("", "title"); // Reset to show all recipes
     };
 
     return (
         <form className={styles["search-form"]} onSubmit={onSearchSubmit}>
             <h2>
-                <span>Search recipes</span>
+                <span>Search Recipes</span>
             </h2>
             <div className={styles["search-input-container"]}>
                 <input
                     type="text"
-                    placeholder="Please, select the search criteria"
+                    placeholder="Search by title or max cooking time..."
                     name="search"
                     onChange={onSearchChange}
                     value={search}
@@ -43,16 +60,20 @@ export const Search = () => {
                 {search.length > 0 && (
                     <button
                         className={cx(styles.btn, styles["close-btn"])}
-                        onClick={() => setSearch("")}
+                        type="button"
+                        data-no-reset
+                        onClick={onResetSearch}
                     >
-                        <FontAwesomeIcon icon={faXmark} />
+                        X {/* Reset icon (or you can use FontAwesome as before) */}
                     </button>
                 )}
                 <button
                     className={styles["btn"]}
-                    title="Please, select the search criteria"
+                    title="Search"
+                    type="submit"
+                    data-no-reset
                 >
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    🔍 {/* Search icon */}
                 </button>
             </div>
 
@@ -62,10 +83,10 @@ export const Search = () => {
                     name="criteria"
                     className={styles.criteria}
                     onChange={onSearchCriteriaChange}
+                    value={criteria}
                 >
-                    <option value="all">Not selected</option>
-                    <option value="name">Recipe name</option>
-                    <option value="timeToCook">Time to cook</option>
+                    <option value="title">Title</option>
+                    <option value="timeToCook">Max Time</option>
                 </select>
             </div>
         </form>
