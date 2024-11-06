@@ -1,6 +1,8 @@
 .main-wrapper {
     display: flex;
     justify-content: space-around;
+    font-size: 1.1rem;
+    margin-top: 2.3rem;
 }
 
 .content-wrapper {
@@ -8,11 +10,10 @@
 }
 
 .sections {
-    margin-top: 2.3rem;
     text-align: center;
 }
 
-.sections > ul {
+.sections>ul {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -71,6 +72,6 @@
 }
 
 .p-style {
-    font-size: 24px;
+    font-size: 1.5rem;
     margin: auto auto;
 }

@@ -1,0 +1,30 @@
+.main {
+    text-align: center;
+    padding: 13%;
+}
+
+.main h1 {
+    font-size: 3em;
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.main p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.main a {
+    font-size: 1.1em;
+    color: #3498db;
+    background-color: #f0f0f0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.main a:hover {
+    background-color: #ddd;
+}

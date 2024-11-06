@@ -24,7 +24,7 @@ export const Home = () => {
                         <hr></hr>
                         <br></br>
                         <ul>
-                        <p className={styles["p-style"]}>От днес 11.05.2024 сме онлайн!</p>
+                        <p className={styles["p-style"]}></p>
                             <p></p>
                             <li></li>
                             <li></li>
@@ -91,16 +91,15 @@ export const Home = () => {
                     className={cx(styles["side-menu-wrapper"], styles.sections)}
                 >
                     <div>
-                        <h2>menu one</h2>
-                        <p>babfababa</p>
-                        <p>babfababa</p>
-                        <p>babfababa</p>
+                        <h2>Online since - 05.11.2024</h2>
+                        <p>...</p>
+                        <p>...</p>
                     </div>
                     <div>
-                        <h2>menu two</h2>
-                        <p>babfababa</p>
-                        <p>babfababa</p>
-                        <p>babfababa</p>
+                        <h2>Updates</h2>
+                        <p>06.11.2024 - Navigation UI update</p>
+                        <p>...</p>
+                        <p>...</p>
                     </div>
                 </div>
             </main>

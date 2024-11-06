@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from '../../../contexts/AuthContext'
 import { doSignInWithEmailAndPassword, doSignInWithGoogle, addUserToDatabase, getUserFromDatabase } from '../../../firebase/auth';
@@ -13,7 +13,7 @@ export const SignIn = () => {
     const [userData, setUserData] = useState(null)
 
     if (userLoggedIn) {
-        return <Navigate to={'/home'} replace={true} />;
+        return <Navigate to={'/'} replace={true} />;
     }
 
     const onSubmit = async (e) => {
@@ -23,7 +23,6 @@ export const SignIn = () => {
             try {
                 const userCredential = await doSignInWithEmailAndPassword(email, password);
                 const user = userCredential.user;
-                // Fetch user data after sign in
                 getUserFromDatabase(user.uid, (data) => {
                     setUserData(data);
                 });
@@ -44,9 +43,7 @@ export const SignIn = () => {
             try {
                 const result = await doSignInWithGoogle();
                 const user = result.user;
-                // Add user to database if not already present
                 await addUserToDatabase(user.uid, user.displayName, user.email);
-                // Fetch user data after Google sign in
                 getUserFromDatabase(user.uid, (data) => {
                     setUserData(data);
                 });
@@ -62,7 +59,7 @@ export const SignIn = () => {
 
 
     return (
-        <div className={styles["login-form-wraper"]}>
+        <div className={styles["main"]}>
             <h1>Sign In</h1>
             <form id="login" className={styles.form} onSubmit={onSubmit}>
                 <div className={styles.containers}>

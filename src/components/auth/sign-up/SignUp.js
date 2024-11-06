@@ -79,8 +79,8 @@ export const SignUp = () => {
     };
 
     return (
-        <div className={styles["register-form-wrapper"]}>
-            {userLoggedIn && (<Navigate to={'/home'} replace={true} />)}
+        <div className={styles["main"]}>
+            {userLoggedIn && (<Navigate to={'/'} replace={true} />)}
 
             <h1 className={styles["title-style"]}>Sign Up</h1>
             <form onSubmit={handleSignUp}>

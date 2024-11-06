@@ -1,4 +1,4 @@
-import { useNavigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import { doSignOut } from "../../../firebase/auth";
 import cx from "classnames"
@@ -6,13 +6,11 @@ import cx from "classnames"
 import styles from "./Navigation.module.css";
 
 export const Navigation = (props) => {
-    const { currentUser, username } = useAuth();
-    const navigate = useNavigate();
+    const { currentUser } = useAuth();
     const userId = currentUser?.uid;
 
     const logoutHandler = () => {
         doSignOut();
-        navigate('/home');
     };
 
     const setNavStyle = ({ isActive }) => {
@@ -66,7 +64,7 @@ export const Navigation = (props) => {
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink to="/home" onClick={logoutHandler}>
+                            <NavLink to="/" onClick={logoutHandler}>
                                 Logout
                             </NavLink>
                         </div>

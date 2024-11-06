@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 // Context Providers
 import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
@@ -64,6 +64,8 @@ function App() {
                                 element={<RecipeDetails />}
                             />
 
+                            {/* redirect old paths back to home */}
+                            <Route path="/old-path" element={<Navigate to="/" replace />} />
                             <Route path="/*" element={<NotFound />} />
                         </Routes>
                     </RecipeProvider>
