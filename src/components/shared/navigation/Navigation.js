@@ -4,17 +4,15 @@ import { doSignOut } from "../../../firebase/auth";
 
 import styles from "./Navigation.module.css";
 
-
 export const Navigation = (props) => {
-    const { currentUser, username } = useAuth()
+    const { currentUser, username } = useAuth();
     const navigate = useNavigate();
-
     const userId = currentUser?.uid;
 
     const logoutHandler = () => {
-        doSignOut()
-        navigate('/home')
-    }
+        doSignOut();
+        navigate('/home');
+    };
 
     const setNavStyle = ({ isActive }) => {
         return isActive ? styles["active-link"] : undefined;
@@ -22,31 +20,28 @@ export const Navigation = (props) => {
 
     return (
         <div className={styles["nav-wrapper"]}>
+            {/* Left-side links */}
             <div className={styles["left-side"]}>
                 <div className={styles["nav-link-wrapper"]}>
                     <NavLink className={setNavStyle} to="/">
                         Home
                     </NavLink>
                 </div>
-
                 <div className={styles["nav-link-wrapper"]}>
                     <NavLink className={setNavStyle} to="/recipes/list">
                         Recipes
                     </NavLink>
                 </div>
-
                 <div className={styles["nav-link-wrapper"]}>
                     <NavLink className={setNavStyle} to="/gallery">
                         Gallery
                     </NavLink>
                 </div>
-
                 <div className={styles["nav-link-wrapper"]}>
                     <NavLink className={setNavStyle} to="/forum">
                         Forum
                     </NavLink>
                 </div>
-
                 <div className={styles["nav-link-wrapper"]}>
                     <NavLink className={setNavStyle} to="/about">
                         About
@@ -54,6 +49,7 @@ export const Navigation = (props) => {
                 </div>
             </div>
 
+            {/* Right-side links */}
             <div className={styles["right-side"]}>
                 {currentUser ? (
                     <>
@@ -66,7 +62,9 @@ export const Navigation = (props) => {
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink to="/home" onClick={logoutHandler}>logout</NavLink>
+                            <NavLink to="/home" onClick={logoutHandler}>
+                                Logout
+                            </NavLink>
                         </div>
                     </>
                 ) : (
@@ -78,7 +76,7 @@ export const Navigation = (props) => {
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
                             <NavLink className={setNavStyle} to="/auth/sign-up">
-                                try it free
+                                Try It Free
                             </NavLink>
                         </div>
                     </>

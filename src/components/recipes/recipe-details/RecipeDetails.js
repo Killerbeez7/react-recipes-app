@@ -160,7 +160,7 @@ export const RecipeDetails = () => {
                 <p><strong>Description:</strong> {currentRecipe.description}</p>
                 <p><strong>Time for preparation:</strong> {currentRecipe.timeToCook} minutes</p>
                 <p><strong>Ingredients:</strong> {currentRecipe.ingredients}</p>
-                <p><strong>Steps:</strong> {currentRecipe.steps}</p>
+                <p className="steps-style"><strong>Steps:</strong> {currentRecipe.steps}</p>
             </div>
             <div className={styles["form-control"]}>
                 <span className={styles["likes-display"]}>{likeCount} {likeCount === 1 ? "like" : "likes"}</span>

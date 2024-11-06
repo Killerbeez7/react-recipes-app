@@ -15,10 +15,19 @@ export const Home = () => {
                         <p className={styles["home-titles"]}>
                             Trending recipes:
                         </p>
+                        <br></br>
+                        <hr></hr>
+
+                        <h1><strong>От админа!</strong></h1>
+                        <h3><i>Първите 3 коментара печелят iPhone 16 pro Max super GALAXY gold edition</i></h3>
+                        <hr></hr>
+                        <br></br>
                         <ul>
-                            <li>gagagadfad</li>
-                            <li>gagagadfad</li>
-                            <li>gagagadfad</li>
+                        <p className={styles["p-style"]}>От днес 11.05.2024 сме онлайн!</p>
+                            <p></p>
+                            <li></li>
+                            <li></li>
+                            <li></li>
                         </ul>
                     </div>
                     <div className={styles["horizontal-row"]}>

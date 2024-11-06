@@ -2,29 +2,49 @@
 .nav-wrapper {
     display: flex;
     justify-content: space-between;
-    padding: 20px 3% 20px 3%;
+    padding: 20px 3%;
     font-size: 1.5em;
     text-transform: uppercase;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ddd;
+    gap: 20%;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 1120px) {
+    .nav-wrapper {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+    }
+
+    .left-side,
+    .right-side {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .nav-link-wrapper {
+        margin-bottom: 10px;
+        width: 100%; /* Links take full width */
+        text-align: center;
+    }
 }
 
 /* Nav left side */
 .left-side {
     display: flex;
-    width: 40%;
-    justify-content: space-between;
+    width: 60%; /* Adjust width for better spacing */
+    justify-content: space-around;
 }
-
-
-/* Nav right side */
 
 .right-side {
     display: flex;
-    min-width: 23%;
-    justify-content: space-between;
+    justify-content: space-around;
+    min-width: 30%;
 }
 
 /*Nav link styles*/
-
 .nav-link-wrapper {
     height: 2.4rem;
     border-bottom: 1px solid transparent;
@@ -32,7 +52,6 @@
 }
 
 .nav-link-wrapper a {
-    
     color: #8a8a8a;
     text-decoration: none;
     transition: color 0.5s;
@@ -45,4 +64,9 @@
 .active-link {
     font-weight: bold;
     color: black;
+}
+
+/* Spacing for mobile improvements */
+.nav-link-wrapper a {
+    padding: 10px 0; /* Adds vertical spacing between links */
 }
