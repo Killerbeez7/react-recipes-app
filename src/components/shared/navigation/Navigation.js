@@ -1,6 +1,7 @@
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import { doSignOut } from "../../../firebase/auth";
+import cx from "classnames"
 
 import styles from "./Navigation.module.css";
 
@@ -22,9 +23,12 @@ export const Navigation = (props) => {
         <div className={styles["nav-wrapper"]}>
             {/* Left-side links */}
             <div className={styles["left-side"]}>
-                <div className={styles["nav-link-wrapper"]}>
+                <div   className={cx(
+                            styles["nav-link-wrapper"],
+                            styles["site-logo"]
+                        )}>
                     <NavLink className={setNavStyle} to="/">
-                        Home
+                        Eat & Amare
                     </NavLink>
                 </div>
                 <div className={styles["nav-link-wrapper"]}>

@@ -22,7 +22,7 @@ export const RecipeList = () => {
                 )}
             </form>
 
-            <ul className={styles["recipe-list-wrapper"]} style={{ width: `${100}%` }}>
+            <ul className={styles["recipe-list-wrapper"]}>
                 {recipes.length > 0 ? (
                     recipes.map((recipe) => (
                         <div>

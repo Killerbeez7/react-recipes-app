@@ -1,0 +1,8 @@
+.main-wrapper {
+    width: 100%;
+    min-height: 75vh;
+    display: flex;
+    justify-content: center;
+    padding: 3rem;
+}
+

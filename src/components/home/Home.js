@@ -20,6 +20,7 @@ export const Home = () => {
 
                         <h1><strong>От админа!</strong></h1>
                         <h3><i>Първите 3 коментара печелят iPhone 16 pro Max super GALAXY gold edition</i></h3>
+
                         <hr></hr>
                         <br></br>
                         <ul>
