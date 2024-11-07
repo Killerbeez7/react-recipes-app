@@ -99,12 +99,13 @@ export const Home = () => {
                         <h2>Updates</h2>
                         <br></br>
                         <h4>06.11.2024</h4>
-                        <p>- Navigation bar responsiveness</p>
-                        <p>- Search bar fix</p>
+                        <p>- Navigation bar: responsiveness</p>
+                        <p>- Search bar: filters </p>
                         <br></br>
                         <h4>07.11.2024</h4>
-                        <p>- Navigation bar style</p>
-                        <p>- Search bar style</p>
+                        <p>- Navigation bar: style</p>
+                        <p>- Search bar: style</p>
+                        <p>- profile details: form, style</p>
                     </div>
                 </div>
             </main>

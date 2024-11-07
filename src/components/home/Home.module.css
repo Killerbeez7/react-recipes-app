@@ -1,8 +1,10 @@
 .main-wrapper {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between; /* Align content with space in between */
     font-size: 1.1rem;
-    margin-top: 2.3rem;
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+    padding: 0 2%; /* Add padding for better spacing */
 }
 
 .content-wrapper {
@@ -11,67 +13,91 @@
 
 .sections {
     text-align: center;
+    padding: 15px;
+    border-radius: 8px; /* Add rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for better separation */
 }
 
-.sections>ul {
+.sections > ul {
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
 .side-menu-wrapper {
-    width: 20%;
-    height: 2000px;
-    margin-left: 50px;
-    margin-bottom: 50px;
-    background-color: bisque;
+    width: 25%;
+    height: auto; /* Let height adjust based on content */
+    margin-left: 2%;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Match sections' shadow */
 }
 
 .trending-recipes {
-    background-color: lightcyan;
-    height: 600px;
-    margin-bottom: 50px;
-    text-align: center;
+    background-color: #e3f2fd; /* Lighter cyan for better readability */
+    margin-bottom: 30px;
 }
 
-.cooking-tips {
-    background-color: lightslategray;
-    height: 350px;
-    width: 45%;
-    margin-bottom: 50px;
-}
-
+.cooking-tips,
 .easy-recipes {
-    background-color: lightgray;
-    width: 45%;
-    height: 350px;
+    background-color: #f0f0f0; /* Neutral color for tips/recipes */
+    width: 48%; /* Adjust for better spacing in horizontal row */
+    margin-bottom: 30px;
 }
 
 .food-news {
-    background-color: lightskyblue;
-    height: 250px;
-    margin-bottom: 50px;
+    background-color: #e1f5fe; /* Sky blue for Food News */
+    margin-bottom: 30px;
 }
 
 .cleaning-organizing {
-    background-color: lightseagreen;
-    height: 300px;
+    background-color: #b2ebf2; /* Sea green for Cleaning & Organizing */
 }
 
 .home-titles {
     font-weight: 700;
     font-style: italic;
-    font-size: 24px;
+    font-size: 1.8rem;
     text-decoration: underline;
+    color: #333; /* Darker text for better contrast */
+    margin-bottom: 10px;
 }
 
-/* test */
 .horizontal-row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Distribute items evenly */
+    gap: 2%; /* Add gap between sections */
 }
 
 .p-style {
-    font-size: 1.5rem;
-    margin: auto auto;
+    font-size: 1.3rem;
+    margin: 10px auto; /* Add spacing for paragraphs */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .main-wrapper {
+        flex-direction: column; /* Stack elements on smaller screens */
+        align-items: center;
+    }
+
+    .content-wrapper {
+        width: 100%;
+    }
+
+    .side-menu-wrapper {
+        width: 90%;
+        margin: 20px auto;
+    }
+
+    .horizontal-row {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .cooking-tips,
+    .easy-recipes {
+        width: 100%;
+    }
 }
