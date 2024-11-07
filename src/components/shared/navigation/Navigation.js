@@ -13,41 +13,36 @@ export const Navigation = (props) => {
         doSignOut();
     };
 
-    // Delete this logic !
-    const setNavStyle = ({ isActive }) => {
-        return isActive ? styles["active-link"] : undefined;
-    };
-    // Delete this logic !
 
     return (
-        <div className={styles["nav-wrapper"]}>
+        <div className={styles["main"]}>
             {/* Left-side links */}
             <div className={styles["left-side"]}>
                 <div   className={cx(
                             styles["nav-link-wrapper"],
                             styles["site-logo"]
                         )}>
-                    <NavLink className={setNavStyle} to="/">
+                    <NavLink to="/">
                         Eat & Amare
                     </NavLink>
                 </div>
                 <div className={styles["nav-link-wrapper"]}>
-                    <NavLink className={setNavStyle} to="/recipes/list">
+                    <NavLink to="/recipes/list">
                         Recipes
                     </NavLink>
                 </div>
                 <div className={styles["nav-link-wrapper"]}>
-                    <NavLink className={setNavStyle} to="/gallery">
+                    <NavLink to="/gallery">
                         Gallery
                     </NavLink>
                 </div>
                 <div className={styles["nav-link-wrapper"]}>
-                    <NavLink className={setNavStyle} to="/forum">
+                    <NavLink to="/forum">
                         Forum
                     </NavLink>
                 </div>
                 <div className={styles["nav-link-wrapper"]}>
-                    <NavLink className={setNavStyle} to="/about">
+                    <NavLink to="/about">
                         About
                     </NavLink>
                 </div>
@@ -59,7 +54,6 @@ export const Navigation = (props) => {
                     <>
                         <div className={styles["nav-link-wrapper"]}>
                             <NavLink
-                                className={setNavStyle}
                                 to={`/auth/${userId}/details`}
                             >
                                 {currentUser?.displayName || currentUser?.email}
@@ -74,12 +68,12 @@ export const Navigation = (props) => {
                 ) : (
                     <>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink className={setNavStyle} to="/auth/sign-in">
+                            <NavLink to="/auth/sign-in">
                                 Sign In
                             </NavLink>
                         </div>
                         <div className={styles["nav-link-wrapper"]}>
-                            <NavLink className={setNavStyle} to="/auth/sign-up">
+                            <NavLink to="/auth/sign-up">
                                 Try It Free
                             </NavLink>
                         </div>
