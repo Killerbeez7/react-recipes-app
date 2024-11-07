@@ -105,7 +105,7 @@ export const Home = () => {
                         <h4>07.11.2024</h4>
                         <p>- Navigation bar: style</p>
                         <p>- Search bar: style</p>
-                        <p>- profile details: form, style</p>
+                        <p>- profile details, home: form, style</p>
                     </div>
                 </div>
             </main>
