@@ -1,7 +1,4 @@
-.search-form {
-    background-color: lightgrey;
-}
-/* Search Bar  */
+/* Search Bar */
 .search-form {
     display: flex;
     justify-content: space-between;
@@ -18,132 +15,119 @@
     display: flex;
     align-items: center;
 }
+
 .search-form h2 > span {
     margin-left: 10px;
 }
 
+/* Input and Select Containers */
 .search-input-container {
     display: flex;
     justify-content: center;
     width: 50%;
     position: relative;
 }
+
 .search-form input,
 .search-form select {
     background: transparent;
     outline: none;
     color: white;
-    border: 1px solid #5f6063;
-}
-.search-form select {
-    border: none;
-    border-bottom: 1px solid #5f6063;
+    border: 1px solid #ffffff75;
+    transition: border-color 0.3s ease;
 }
 
 .search-form input {
     background: white;
     border-right: none;
     width: 100%;
-    padding: 0px 10px;
+    padding: 0 10px;
     color: black;
+    height: 40px;
 }
 
 .search-form select option {
     color: black;
 }
 
-.search-form select:hover,
-.search-form select:focus {
-    border-bottom: 1px solid #ccc;
-    cursor: pointer;
-}
-
 .search-form input:hover,
 .search-form input:focus {
     border: 1px solid #ccc;
-    border-right: none;
-}
-.search-form input:hover + button,
-.search-form input:focus + button {
-    border: 1px solid #ccc;
-    border-left: none;
+    background-color: #f9f9f9;
 }
 
-.search-form .icon {
-    color: white;
-    position: relative;
-}
-
+/* Buttons */
 .search-form .btn {
     background: transparent;
     border: 1px solid #5f6063;
-    border-left: none;
-    border-radius: 0px;
     color: white;
     padding: 0.5rem;
-    height: auto;
+    height: 40px;
+    width: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.search-form .btn:hover {
+    background-color: #3498db;
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .search-form .close-btn {
     background-color: #943232;
+    color: white;
 }
 
+.search-form .close-btn:hover {
+    background-color: #c9302c;
+}
+
+/* Filter Section */
 .filter {
     display: flex;
     align-items: center;
+    gap: 10px;
+    margin: 10px 0;
+    font-size: 1rem;
 }
 
 .filter > span {
-    display: flex;
-    align-items: center;
-    margin-right: 5px;
+    font-weight: bold;
+    color: #fff;
 }
 
+/* Dropdown Styling */
 .criteria {
     margin-right: 20px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-@media (max-width: 768px) {
-    .search-form {
-        flex-direction: column;
-        height: 6rem;
-    }
-    .search-form h2 {
-        display: none;
-    }
-    .search-input-container {
-        width: 100%;
-    }
-    .filter {
-        justify-content: center;
-    }
+.criteria:hover {
+    border: 1px solid #f8f8f8d3;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
-
-/* ////////////////////////////////// */
-/* Action buttons  */
-
-.btn:disabled,
-.btn.save:disabled {
+/* Disabled Buttons */
+.btn:disabled {
     cursor: not-allowed;
     background: rgba(0, 0, 0, 0.5);
 }
 
-.btn:disabled svg,
-.btn.save:disabled svg {
+.btn:disabled svg {
     color: #ccc;
 }
 
-.btn:hover {
-    opacity: 0.9;
-    box-shadow: 1px 2px 8px black;
-}
-
-.btn svg {
-    color: inherit;
-    font-size: 1.25rem;
-}
-
+/* Specialized Buttons */
 .btn.save {
     background-color: rgb(81, 194, 123);
 }
@@ -162,32 +146,68 @@
     color: black;
 }
 
+/* Icon and Miscellaneous */
+.search-form .icon {
+    color: white;
+    position: relative;
+}
+
 .before {
     margin-right: 10px;
 }
+
 .after {
     margin-left: 10px;
 }
 
 .btn {
     padding: 5px;
-    color: white;
     opacity: 0.7;
     width: 30px;
     height: 30px;
 }
+
 .btn svg {
     margin: 0;
+    color: inherit;
+    font-size: 1.25rem;
 }
 
 .btn:hover {
     opacity: 1;
 }
 
+/* Status-Specific Buttons */
 .delete-btn {
     background-color: #d9534f;
 }
 
 .edit-btn {
     background-color: #5cb85c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .search-form {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .search-form h2 {
+        display: none;
+    }
+
+    .search-input-container {
+        width: 100%;
+    }
+
+    .filter {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+
+    .criteria {
+        width: 100%;
+    }
 }

@@ -32,3 +32,17 @@
 .recipe-details-wrapper {
     position: absolute;
 }
+
+.no-recipes-message {
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    font-size: 2rem;
+    color: #555;
+    background-color: #f9f9f9;
+    border: 1px solid;
+    border-color: #fa848486;
+    
+}

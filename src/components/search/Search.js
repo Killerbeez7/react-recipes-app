@@ -1,7 +1,7 @@
 import { useContext, useState, useEffect } from "react";
 import { RecipeContext } from "../../contexts/RecipeContext";
 import styles from "./Search.module.css";
-import cx from "classnames"; // For class merging if needed
+import cx from "classnames";
 
 export const Search = () => {
     const { filterRecipes } = useContext(RecipeContext);
@@ -12,8 +12,10 @@ export const Search = () => {
         const handleGlobalClick = (e) => {
             const target = e.target;
 
-            // Exclude clicks on the search button
-            if (target.tagName === "A" || (target.tagName === "BUTTON" && !target.dataset.noReset)) {
+            if (
+                target.tagName === "A" ||
+                (target.tagName === "BUTTON" && !target.dataset.noReset)
+            ) {
                 onResetSearch();
             }
         };
@@ -39,10 +41,11 @@ export const Search = () => {
     };
 
     const onResetSearch = () => {
-        setSearch(""); // Clear search input
-        setCriteria("title"); // Default back to title
-        filterRecipes("", "title"); // Reset to show all recipes
+        setSearch("");
+        setCriteria("title");
+        filterRecipes("", "title");
     };
+
 
     return (
         <form className={styles["search-form"]} onSubmit={onSearchSubmit}>
@@ -52,7 +55,7 @@ export const Search = () => {
             <div className={styles["search-input-container"]}>
                 <input
                     type="text"
-                    placeholder="Search by title or max cooking time..."
+                    placeholder="Hungry? Let’s find a recipe for you..."
                     name="search"
                     onChange={onSearchChange}
                     value={search}
@@ -64,7 +67,7 @@ export const Search = () => {
                         data-no-reset
                         onClick={onResetSearch}
                     >
-                        X {/* Reset icon (or you can use FontAwesome as before) */}
+                        X{" "}
                     </button>
                 )}
                 <button
@@ -73,12 +76,12 @@ export const Search = () => {
                     type="submit"
                     data-no-reset
                 >
-                    🔍 {/* Search icon */}
+                    🔍  
                 </button>
             </div>
 
             <div className={styles["filter"]}>
-                <span>Search Criteria:</span>
+                <span>Search by:</span>
                 <select
                     name="criteria"
                     className={styles.criteria}

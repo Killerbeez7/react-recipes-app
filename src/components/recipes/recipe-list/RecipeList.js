@@ -30,7 +30,8 @@ export const RecipeList = () => {
                         </div>
                     ))
                 ) : (
-                    <h1>No recipes yet!</h1>
+                    <h1 className={styles["no-recipes-message"]}>No recipes yet!</h1>
+
                 )}
             </ul>
         </>

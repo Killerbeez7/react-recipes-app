@@ -97,8 +97,12 @@ export const Home = () => {
                     </div>
                     <div>
                         <h2>Updates</h2>
-                        <p>06.11.2024 - Navigation UI update</p>
-                        <p>...</p>
+                        <br></br>
+                        <h4>06.11.2024</h4>
+                        <p>- Navigation Bar UI</p>
+                        <p>- Search bar fix</p>
+                        <br></br>
+                        <h4>07.11.2024</h4>
                         <p>...</p>
                     </div>
                 </div>
