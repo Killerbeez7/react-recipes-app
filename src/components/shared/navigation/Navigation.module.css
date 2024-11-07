@@ -3,88 +3,78 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* Vertically center content */
     padding: 20px 3%;
     font-size: 1.5em;
     text-transform: uppercase;
     background-color: #f8f8f8;
     border-bottom: 1px solid #ddd;
     gap: 40%;
-    /* Space between left and right sides */
     width: 100%;
-    /* Always take full width relative to viewport */
-    max-width: 100%;
-    /* Prevent overflow even with scrollbars */
     box-sizing: border-box;
-    /* Include padding and border in width */
 }
 
 /* Mobile-friendly adjustments */
 @media (max-width: 1120px) {
     .nav-wrapper {
         flex-direction: column;
-        /* Stack items vertically on smaller screens */
         align-items: center;
         gap: 20px;
-        /* Reduce space between left and right sides on mobile */
     }
-
     .left-side,
     .right-side {
         flex-direction: column;
         align-items: center;
         width: 100%;
         gap: 10px;
-        /* Space between items in mobile view */
     }
 
     .nav-link-wrapper {
         margin-bottom: 10px;
         width: 100%;
-        /* Links take full width for better alignment */
         text-align: center;
     }
 }
-
 
 /* Nav left side */
 .left-side {
     display: flex;
     max-width: 38%;
     justify-content: space-between;
-    /* Evenly distribute items */
     gap: 2rem;
-    /* Add space between individual links */
     white-space: nowrap;
-    /* Prevent text wrapping */
     flex-shrink: 0;
-    /* Prevent shrinking */
 }
 
+/* Nav right side */
 .right-side {
     display: flex;
-    /* width: 25%; */
     justify-content: space-between;
-    /* Evenly distribute items */
     gap: 2rem;
-    /* Add space between individual links */
     white-space: nowrap;
-    /* Prevent text wrapping */
     flex-shrink: 0;
-    /* Prevent shrinking */
 }
 
 /* Nav link styles */
 .nav-link-wrapper {
     height: 2.4rem;
     border-bottom: 1px solid transparent;
-    transition: border-bottom 0.5s;
+    transition: border-bottom 0.5s, font-weight 0.2s ease;
 }
 
 .nav-link-wrapper a {
     color: #8a8a8a;
     text-decoration: none;
-    transition: color 0.5s;
+    font-weight: 400;
+    transition: color 0.3s ease, font-weight 0.2s ease;
+}
+
+.nav-link-wrapper a:hover {
+    color: black;
+}
+
+.nav-link-wrapper.active-link a {
+    font-weight: 700;
+    color: black;
 }
 
 .nav-link-wrapper:hover {
@@ -98,7 +88,6 @@
 
 /* Spacing for mobile improvements */
 .nav-link-wrapper a {
-
     /* Nav styles */
     .nav-wrapper {
         display: flex;
@@ -110,22 +99,17 @@
         background-color: #f8f8f8;
         border-bottom: 1px solid #ddd;
         width: 100vw;
-        /* Ensures the navbar always spans the viewport width */
         min-width: 100%;
-        /* Prevents shrinking below viewport width */
         box-sizing: border-box;
-        /* Includes padding and border in width calculation */
     }
 
     /* Mobile-friendly adjustments */
     @media (max-width: 1120px) {
         .nav-wrapper {
             flex-direction: column;
-            /* Stack items vertically */
             align-items: center;
             gap: 20px;
             width: 100%;
-            /* Still maintain full width on smaller screens */
         }
 
         .left-side,
@@ -157,9 +141,7 @@
         width: 30%;
         gap: 15px;
         white-space: nowrap;
-        /* Prevent text wrapping */
         flex-shrink: 0;
-        /* Prevent shrinking */
     }
 
     /* Nav link styles */
@@ -183,7 +165,6 @@
         font-weight: bold;
         color: black;
     }
-
 }
 
 /* .site-logo {

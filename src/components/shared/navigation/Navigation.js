@@ -13,9 +13,11 @@ export const Navigation = (props) => {
         doSignOut();
     };
 
+    // Delete this logic !
     const setNavStyle = ({ isActive }) => {
         return isActive ? styles["active-link"] : undefined;
     };
+    // Delete this logic !
 
     return (
         <div className={styles["nav-wrapper"]}>
