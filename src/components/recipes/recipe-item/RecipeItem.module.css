@@ -4,8 +4,8 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: 15px;
+    margin-bottom: 3%;
     background-color: #f9f9f9;
     border: 1px solid #ddd;
     border-radius: 10px;
@@ -18,15 +18,14 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Recipe Image Section */
 .recipe-image-wrapper {
-    width: 30%;
-    max-width: 150px;
-    height: 150px; /* Consistent height for all images */
+    width: 20%;
+    max-width: 120px;
+    height: 120px; /* Consistent height for all images */
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-right: 20px; /* Added spacing for consistency */
+    margin-right: 15px; /* Added spacing for consistency */
 }
 
 .recipe-img {
@@ -37,21 +36,21 @@
 
 /* Recipe Content Section */
 .recipe-content-wrapper {
-    width: 65%;
-    padding: 10px 0; /* Even padding within content */
+    flex: 1;
+    padding-right: 15px;
 }
 
 .recipe-name-wrapper h3 {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     text-transform: uppercase;
 }
 
 .recipe-description-wrapper,
 .recipe-ingredients-wrapper,
 .recipe-steps-wrapper {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .recipe-description-wrapper strong,
@@ -73,7 +72,7 @@
 
 /* Cook Time */
 .cook-time {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-style: italic;
     color: #6d6d6d;
     text-align: right;
@@ -82,8 +81,7 @@
 
 /* View Recipe Button */
 .view-recipe-btn {
-    display: inline-block;
-    padding: 10px 20px;
+    padding: 10px 15px;
     font-size: 1rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -103,6 +101,12 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .section {
+        margin-bottom: 15%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+
     .recipe-list-item-wrapper {
         flex-direction: column;
         align-items: center;
@@ -112,12 +116,11 @@
         width: 100%;
         max-width: 100%;
         height: auto; /* Maintain aspect ratio for smaller screens */
-        margin-bottom: 15px;
     }
 
     .recipe-content-wrapper {
         width: 100%;
-        padding: 10px 0;
+        padding-right: 0;
     }
 
     .view-recipe-btn {

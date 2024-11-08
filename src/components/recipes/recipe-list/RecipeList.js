@@ -21,19 +21,21 @@ export const RecipeList = () => {
                     </Link>
                 )}
             </form>
-
-            <ul className={styles["recipe-list-wrapper"]}>
-                {recipes.length > 0 ? (
-                    recipes.map((recipe) => (
-                        <div>
-                            <RecipeItem key={recipe.id} recipe={recipe} />
-                        </div>
-                    ))
-                ) : (
-                    <h1 className={styles["no-recipes-message"]}>No recipes yet!</h1>
-
-                )}
-            </ul>
+            <div className={styles["section"]}>
+                <ul className={styles["recipe-list-wrapper"]}>
+                    {recipes.length > 0 ? (
+                        recipes.map((recipe) => (
+                            <div>
+                                <RecipeItem key={recipe.id} recipe={recipe} />
+                            </div>
+                        ))
+                    ) : (
+                        <h1 className={styles["no-recipes-message"]}>
+                            No recipes yet!
+                        </h1>
+                    )}
+                </ul>
+            </div>
         </>
     );
 };
