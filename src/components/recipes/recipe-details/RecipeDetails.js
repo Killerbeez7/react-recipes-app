@@ -16,8 +16,14 @@ export const RecipeDetails = () => {
     const [editCommentText, setEditCommentText] = useState("");
     const { recipeId } = useParams();
     const { currentUser } = useAuth();
-    const { recipes, addComment, toggleLike, deleteComment, editComment } =
-        useContext(RecipeContext);
+    const {
+        recipes,
+        addComment,
+        toggleLike,
+        deleteComment,
+        editComment,
+        deleteRecipe,
+    } = useContext(RecipeContext);
 
     const navigate = useNavigate();
     const currentRecipe = recipes.find((recipe) => recipe.id === recipeId);
@@ -88,6 +94,13 @@ export const RecipeDetails = () => {
             }
         }
     };
+
+    const handleDeleteRecipe = () => {
+        if (window.confirm("Are you sure you want to delete this recipe?")) {
+            deleteRecipe(recipeId).then(() => navigate("/recipes/list"));
+        }
+    };
+
     const userHasLiked = currentRecipe.likes?.[currentUser?.uid];
     const likeCount = currentRecipe.likeCount || 0;
 
@@ -126,19 +139,43 @@ export const RecipeDetails = () => {
             </div>
 
             <div className={styles["form-control"]}>
-                <span className={styles["likes-display"]}>
-                    {likeCount} {likeCount === 1 ? "like" : "likes"}
-                </span>
-                <span
-                    onClick={() => toggleLike(recipeId, currentUser)}
-                    className={styles.btn}
-                >
-                    {userHasLiked ? (
-                        <i class="fas fa-thumbs-up"></i>
-                    ) : (
-                        <i class="far fa-thumbs-up"></i>
-                    )}
-                </span>
+                <div className={styles["likes-section"]}>
+                    <span className={styles["likes-display"]}>
+                        {likeCount} {likeCount === 1 ? "like" : "likes"}
+                    </span>
+                    <button
+                        onClick={() => toggleLike(recipeId, currentUser)}
+                        className={styles["like-btn"]}
+                    >
+                        {userHasLiked ? "Unlike" : "Like"}
+                    </button>
+                </div>
+
+                {currentUser?.uid === currentRecipe.authorId && (
+                    <div className={styles["recipe-actions"]}>
+                        <button
+                            className="edit-btn"
+                            onClick={() =>
+                                navigate(`/recipes/edit/${recipeId}`)
+                            }
+                        >
+                            Edit
+                        </button>
+                        <button
+                            onClick={() => {
+                                if (
+                                    window.confirm(
+                                        "Are you sure you want to delete this recipe?"
+                                    )
+                                ) {
+                                    handleDeleteRecipe(recipeId);
+                                }
+                            }}
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
             </div>
 
             <div className={styles["comments-section-wrapper"]}>
@@ -150,7 +187,7 @@ export const RecipeDetails = () => {
                                 <img
                                     src={
                                         comment.userPhoto ||
-                                        "https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png"
+                                        "default-avatar-url"
                                     }
                                     alt="User"
                                     className={styles["profile-picture"]}
@@ -167,32 +204,32 @@ export const RecipeDetails = () => {
                                                 { addSuffix: true }
                                             )}
                                         </p>
-                                        
-                                    )} {currentUser?.uid === comment.userId && (
-                                    <div className={styles["comment-actions"]}>
-                                        <span
-                                            onClick={() => {
-                                                setEditCommentId(key);
-                                                setEditCommentText(
-                                                    comment.text
-                                                );
-                                            }}
-                                        >
-                                            <i class="fas fa-edit"></i>
-                                        </span>
-                                        <span
-                                            className={clx(
-                                                styles["comment-btn"],
-                                                "btn"
-                                            )}
-                                            onClick={() =>
-                                                handleDeleteComment(key)
+                                    )}
+                                    {currentUser?.uid === comment.userId && (
+                                        <div
+                                            className={
+                                                styles["comment-actions"]
                                             }
                                         >
-                                            <i class="fas fa-trash-alt"></i>
-                                        </span>
-                                    </div>
-                                )}
+                                            <button
+                                                onClick={() => {
+                                                    setEditCommentId(key);
+                                                    setEditCommentText(
+                                                        comment.text
+                                                    );
+                                                }}
+                                            >
+                                                <i class="fa-regular fa-pen-to-square"></i>
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteComment(key)
+                                                }
+                                            >
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </li>
                         )
