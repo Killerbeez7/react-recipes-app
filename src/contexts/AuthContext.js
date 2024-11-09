@@ -25,7 +25,7 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         currentUser,
-        setCurrentUser, // Allow manual updates
+        setCurrentUser,
         userLoggedIn,
     };
 

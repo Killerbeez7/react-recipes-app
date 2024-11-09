@@ -1,0 +1,11 @@
+[
+    {
+        "origin": [
+            "https://localhost:3000",
+            "https://eat-and-amare-f0f08.web.app"
+        ],
+        "method": ["GET", "POST"],
+        "responseHeader": ["Content-Type", "Authorization"],
+        "maxAgeSeconds": 3600
+    }
+]

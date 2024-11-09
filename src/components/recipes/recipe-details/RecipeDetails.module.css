@@ -1,169 +1,110 @@
-.btn {
-    display: inline-block;
-    font-size: 1.15em;
-    margin: 0.5em 3em;
-    max-height: 30px;
-    width: 100px;
-    text-transform: uppercase;
-
-    text-decoration: none;
-    text-align: center;
-    color: #888787;
-    transition: all 0.15s;
-    border: 0.1em solid #888787;
-    border-radius: 20px;
-}
-
-.btn:hover {
-    color: #6d6d6d;
-    border-color: #6d6d6d;
+.recipe-details-wrapper {
+    max-width: 800px;
+    width: 24%;
+    margin: 3% auto;
+    padding: 2%;
+    background-color: #fdfdfd;
+    border-radius: 10px;
+    border: 1px solid lightgray;
+    box-shadow: 0 5px 10px rgb(40, 40, 40, 0.3);
 }
 
 .recipe-title {
     text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
 }
 
-.recipe-details-wrapper {
-    display: "flex";
-    justify-content: "space-between";
-
-    padding: 30px;
-    margin: 5% auto;
-    background-color: rgb(255 217 197 / 5%);
-    border: 1px solid lightgray;
-    box-shadow: 0 5px 10px rgb(40, 40, 40, 0.3);
-    width: 50%;
-    border-radius: 15px;
-}
-
-.create-comment {
-    background-color: "#c0b3dc";
-    padding: 20px;
-    margin: 20px;
-}
-
-.create-comment-text-area {
-    /* margin-right: 20px;
-    margin-top: 10;
-    border-radius: 8px; */
-    margin: auto auto;
+.recipe-header {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: auto;
 }
 
 .recipe-img {
-    width: 300px;
-    height: 300px;
-    margin: 0 auto;
-    display: "inline-block";
+    width: 100%;
+    /* max-width: 300px; */
+    border-radius: 10px;
+    margin: auto auto;
 }
 
-.recipe-details-box {
-    padding: 30px;
-}
-
-
-.create-comment-text-area {
-    width: 400px;
-    height: 100px;
-}
-
-.comments-title {
-    font-size: 1.5rem;
-    font-style: italic;
-}
-
-.btn {
-    display: inline-block;
-    font-size: 1.15em;
-    margin: 0.5em 3em;
-    max-height: 100px;
-    width: 100px;
-    text-transform: uppercase;
-
-    text-decoration: none;
-    text-align: center;
-    color: #888787;
-    background-color: white;
-    transition: all 0.15s;
-    border: 0.1em solid #888787;
-    border-radius: 15px;
-}
-
-.comment-btn {
-    display: inline-block;
-    font-size: 0.8rem;
-    margin: 0.5rem 0.5rem;
-    max-height: 70px;
-    width: 70px;
-    text-transform: uppercase;
-
-    text-align: center;
-    color: #888787;
-    background-color: white;
-    transition: all 0.15s;
-    border: 0.1em solid #888787;
-    border-radius: 15px;
-}
-
-.comment-btn:hover {
-    color: #6d6d6d;
-    border: 0.1em solid #888787;
-    background-color: rgb(230, 230, 230);
-}
-
-.btn:hover {
-    color: #6d6d6d;
-    border: 0.1em solid #888787;
-    background-color: rgb(230, 230, 230);
+.details-box {
+    flex: 1;
+    font-size: 1rem;
+    color: #333;
 }
 
 .form-control {
     display: flex;
-    justify-content: center;
-    position: relative;
-    margin: 1rem 0;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
 }
 
 .likes-display {
-    position: absolute;
-
-    top: 0.7rem;
-    left: 4.5rem;
-
-    color: #6d6d6d;
-    font-size: 1.1rem;
-    font-style:italic;
-}
-
-.comments-section {
-    background-color:rgba(245, 245, 220, 0.5);
-    display: flex;
-    flex-direction: column;
-    list-style-type: none;
-    padding: 0.5rem 1rem;
-    border: 1px solid rgba(109, 109, 109, 0.5);
-    border-radius: 0.8rem;
-    min-width: 30%;
-    /* max-width: 20%; */
-}
-
-.comment-item {
-    background-color:rgba(230, 230, 220, 0.5);
-    margin: 0.5rem 0;
-    padding: 1rem 1rem;
+    font-size: 1rem;
+    color: #555;
 }
 
 .comments-section-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    margin-top: 30px;
+    padding: 5%;
+    background-color: #55555511;
+    border-radius: 10px;
 }
+
+.comments-section {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+    gap: 5%;
+}
+
+.profile-picture {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
 
 .comment-text-area {
-    max-width: 100%;
+    width: 100%;
+    height: 80px;
+    border-radius: 5px;
+    margin-top: 10px;
 }
 
-.steps-style {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; 
+.save-btn {
+    margin-top: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+}
+
+@media (max-width: 600px) {
+    .recipe-header {
+        flex-direction: column;
+    }
+
+    .recipe-img {
+        max-width: 100%;
+    }
+
+    .details-box {
+        text-align: center;
+    }
+
+    .form-control {
+        flex-direction: column;
+    }
 }

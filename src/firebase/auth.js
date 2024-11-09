@@ -63,6 +63,10 @@ export const doSignOut = () => {
     return auth.signOut();
 }
 
+export const updateProfileDetails = () => {
+
+}
+
 // ADD PASSWORD RESET
 // export const doPasswordReset = (email) => {
 //     return sendPasswordResetEmail(auth, email);

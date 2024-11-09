@@ -1,19 +1,24 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from '../../../contexts/AuthContext'
-import { doSignInWithEmailAndPassword, doSignInWithGoogle, addUserToDatabase, getUserFromDatabase } from '../../../firebase/auth';
+import { useAuth } from "../../../contexts/AuthContext";
+import {
+    doSignInWithEmailAndPassword,
+    doSignInWithGoogle,
+    addUserToDatabase,
+    getUserFromDatabase,
+} from "../../../firebase/auth";
 import styles from "./SignIn.module.css";
 
 export const SignIn = () => {
-    const { userLoggedIn } = useAuth()
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [isSigningIn, setIsSigningIn] = useState(false)
-    const [errorMessage, setErrorMessage] = useState('')
-    const [userData, setUserData] = useState(null)
+    const { userLoggedIn } = useAuth();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [isSigningIn, setIsSigningIn] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [userData, setUserData] = useState(null);
 
     if (userLoggedIn) {
-        return <Navigate to={'/'} replace={true} />;
+        return <Navigate to={"/"} replace={true} />;
     }
 
     const onSubmit = async (e) => {
@@ -21,14 +26,18 @@ export const SignIn = () => {
         if (!isSigningIn) {
             setIsSigningIn(true);
             try {
-                const userCredential = await doSignInWithEmailAndPassword(email, password);
+                const userCredential = await doSignInWithEmailAndPassword(
+                    email,
+                    password
+                );
                 const user = userCredential.user;
                 getUserFromDatabase(user.uid, (data) => {
                     setUserData(data);
                 });
-
             } catch (err) {
-                setErrorMessage("Failed to sign in. Please check your credentials.");
+                setErrorMessage(
+                    "Failed to sign in. Please check your credentials."
+                );
                 console.error("Email/Password Sign-In Error:", err);
             } finally {
                 setIsSigningIn(false);
@@ -48,15 +57,15 @@ export const SignIn = () => {
                     setUserData(data);
                 });
             } catch (err) {
-                setErrorMessage("Failed to sign in with Google. Please try again.");
+                setErrorMessage(
+                    "Failed to sign in with Google. Please try again."
+                );
                 console.error("Google Sign-In Error:", err);
             } finally {
                 setIsSigningIn(false);
             }
         }
     };
-
-
 
     return (
         <div className={styles["main"]}>
@@ -69,7 +78,9 @@ export const SignIn = () => {
                         type="text"
                         placeholder="Email"
                         value={email}
-                        onChange={(e) => { setEmail(e.target.value); }}
+                        onChange={(e) => {
+                            setEmail(e.target.value);
+                        }}
                     />
                 </div>
                 <div className={styles.containers}>
@@ -79,11 +90,17 @@ export const SignIn = () => {
                         type="password"
                         placeholder="Password"
                         value={password}
-                        onChange={(e) => { setPassword(e.target.value); }}
+                        onChange={(e) => {
+                            setPassword(e.target.value);
+                        }}
                     />
                 </div>
 
-                {errorMessage && (<span className="text-red-600 front-bold">{errorMessage}</span>)}
+                {errorMessage && (
+                    <span className="text-red-600 front-bold">
+                        {errorMessage}
+                    </span>
+                )}
 
                 <div>
                     <button
@@ -91,7 +108,7 @@ export const SignIn = () => {
                         disabled={isSigningIn}
                         className={styles["auth-btn"]}
                     >
-                        {isSigningIn ? 'Signing In...' : 'Sign In'}
+                        {isSigningIn ? "Signing In..." : "Sign In"}
                     </button>
 
                     <button
@@ -99,7 +116,7 @@ export const SignIn = () => {
                         onClick={onGoogleSignIn}
                         className={styles["auth-btn"]}
                     >
-                        {isSigningIn ? 'Signing In...' : 'Google'}
+                        {isSigningIn ? "Signing In..." : "Google"}
                     </button>
                 </div>
             </form>

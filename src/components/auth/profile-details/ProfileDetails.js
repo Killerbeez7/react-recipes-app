@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { ref, update, get } from "firebase/database";
 import { updateProfile } from "firebase/auth";
-import { auth, database } from "../../../firebase/firebaseConfig";
+
+import { ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
+import { auth, database, storage } from "../../../firebase/firebaseConfig";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./ProfileDetails.module.css";
@@ -11,6 +13,7 @@ export const ProfileDetails = () => {
     const { currentUser, setCurrentUser } = useAuth();
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
+    const [profilePicture, setProfilePicture] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -23,6 +26,7 @@ export const ProfileDetails = () => {
                         const userData = snapshot.val();
                         setUsername(userData.username);
                         setEmail(userData.email);
+                        setProfilePicture(userData.profilePicture || "");
                     }
                     setIsLoading(false);
                 })
@@ -48,16 +52,34 @@ export const ProfileDetails = () => {
         try {
             const user = auth.currentUser;
             if (user) {
+                let newProfilePictureUrl = profilePicture;
+                if (profilePicture instanceof File) {
+                    const imageRef = storageRef(
+                        storage,
+                        `profilePictures/${user.uid}`
+                    );
+                    await uploadBytes(imageRef, profilePicture);
+                    newProfilePictureUrl = await getDownloadURL(imageRef);
+                }
+
                 await updateProfile(user, {
                     displayName: username,
+                    photoURL: newProfilePictureUrl,
                 });
 
                 const userRef = ref(database, `users/${user.uid}`);
-                await update(userRef, { username: username });
+                await update(userRef, {
+                    username: username,
+                    profilePicture: newProfilePictureUrl,
+                });
 
-                setCurrentUser({ ...user, displayName: username });
+                setCurrentUser({
+                    ...user,
+                    displayName: username,
+                    photoURL: newProfilePictureUrl,
+                });
 
-                console.log("Username updated successfully.");
+                console.log("Profile updated successfully.");
                 navigate(-1);
             } else {
                 console.error("User not found in Firebase Authentication.");
@@ -81,7 +103,10 @@ export const ProfileDetails = () => {
             {/* Profile Picture Section */}
             <div className={styles["profile-picture-section"]}>
                 <img
-                    src="https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png"
+                    src={
+                        currentUser.photoURL ||
+                        "https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png"
+                    }
                     alt="Profile"
                     className={styles["profile-picture"]}
                 />
@@ -95,6 +120,7 @@ export const ProfileDetails = () => {
                         id="profilePicture"
                         name="profilePicture"
                         className={styles["file-input"]}
+                        onChange={(e) => setProfilePicture(e.target.files[0])}
                     />
                 </label>
             </div>
