@@ -133,7 +133,11 @@ export const RecipeDetails = () => {
                     onClick={() => toggleLike(recipeId, currentUser)}
                     className={styles.btn}
                 >
-                    {userHasLiked ? <i class="fas fa-thumbs-up"></i> : <i class="far fa-thumbs-up"></i>}
+                    {userHasLiked ? (
+                        <i class="fas fa-thumbs-up"></i>
+                    ) : (
+                        <i class="far fa-thumbs-up"></i>
+                    )}
                 </span>
             </div>
 
@@ -163,9 +167,8 @@ export const RecipeDetails = () => {
                                                 { addSuffix: true }
                                             )}
                                         </p>
-                                    )}
-                                </div>
-                                {currentUser?.uid === comment.userId && (
+                                        
+                                    )} {currentUser?.uid === comment.userId && (
                                     <div className={styles["comment-actions"]}>
                                         <span
                                             onClick={() => {
@@ -177,7 +180,6 @@ export const RecipeDetails = () => {
                                         >
                                             <i class="fas fa-edit"></i>
                                         </span>
-                                        <br></br>
                                         <span
                                             className={clx(
                                                 styles["comment-btn"],
@@ -191,6 +193,7 @@ export const RecipeDetails = () => {
                                         </span>
                                     </div>
                                 )}
+                                </div>
                             </li>
                         )
                     )}
