@@ -1,11 +1,17 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { doSignOut } from "../../../firebase/auth";
-import cx from "classnames"
+import cx from "classnames";
 
 import styles from "./Navigation.module.css";
 
 export const Navigation = (props) => {
+    const [menuOpen, setMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+        setMenuOpen((prev) => !prev);
+    };
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
 
@@ -13,73 +19,67 @@ export const Navigation = (props) => {
         doSignOut();
     };
 
+    const handleLinkClick = () => setMenuOpen(false);
 
     return (
-        <div className={styles["main"]}>
-            {/* Left-side links */}
-            <div className={styles["left-side"]}>
-                <div   className={cx(
-                            styles["nav-link-wrapper"],
-                            styles["site-logo"]
-                        )}>
-                    <NavLink to="/">
-                        Eat & Amare
-                    </NavLink>
-                </div>
-                <div className={styles["nav-link-wrapper"]}>
-                    <NavLink to="/recipes/list">
-                        Recipes
-                    </NavLink>
-                </div>
-                <div className={styles["nav-link-wrapper"]}>
-                    <NavLink to="/gallery">
-                        Gallery
-                    </NavLink>
-                </div>
-                <div className={styles["nav-link-wrapper"]}>
-                    <NavLink to="/forum">
-                        Forum
-                    </NavLink>
-                </div>
-                <div className={styles["nav-link-wrapper"]}>
-                    <NavLink to="/about">
-                        About
-                    </NavLink>
-                </div>
+        <nav className={styles.navbar}>
+            <div className={styles.brand}>
+                <Link to="/" onClick={handleLinkClick}>
+                    Eat & Amare
+                </Link>
+                <button className={styles.menuButton} onClick={toggleMenu}>
+                    <i className="fa-solid fa-bars"></i>
+                </button>
             </div>
-
-            {/* Right-side links */}
-            <div className={styles["right-side"]}>
+            <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
+                <li>
+                    <Link to="/recipes" onClick={handleLinkClick}>
+                        Recipes
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/gallery" onClick={handleLinkClick}>
+                        Gallery
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/forum" onClick={handleLinkClick}>
+                        Forum
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/about" onClick={handleLinkClick}>
+                        About
+                    </Link>
+                </li>
                 {currentUser ? (
                     <>
-                        <div className={styles["nav-link-wrapper"]}>
-                            <NavLink
+                        <li>
+                            <Link
                                 to={`/auth/${userId}/details`}
+                                onClick={handleLinkClick}
                             >
                                 {currentUser?.displayName || currentUser?.email}
-                            </NavLink>
-                        </div>
-                        <div className={styles["nav-link-wrapper"]}>
-                            <NavLink to="/" onClick={logoutHandler}>
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/" onClick={logoutHandler}>
                                 Logout
-                            </NavLink>
-                        </div>
+                            </Link>
+                        </li>
                     </>
                 ) : (
                     <>
-                        <div className={styles["nav-link-wrapper"]}>
-                            <NavLink to="/auth/sign-in">
-                                Sign In
-                            </NavLink>
-                        </div>
-                        <div className={styles["nav-link-wrapper"]}>
-                            <NavLink to="/auth/sign-up">
-                                Try It Free
-                            </NavLink>
-                        </div>
+                        <Link to="/auth/sign-in" onClick={handleLinkClick}>
+                            Sign In
+                        </Link>
+
+                        <Link to="/auth/sign-up" onClick={handleLinkClick}>
+                            Try It Free
+                        </Link>
                     </>
                 )}
-            </div>
-        </div>
+            </ul>
+        </nav>
     );
 };

@@ -46,7 +46,7 @@ function App() {
                             <Route path="/auth/:userId/details" element={<ProfileDetails />} />
 
                             <Route
-                                path="/recipes/list"
+                                path="/recipes"
                                 element={<RecipeList />}
                             />
                             <Route element={<PrivateRoute />}>
