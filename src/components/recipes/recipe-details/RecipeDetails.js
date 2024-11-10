@@ -7,7 +7,7 @@ import { ref, update } from "firebase/database";
 import { database } from "../../../firebase/firebaseConfig";
 
 import styles from "./RecipeDetails.module.css";
-import clx from "classnames";
+// import clx from "classnames";
 
 export const RecipeDetails = () => {
     const [loading, setLoading] = useState(true);
@@ -31,6 +31,12 @@ export const RecipeDetails = () => {
     const [isSaved, setIsSaved] = useState(
         !!currentUser?.savedRecipes?.[recipeId]
     );
+
+    const resetCommentFields = () => {
+        setNewComment(""); // Clear the new comment input field
+        setEditCommentId(null); // Reset the editing state
+        setEditCommentText(""); // Clear the edit comment input field
+    };
 
     useEffect(() => {
         setLoading(!currentRecipe);
@@ -62,6 +68,14 @@ export const RecipeDetails = () => {
         }
     };
 
+    const handleDeleteRecipe = () => {
+        if (window.confirm("Are you sure you want to delete this recipe?")) {
+            deleteRecipe(recipeId).then(() => navigate("/recipes/list"));
+        }
+    };
+
+    // --------------------------------------------------------- coments
+
     const handleAddComment = async (e) => {
         e.preventDefault();
         if (!newComment.trim()) return alert("Comment cannot be empty");
@@ -72,7 +86,7 @@ export const RecipeDetails = () => {
             username: currentUser.displayName,
             userPhoto: currentUser.photoURL,
         });
-        setNewComment("");
+        resetCommentFields();
     };
 
     const handleEditComment = async (e) => {
@@ -82,7 +96,7 @@ export const RecipeDetails = () => {
             username: currentUser.displayName,
             userPhoto: currentUser.photoURL,
         });
-        setEditCommentId(null);
+        resetCommentFields();
     };
 
     const handleDeleteComment = async (commentId) => {
@@ -93,12 +107,7 @@ export const RecipeDetails = () => {
                 console.error("Error deleting comment:", error);
             }
         }
-    };
-
-    const handleDeleteRecipe = () => {
-        if (window.confirm("Are you sure you want to delete this recipe?")) {
-            deleteRecipe(recipeId).then(() => navigate("/recipes/list"));
-        }
+        resetCommentFields();
     };
 
     const userHasLiked = currentRecipe.likes?.[currentUser?.uid];

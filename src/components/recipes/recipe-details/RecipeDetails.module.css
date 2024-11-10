@@ -1,4 +1,4 @@
-/* Recipe Details Wrapper */
+/* Recipe Details */
 .recipe-details-wrapper {
     max-width: 1200px;
     margin: 3% auto;
@@ -8,7 +8,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Title */
 .recipe-title {
     text-align: center;
     font-size: 2rem;
@@ -16,7 +15,6 @@
     margin-bottom: 20px;
 }
 
-/* Header */
 .recipe-header {
     display: flex;
     gap: 20px;
@@ -42,20 +40,21 @@
     margin-bottom: 10px;
 }
 
-/* Form Control */
+
+/* Recipe Actions */
 .form-control {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 20px;
+    margin-left: 2%;
+    margin-right: 2%;
 }
 
-/* Recipe Actions */
 .recipe-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
 }
 
 .recipe-actions button {
@@ -65,6 +64,9 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .edit-btn {
@@ -201,9 +203,8 @@
     }
 
     .form-control {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+        flex-direction: row;
+        align-items: center;
     }
 
     .recipe-actions {
@@ -212,6 +213,7 @@
     }
 
     .recipe-actions button {
-        width: 45%;
+        width: 50%;
+        /* text-align: center; */
     }
 }
