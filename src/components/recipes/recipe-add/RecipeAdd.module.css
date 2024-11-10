@@ -1,48 +1,93 @@
+/* Form Container */
 .form-container {
-    margin: 2% auto;
-    padding: 1.5% 3% 2% 3%;
-    border-radius: 15px;
-    border: 2px solid lightgrey;
-    background-color: rgb(255 217 197 / 5%);
+    margin: 5% auto;
+    padding: 2% 4%;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 23%;
+    width: 40%;
+    max-width: 500px;
 }
 
+/* Form Group and Inputs */
 .form-group > input {
-    margin: 10px;
-    padding: 5px 10px;
-    border-radius: 10px;
-    background-color: white;
-    border: 2px solid lightgray;
+    width: 100%;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: #f9f9f9;
+    transition: border-color 0.2s ease;
 }
 
+.form-group > input:focus {
+    border-color: #3498db;
+    outline: none;
+    background-color: #fff;
+}
+
+/* Buttons Section */
 .buttons-form {
     display: flex;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .btn {
     display: inline-block;
-    font-size: 1.15em;
-    margin-top: 1em;
-    max-height: 30px;
-    width: 100px;
-    background-color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    color: white;
+    background-color: #3498db;
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
-    color: #888787;
-    transition: all 0.15s;
-    border: 0.1em solid #888787;
-    border-radius: 15px;
-}
-
-button {
-    padding: 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .btn:hover {
-    color: #6d6d6d;
-    border: 0.1em solid #888787;
-    background-color: rgb(230, 230, 230);
+    background-color: #2980b9;
+    transform: scale(1.05);
+}
+
+/* Disabled Button */
+button:disabled {
+    background-color: #b0c4de;
+    cursor: not-allowed;
+}
+
+/* Cancel Button */
+a.btn {
+    background-color: #e74c3c;
+    color: white;
+}
+
+a.btn:hover {
+    background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%;
+        padding: 4%;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .buttons-form {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+    }
 }

@@ -33,6 +33,11 @@ export const Navigation = (props) => {
             </div>
             <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
                 <li>
+                    <Link to="/" onClick={handleLinkClick}>
+                        Home
+                    </Link>
+                </li>
+                <li>
                     <Link to="/recipes" onClick={handleLinkClick}>
                         Recipes
                     </Link>
