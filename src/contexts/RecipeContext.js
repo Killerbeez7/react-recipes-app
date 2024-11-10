@@ -2,9 +2,17 @@ import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
 import * as commentService from "../services/commentService";
-import { ref, onValue, query, orderByChild, startAt, endAt, update, get } from "firebase/database";
+import {
+    ref,
+    onValue,
+    query,
+    orderByChild,
+    startAt,
+    endAt,
+    update,
+    get,
+} from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
-
 
 export const RecipeContext = createContext();
 
@@ -16,7 +24,9 @@ const recipeReducer = (state, action) => {
             return action.payload;
         case "EDIT_RECIPE":
             return state.map((recipe) =>
-                recipe.id === action.recipeId ? { ...recipe, ...action.payload } : recipe
+                recipe.id === action.recipeId
+                    ? { ...recipe, ...action.payload }
+                    : recipe
             );
         case "DELETE_RECIPE":
             return state.filter((recipe) => recipe.id !== action.recipeId);
@@ -28,14 +38,14 @@ const recipeReducer = (state, action) => {
         //             ? { ...recipe, comments: [...(recipe.comments || []), action.payload.comment] }
         //             : recipe
         //     );
-        case 'TOGGLE_LIKE':
-            return state.map(recipe =>
+        case "TOGGLE_LIKE":
+            return state.map((recipe) =>
                 recipe.id === action.recipeId
                     ? {
-                        ...recipe,
-                        likes: action.payload.likes,
-                        likeCount: action.payload.likeCount,
-                    }
+                          ...recipe,
+                          likes: action.payload.likes,
+                          likeCount: action.payload.likeCount,
+                      }
                     : recipe
             );
         default:
@@ -52,14 +62,16 @@ export const RecipeProvider = ({ children }) => {
         const unsubscribe = onValue(recipesRef, (snapshot) => {
             const recipesData = snapshot.val();
             const recipesArray = recipesData
-                ? Object.entries(recipesData).map(([id, data]) => ({ id, ...data }))
+                ? Object.entries(recipesData).map(([id, data]) => ({
+                      id,
+                      ...data,
+                  }))
                 : [];
             dispatch({ type: "SET_RECIPES", payload: recipesArray });
         });
 
         return () => unsubscribe();
     }, []);
-
 
     // ------------------------------------------------- Filter ---------------------------------------------------------
     const filterRecipes = async (search, criteria) => {
@@ -68,18 +80,20 @@ export const RecipeProvider = ({ children }) => {
         const snapshot = await get(recipesRef);
 
         if (snapshot.exists()) {
-            const allRecipes = Object.entries(snapshot.val()).map(([id, data]) => ({ id, ...data }));
+            const allRecipes = Object.entries(snapshot.val()).map(
+                ([id, data]) => ({ id, ...data })
+            );
 
             // Check if search is a number for timeToCook filtering
             if (!isNaN(search) && search.trim() !== "") {
                 const maxTime = Number(search.trim());
-                filteredRecipes = allRecipes.filter(recipe =>
-                    recipe.timeToCook <= maxTime
+                filteredRecipes = allRecipes.filter(
+                    (recipe) => recipe.timeToCook <= maxTime
                 );
             } else {
                 // Default to title search if not a number
                 const normalizedSearch = search.toLowerCase().trim();
-                filteredRecipes = allRecipes.filter(recipe =>
+                filteredRecipes = allRecipes.filter((recipe) =>
                     recipe.title.toLowerCase().includes(normalizedSearch)
                 );
             }
@@ -101,13 +115,12 @@ export const RecipeProvider = ({ children }) => {
         const updatedRecipe = await recipeService.getOne(recipeId);
         dispatch({ type: "EDIT_RECIPE", recipeId, payload: updatedRecipe });
 
-        navigate(`/recipes/list`);
+        navigate(`/recipes`);
     };
-
 
     const deleteRecipe = async (recipeId) => {
         await recipeService.del(recipeId);
-        navigate("/recipes/list");
+        navigate("/recipes");
     };
 
     const selectRecipe = (recipeId) => {
@@ -127,20 +140,19 @@ export const RecipeProvider = ({ children }) => {
 
     const editComment = async (recipeId, commentId, updatedComment) => {
         try {
-            await commentService.edit(recipeId, commentId, updatedComment)
+            await commentService.edit(recipeId, commentId, updatedComment);
         } catch (error) {
             console.log("Error editing comment:", error);
-            alert("Failed to edit comment. Please try again")
+            alert("Failed to edit comment. Please try again");
         }
-
     };
 
     const deleteComment = async (recipeId, commentId) => {
         try {
-            commentService.del(recipeId, commentId)
+            commentService.del(recipeId, commentId);
         } catch (error) {
             console.log("Error deleting comment:", error);
-            alert("Failed to delete comment. Please try again")
+            alert("Failed to delete comment. Please try again");
         }
     };
 
@@ -167,7 +179,11 @@ export const RecipeProvider = ({ children }) => {
         try {
             const recipeRef = ref(database, `recipes/${recipeId}`);
             await update(recipeRef, { likes, likeCount });
-            dispatch({ type: 'TOGGLE_LIKE', recipeId, payload: { likes, likeCount } });
+            dispatch({
+                type: "TOGGLE_LIKE",
+                recipeId,
+                payload: { likes, likeCount },
+            });
         } catch (error) {
             console.error("Error toggling like:", error);
         }

@@ -70,7 +70,7 @@ export const RecipeDetails = () => {
 
     const handleDeleteRecipe = () => {
         if (window.confirm("Are you sure you want to delete this recipe?")) {
-            deleteRecipe(recipeId).then(() => navigate("/recipes/list"));
+            deleteRecipe(recipeId).then(() => navigate("/recipes"));
         }
     };
 

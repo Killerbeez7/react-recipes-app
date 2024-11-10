@@ -18,13 +18,20 @@ export const Home = () => {
                         <br></br>
                         <hr></hr>
 
-                        <h1><strong>От админа!</strong></h1>
-                        <h3><i>Първите 3 коментара печелят iPhone 16 pro Max super GALAXY gold edition</i></h3>
+                        <h1>
+                            <strong>От админа!</strong>
+                        </h1>
+                        <h3>
+                            <i>
+                                Първите 3 коментара печелят iPhone 16 pro Max
+                                super GALAXY gold edition
+                            </i>
+                        </h3>
 
                         <hr></hr>
                         <br></br>
                         <ul>
-                        <p className={styles["p-style"]}></p>
+                            <p className={styles["p-style"]}></p>
                             <p></p>
                             <li></li>
                             <li></li>
@@ -106,6 +113,14 @@ export const Home = () => {
                         <p>- Navigation bar: style</p>
                         <p>- Search bar: style</p>
                         <p>- profile details, home: form, style</p>
+                        <h4>08.11.2024</h4>
+                        <p>- added comments</p>
+                        <p>- add user profile photo</p>
+                        <h4>09.11.2024</h4>
+                        <p>- comments: functionality and style</p>
+                        <h4>10.11.2024</h4>
+                        <p>- Navigation bar: style improvements</p>
+                        <p>- comments, add recipe, edit recipe: style update</p>
                     </div>
                 </div>
             </main>

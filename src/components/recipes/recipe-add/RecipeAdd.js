@@ -54,7 +54,7 @@ export const RecipeAdd = () => {
 
         try {
             await addRecipe(values);
-            navigate(`/recipes/list`);
+            navigate(`/recipes`);
         } catch (error) {
             console.error("Error adding recipe:", error);
             alert("There was an error adding the recipe. Please try again.");
@@ -145,7 +145,7 @@ export const RecipeAdd = () => {
                     >
                         Submit
                     </button>
-                    <Link className={styles.btn} to={`/recipes/list`}>Cancel</Link>
+                    <Link className={styles.btn} to={`/recipes`}>Cancel</Link>
                 </div>
             </form>
         </div>
