@@ -143,18 +143,23 @@ export const RecipeDetails = () => {
                     <span className={styles["likes-display"]}>
                         {likeCount} {likeCount === 1 ? "like" : "likes"}
                     </span>
+
                     <button
                         onClick={() => toggleLike(recipeId, currentUser)}
                         className={styles["like-btn"]}
                     >
-                        {userHasLiked ? "Unlike" : "Like"}
+                        {userHasLiked ? (
+                            <i className="fa-solid fa-heart"></i>
+                        ) : (
+                            <i className="fa-regular fa-heart"></i>
+                        )}
                     </button>
                 </div>
 
                 {currentUser?.uid === currentRecipe.authorId && (
                     <div className={styles["recipe-actions"]}>
                         <button
-                            className="edit-btn"
+                            className={styles["edit-btn"]}
                             onClick={() =>
                                 navigate(`/recipes/edit/${recipeId}`)
                             }
@@ -162,14 +167,9 @@ export const RecipeDetails = () => {
                             Edit
                         </button>
                         <button
+                            className={styles["delete-btn"]}
                             onClick={() => {
-                                if (
-                                    window.confirm(
-                                        "Are you sure you want to delete this recipe?"
-                                    )
-                                ) {
-                                    handleDeleteRecipe(recipeId);
-                                }
+                                handleDeleteRecipe(recipeId);
                             }}
                         >
                             Delete
