@@ -1,8 +1,9 @@
-import { useState, useEffect, useContext } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { RecipeContext } from '../../../contexts/RecipeContext';
-import * as recipeService from '../../../services/recipeService';
-import styles from './RecipeEdit.module.css';
+import { useState, useEffect, useContext } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { RecipeContext } from "../../../contexts/RecipeContext";
+import * as recipeService from "../../../services/recipeService";
+import styles from "./RecipeEdit.module.css";
+
 
 export const RecipeEdit = () => {
     const { editRecipe } = useContext(RecipeContext);
@@ -20,11 +21,13 @@ export const RecipeEdit = () => {
                     setCurrentRecipe({ id: recipeId, ...recipeData });
                 } else {
                     alert("Recipe not found");
-                    navigate('/recipes');
+                    navigate("/recipes");
                 }
             } catch (error) {
                 console.error("Error fetching recipe details:", error);
-                alert("There was an error fetching the recipe details. Please try again later.");
+                alert(
+                    "There was an error fetching the recipe details. Please try again later."
+                );
             } finally {
                 setLoading(false);
             }
@@ -37,12 +40,19 @@ export const RecipeEdit = () => {
         const formData = new FormData(e.target);
         const recipeData = Object.fromEntries(formData);
 
-        if (!recipeData.title || !recipeData.description || !recipeData.timeToCook) {
+        if (
+            !recipeData.title ||
+            !recipeData.description ||
+            !recipeData.timeToCook
+        ) {
             alert("Please fill in all required fields");
             return;
         }
 
-        if (isNaN(recipeData.timeToCook) || Number(recipeData.timeToCook) <= 0) {
+        if (
+            isNaN(recipeData.timeToCook) ||
+            Number(recipeData.timeToCook) <= 0
+        ) {
             alert("Time to cook must be a positive number");
             return;
         }
@@ -66,64 +76,79 @@ export const RecipeEdit = () => {
     }
 
     return (
-        <div className={styles['container']}>
-            <h1>Edit Recipe</h1>
-            <form className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
-                <div className={styles['form-group']}>
-                    <p>Title</p>
+        <div className={styles["edit-form-container"]}>
+            <h1 className={styles["edit-recipe-title"]}>Edit Recipe</h1>
+            <form
+                id="edit"
+                className="col-lg-6 offset-lg-3"
+                onSubmit={onSubmit}
+            >
+                <div className={styles["edit-form-group"]}>
                     <input
                         type="text"
                         id="title"
                         name="title"
-                        value={currentRecipe.title} onChange={(e) => setCurrentRecipe({ ...currentRecipe, title: e.target.value })}
+                        placeholder="Recipe title"
+                        defaultValue={currentRecipe.title}
                     />
                 </div>
-                <div className={styles['form-group']}>
-                    <p>Description</p>
-                    <textarea
+                <div className={styles["edit-form-group"]}>
+                    <input
+                        type="textarea"
                         id="description"
                         name="description"
+                        placeholder="Description"
                         defaultValue={currentRecipe.description}
                     />
                 </div>
-                <div className={styles['form-group']}>
-                    <p>Time to cook (minutes)</p>
-                    <input
-                        type="number"
-                        id="timeToCook"
-                        name="timeToCook"
-                        defaultValue={currentRecipe.timeToCook}
-                    />
-                </div>
-                <div className={styles['form-group']}>
-                    <p>Image URL:</p>
+                <div className={styles["edit-form-group"]}>
                     <input
                         type="text"
                         id="imageUrl"
                         name="imageUrl"
+                        placeholder="Image URL"
                         defaultValue={currentRecipe.imageUrl}
                     />
                 </div>
-                <div className={styles['form-group']}>
-                    <p>Ingredients</p>
-                    <textarea
+                <div className={styles["edit-form-group"]}>
+                    <input
+                        type="number"
+                        id="timeToCook"
+                        name="timeToCook"
+                        placeholder="Preparation time"
+                        defaultValue={currentRecipe.timeToCook}
+                    />
+                </div>
+                <div className={styles["edit-form-group"]}>
+                    <input
+                        type="textarea"
                         id="ingredients"
                         name="ingredients"
+                        placeholder="Ingredients"
                         defaultValue={currentRecipe.ingredients}
                     />
                 </div>
-                <div className={styles['form-group']}>
-                    <p>Steps</p>
-                    <textarea
+                <div className={styles["edit-form-group"]}>
+                    <input
+                        type="textarea"
                         id="steps"
                         name="steps"
+                        placeholder="Steps"
                         defaultValue={currentRecipe.steps}
                     />
                 </div>
-                <input type="submit" value="Save Changes" />
-                <button type="button" onClick={() => navigate(`/recipes/details/${recipeId}`)}>
-                    Cancel
-                </button>
+                <div className={styles["edit-buttons-form"]}>
+                    <button
+                        type="submit"
+                        className={styles["edit-btn"]}
+                        // disabled={isSubmitting}
+                    >
+                        Submit
+                    </button>
+                    <Link className={styles["edit-btn"]} to={`/recipes/details/${recipeId}`}>
+                        Cancel
+                    </Link>
+                </div>
             </form>
         </div>
     );

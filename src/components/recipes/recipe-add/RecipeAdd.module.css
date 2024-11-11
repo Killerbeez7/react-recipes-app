@@ -87,7 +87,9 @@ a.btn:hover {
     }
 
     .btn {
-        width: 100%;
+        width: 60%;
+        margin: auto;
+        /* width: 100%; */
         text-align: center;
     }
 }

@@ -40,7 +40,6 @@
     margin-bottom: 10px;
 }
 
-
 /* Recipe Actions */
 .form-control {
     display: flex;
@@ -114,26 +113,24 @@
 
 .like-btn.liked {
     animation: pulse 0.4s ease;
-  }
+}
 
-
-  @keyframes pulse {
+@keyframes pulse {
     0% {
-      transform: scale(1);
+        transform: scale(1);
     }
     50% {
-      transform: scale(1.2);
+        transform: scale(1.2);
     }
     100% {
-      transform: scale(1);
+        transform: scale(1);
     }
-  }
-  
-  /* probably wont use it */
-  /* .like-btn:hover {
+}
+
+/* probably wont use it */
+/* .like-btn:hover {
     transform: scale(1.1);
   } */
-
 
 /* Comments Section */
 .comments-section-wrapper {
@@ -221,15 +218,18 @@
     .form-control {
         flex-direction: row;
         align-items: center;
+        gap: 40px;
     }
 
     .recipe-actions {
         justify-content: center;
-        gap: 5px;
     }
 
     .recipe-actions button {
         width: 50%;
         /* text-align: center; */
+    }
+    .save-btn {
+        margin: 10px auto;
     }
 }

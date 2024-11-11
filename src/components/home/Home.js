@@ -121,6 +121,10 @@ export const Home = () => {
                         <h4>10.11.2024</h4>
                         <p>- Navigation bar: style improvements</p>
                         <p>- comments, add recipe, edit recipe: style update</p>
+                        <h4>11.11.2024</h4>
+                        <p>- like button: style update</p>
+                        <p>- Recipe Edit, Details: update style</p>
+
                     </div>
                 </div>
             </main>
