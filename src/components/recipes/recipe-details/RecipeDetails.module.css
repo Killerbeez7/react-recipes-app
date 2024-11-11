@@ -90,22 +90,6 @@
 }
 
 /* Like Section */
-.like-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent;
-    color: #e74c3c;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.3s ease;
-}
-
-.like-btn:hover {
-    transform: scale(1.1);
-    opacity: 0.8;
-}
 
 .likes-section {
     display: flex;
@@ -113,10 +97,43 @@
     gap: 10px;
 }
 
-.likes-display {
+.likes-text {
     font-size: 1rem;
+    font-weight: bold;
     color: #555;
 }
+
+.like-btn {
+    font-size: 1.5rem;
+    color: #e74c3c;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.like-btn.liked {
+    animation: pulse 0.4s ease;
+  }
+
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* probably wont use it */
+  /* .like-btn:hover {
+    transform: scale(1.1);
+  } */
+
 
 /* Comments Section */
 .comments-section-wrapper {
@@ -159,7 +176,6 @@
     cursor: pointer;
 }
 
-/* Comment Text Area */
 .comment-text-area {
     width: 100%;
     min-height: 100px;
@@ -170,7 +186,7 @@
     resize: none;
 }
 
-/* Save Button */
+/* Save Recipe Button */
 .save-btn {
     display: block;
     margin-top: 10px;

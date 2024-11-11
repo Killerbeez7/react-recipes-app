@@ -32,6 +32,19 @@ export const RecipeDetails = () => {
         !!currentUser?.savedRecipes?.[recipeId]
     );
 
+    const [isLiked, setIsLiked] = useState(false);
+
+    useEffect(() => {
+        if (currentRecipe && currentUser) {
+          setIsLiked(!!currentRecipe.likes?.[currentUser.uid]);
+        }
+      }, [currentRecipe, currentUser]);
+
+      const handleLike = () => {
+        toggleLike(recipeId, currentUser);
+        setIsLiked((prev) => !prev);
+      };
+
     const resetCommentFields = () => {
         setNewComment(""); // Clear the new comment input field
         setEditCommentId(null); // Reset the editing state
@@ -141,29 +154,22 @@ export const RecipeDetails = () => {
                         <strong>Steps:</strong> {currentRecipe.steps}
                     </p>
                     <p>
-                    <i class="fa-regular fa-clock"></i> {currentRecipe.timeToCook}{" "}
-                        min
+                        <i class="fa-regular fa-clock"></i>{" "}
+                        {currentRecipe.timeToCook} min
                     </p>
                 </div>
             </div>
 
             <div className={styles["form-control"]}>
-                <div className={styles["likes-section"]}>
-                    <span className={styles["likes-display"]}>
-                        {likeCount} {likeCount === 1 ? "like" : "likes"}
-                    </span>
-
-                    <button
-                        onClick={() => toggleLike(recipeId, currentUser)}
-                        className={styles["like-btn"]}
-                    >
-                        {userHasLiked ? (
-                            <i className="fa-solid fa-heart"></i>
-                        ) : (
-                            <i className="fa-regular fa-heart"></i>
-                        )}
-                    </button>
-                </div>
+            <div className={styles["likes-section"]}>
+        <button
+          className={`${styles["like-btn"]} ${isLiked ? styles["liked"] : ""}`}
+          onClick={handleLike}
+        >
+          {isLiked ? <i className="fa-solid fa-heart"></i> : <i className="fa-regular fa-heart"></i>}
+        </button>
+        <span>{currentRecipe.likeCount || 0} Likes</span>
+      </div>
 
                 {currentUser?.uid === currentRecipe.authorId && (
                     <div className={styles["recipe-actions"]}>
