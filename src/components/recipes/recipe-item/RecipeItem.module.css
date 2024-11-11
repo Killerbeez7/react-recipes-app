@@ -65,8 +65,8 @@
     color: #777;
 }
 
-.text-styles strong{
-    font-style:normal;
+.text-styles strong {
+    font-style: normal;
     color: #555;
 }
 
@@ -89,7 +89,7 @@
     color: white;
     background-color: #3498db;
     border-radius: 5px;
-    /* border: 1px solid black; */       /*to ask people if like it*/
+    /* border: 1px solid black; */ /*to ask people if like it*/
     text-decoration: none;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
@@ -131,3 +131,12 @@
         text-align: center;
     }
 }
+
+.recipe-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* .recipe-link:hover .recipe-list-item-wrapper {
+    background-color: #f0f8ff;
+} */

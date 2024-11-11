@@ -141,7 +141,7 @@ export const RecipeDetails = () => {
                         <strong>Steps:</strong> {currentRecipe.steps}
                     </p>
                     <p>
-                        <strong>Cook Time:</strong> {currentRecipe.timeToCook}{" "}
+                    <i class="fa-regular fa-clock"></i> {currentRecipe.timeToCook}{" "}
                         min
                     </p>
                 </div>
