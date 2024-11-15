@@ -25,8 +25,27 @@ import "./App.css";
 // Error Boundary
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
+import React, { useEffect, useState } from "react";
 
 function App() {
+    const [showTranslateButton, setShowTranslateButton] = useState(false);
+
+    useEffect(() => {
+        // Detect user's language
+        const userLang = navigator.language || navigator.userLanguage;
+
+        // Show the translate button if user's language is not English
+        if (userLang !== "en") {
+            setShowTranslateButton(true);
+        }
+    }, []);
+
+    const handleTranslateClick = () => {
+        // Logic for translating the page can go here
+        alert("Redirecting to translated version...");
+        // You could also integrate with an API or trigger translation logic here.
+    };
+
     return (
         <ErrorBoundary>
             <AuthProvider>
@@ -43,12 +62,12 @@ function App() {
                             <Route path="/auth/sign-up" element={<SignUp />} />
                             <Route path="/auth/sign-in" element={<SignIn />} />
                             <Route path="/auth/logout" element={<Logout />} />
-                            <Route path="/auth/:userId/details" element={<ProfileDetails />} />
-
                             <Route
-                                path="/recipes"
-                                element={<RecipeList />}
+                                path="/auth/:userId/details"
+                                element={<ProfileDetails />}
                             />
+
+                            <Route path="/recipes" element={<RecipeList />} />
                             <Route element={<PrivateRoute />}>
                                 <Route
                                     path="/recipes/add"
@@ -65,13 +84,24 @@ function App() {
                             />
 
                             {/* redirect old paths back to home */}
-                            <Route path="/old-path" element={<Navigate to="/" replace />} />
+                            <Route
+                                path="/old-path"
+                                element={<Navigate to="/" replace />}
+                            />
                             <Route path="/*" element={<NotFound />} />
                         </Routes>
                     </RecipeProvider>
                     {/* End of main content */}
 
                     <Footer />
+                    {showTranslateButton && (
+                        <button
+                            className="translate-button"
+                            onClick={handleTranslateClick}
+                        >
+                            Translate Page
+                        </button>
+                    )}
                 </div>
             </AuthProvider>
         </ErrorBoundary>
