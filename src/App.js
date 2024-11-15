@@ -28,23 +28,25 @@ import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import React, { useEffect, useState } from "react";
 
 function App() {
-    const [showTranslateButton, setShowTranslateButton] = useState(false);
+    // ------------------------------------------------------------------------------------- Language translate ---------------------------------------------------
+    // const [showTranslateButton, setShowTranslateButton] = useState(false);
 
-    useEffect(() => {
-        // Detect user's language
-        const userLang = navigator.language || navigator.userLanguage;
+    // useEffect(() => {
+    //     // Detect user's language
+    //     const userLang = navigator.language || navigator.userLanguage;
 
-        // Show the translate button if user's language is not English
-        if (userLang !== "en") {
-            setShowTranslateButton(true);
-        }
-    }, []);
+    //     // Show the translate button if user's language is not English
+    //     if (userLang !== "en") {
+    //         setShowTranslateButton(true);
+    //     }
+    // }, []);
 
-    const handleTranslateClick = () => {
-        // Logic for translating the page can go here
-        alert("Redirecting to translated version...");
-        // You could also integrate with an API or trigger translation logic here.
-    };
+    // const handleTranslateClick = () => {
+    //     // Logic for translating the page can go here
+    //     alert("Redirecting to translated version...");
+    //     // You could also integrate with an API or trigger translation logic here.
+    // };
+    // --------------------------------------------------------------------------------- end of lang translate ----------------------------------------------------
 
     return (
         <ErrorBoundary>
@@ -94,14 +96,16 @@ function App() {
                     {/* End of main content */}
 
                     <Footer />
-                    {showTranslateButton && (
+                    {/* ------------------------------------------------------------ To add language translate on later stage --------------------------------------- */}
+                    {/* {showTranslateButton && (
                         <button
                             className="translate-button"
                             onClick={handleTranslateClick}
                         >
                             Translate Page
                         </button>
-                    )}
+                    )} */}
+                    {/* ---------------------------------------------------------------- end of language translate ------------------------------------------------------- */}
                 </div>
             </AuthProvider>
         </ErrorBoundary>
