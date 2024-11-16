@@ -41,9 +41,13 @@ export const RecipeDetails = () => {
       }, [currentRecipe, currentUser]);
 
       const handleLike = () => {
+        if (!currentUser) {
+            alert("You need to log in to like recipes.");
+            return;
+        }
         toggleLike(recipeId, currentUser);
         setIsLiked((prev) => !prev);
-      };
+    };
 
     const resetCommentFields = () => {
         setNewComment(""); // Clear the new comment input field
