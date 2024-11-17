@@ -32,11 +32,13 @@ import { ErrorBoundary } from "./components/common/ErrorBoundary";
 function App() {
     // ------------------------------------------------------------------------------------- Language translate ---------------------------------------------------
     const [showTranslateButton, setShowTranslateButton] = useState(false);
+    const [userLang, setUserLang] = useState("");
 
     useEffect(() => {
         const userLang = navigator.language || navigator.userLanguage;
         if (!userLang.toLowerCase().startsWith("en")) {
             setShowTranslateButton(true);
+            setUserLang(userLang);
         }
 
         const addGoogleTranslateScript = () => {
@@ -49,6 +51,7 @@ function App() {
             }
         };
 
+        // ----------------------- this keeps the translated page persistent, not sure if is better or not -----------------
         window.googleTranslateElementInit = () => {
             new window.google.translate.TranslateElement(
                 {
@@ -59,18 +62,21 @@ function App() {
                 "google_translate_element"
             );
         };
+        // -------------------------------------------------------------------------------------------------------------------
 
         addGoogleTranslateScript();
     }, []);
 
     const handleTranslateClick = () => {
         if (window.google && window.google.translate) {
+            // const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             const translateElement =
                 new window.google.translate.TranslateElement({
                     pageLanguage: "en",
-                    includedLanguages: "bg",
+                    includedLanguages: userLang,
                     layout: google.translate.TranslateElement.InlineLayout
                         .SIMPLE,
+                    // autoDisplay: isIOS,
                 });
             translateElement.showBanner(true);
             const iframe = document.querySelector(
