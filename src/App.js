@@ -1,4 +1,8 @@
+/* global google */
+
+// react imports
 import { Routes, Route, Navigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 // Context Providers
 import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
@@ -25,27 +29,63 @@ import "./App.css";
 // Error Boundary
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
-import React, { useEffect, useState } from "react";
-
 function App() {
     // ------------------------------------------------------------------------------------- Language translate ---------------------------------------------------
-    // const [showTranslateButton, setShowTranslateButton] = useState(false);
+    const [showTranslateButton, setShowTranslateButton] = useState(false);
 
-    // useEffect(() => {
-    //     // Detect user's language
-    //     const userLang = navigator.language || navigator.userLanguage;
+    useEffect(() => {
+        const userLang = navigator.language || navigator.userLanguage;
+        if (!userLang.toLowerCase().startsWith("en")) {
+            setShowTranslateButton(true);
+        }
 
-    //     // Show the translate button if user's language is not English
-    //     if (userLang !== "en") {
-    //         setShowTranslateButton(true);
-    //     }
-    // }, []);
+        const addGoogleTranslateScript = () => {
+            if (!window.google) {
+                const script = document.createElement("script");
+                script.src =
+                    "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+                script.async = true;
+                document.body.appendChild(script);
+            }
+        };
 
-    // const handleTranslateClick = () => {
-    //     // Logic for translating the page can go here
-    //     alert("Redirecting to translated version...");
-    //     // You could also integrate with an API or trigger translation logic here.
-    // };
+        window.googleTranslateElementInit = () => {
+            new window.google.translate.TranslateElement(
+                {
+                    pageLanguage: "en",
+                    layout: google.translate.TranslateElement.InlineLayout
+                        .SIMPLE,
+                },
+                "google_translate_element"
+            );
+        };
+
+        addGoogleTranslateScript();
+    }, []);
+
+    const handleTranslateClick = () => {
+        if (window.google && window.google.translate) {
+            const translateElement =
+                new window.google.translate.TranslateElement({
+                    pageLanguage: "en",
+                    includedLanguages: "bg",
+                    layout: google.translate.TranslateElement.InlineLayout
+                        .SIMPLE,
+                });
+            translateElement.showBanner(true);
+            const iframe = document.querySelector(
+                "iframe.goog-te-banner-frame"
+            );
+            if (iframe) {
+                iframe.contentWindow.document
+                    .getElementById(":1.container")
+                    .click();
+            }
+        } else {
+            console.warn("Google Translate is not initialized yet.");
+        }
+    };
+
     // --------------------------------------------------------------------------------- end of lang translate ----------------------------------------------------
 
     return (
@@ -53,6 +93,17 @@ function App() {
             <AuthProvider>
                 <div className="body">
                     <Navigation />
+                    {showTranslateButton && (
+                        <>
+                            <button
+                                onClick={handleTranslateClick}
+                                className="translate-button"
+                            >
+                                Translate
+                            </button>
+                            <div id="google_translate_element"></div>
+                        </>
+                    )}
 
                     {/* Main content */}
                     <RecipeProvider>
@@ -96,16 +147,6 @@ function App() {
                     {/* End of main content */}
 
                     <Footer />
-                    {/* ------------------------------------------------------------ To add language translate on later stage --------------------------------------- */}
-                    {/* {showTranslateButton && (
-                        <button
-                            className="translate-button"
-                            onClick={handleTranslateClick}
-                        >
-                            Translate Page
-                        </button>
-                    )} */}
-                    {/* ---------------------------------------------------------------- end of language translate ------------------------------------------------------- */}
                 </div>
             </AuthProvider>
         </ErrorBoundary>
