@@ -32,7 +32,19 @@ import { ErrorBoundary } from "./components/common/ErrorBoundary";
 function App() {
     // ------------------------------------------------------------------------------------- Language translate ---------------------------------------------------
     const [showTranslateButton, setShowTranslateButton] = useState(false);
-    const [userLang, setUserLang] = useState("");
+    const [userLang, setUserLang] = useState("en");
+
+    const translations = {
+        en: "Translate",
+        bg: "Преведи",
+        es: "Traducir",
+        fr: "Traduire",
+        de: "Übersetzen",
+        it: "Traduci",
+        zh: "翻译",
+        ja: "翻訳",
+        // Add more languages as needed
+    };
 
     useEffect(() => {
         const userLang = navigator.language || navigator.userLanguage;
@@ -53,12 +65,15 @@ function App() {
 
         // ----------------------- this keeps the translated page persistent, not sure if is better or not -----------------
         window.googleTranslateElementInit = () => {
+            // const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             new window.google.translate.TranslateElement(
                 {
                     pageLanguage: "en",
                     layout: google.translate.TranslateElement.InlineLayout
                         .SIMPLE,
+                    // autoDisplay: isIOS,
                 },
+
                 "google_translate_element"
             );
         };
@@ -69,14 +84,12 @@ function App() {
 
     const handleTranslateClick = () => {
         if (window.google && window.google.translate) {
-            // const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
             const translateElement =
                 new window.google.translate.TranslateElement({
                     pageLanguage: "en",
                     includedLanguages: userLang,
                     layout: google.translate.TranslateElement.InlineLayout
                         .SIMPLE,
-                    // autoDisplay: isIOS,
                 });
             translateElement.showBanner(true);
             const iframe = document.querySelector(
@@ -105,7 +118,7 @@ function App() {
                                 onClick={handleTranslateClick}
                                 className="translate-button"
                             >
-                                Translate
+                                {translations[userLang] || translations["en"]}
                             </button>
                             <div id="google_translate_element"></div>
                         </>
