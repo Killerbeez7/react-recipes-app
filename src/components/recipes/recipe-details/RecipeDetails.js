@@ -5,6 +5,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { ref, update } from "firebase/database";
 import { database } from "../../../firebase/firebaseConfig";
+import { addRecipeToFavorites } from "../../../services/addRecipeToFavorites";
 
 import styles from "./RecipeDetails.module.css";
 // import clx from "classnames";
@@ -64,26 +65,17 @@ export const RecipeDetails = () => {
 
     const handleSaveRecipe = async () => {
         if (!currentUser) {
-            alert("You need to be logged in to save recipes.");
+            alert("You need to log in to save recipes.");
             return;
         }
-
-        const userRef = ref(database, `users/${currentUser.uid}`);
-        const updatedSavedRecipes = { ...currentUser.savedRecipes };
-
-        if (isSaved) {
-            delete updatedSavedRecipes[recipeId];
-        } else {
-            updatedSavedRecipes[recipeId] = true;
-        }
-
         try {
-            await update(userRef, { savedRecipes: updatedSavedRecipes });
+            await addRecipeToFavorites(currentUser.uid, recipeId, isSaved);
             setIsSaved(!isSaved);
         } catch (error) {
             console.error("Error saving recipe:", error);
         }
     };
+    
 
     const handleDeleteRecipe = () => {
         if (window.confirm("Are you sure you want to delete this recipe?")) {

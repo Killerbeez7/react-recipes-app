@@ -51,7 +51,7 @@ export const doSignInWithGoogle = async () => {
     try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
-        await addUserToDatabase(user.uid, user.displayName, user.email);
+        await addUserToDatabase(user.uid, user.displayName, user.email, user.photoURL);
         return result;
     } catch (error) {
         console.error("Error with Google Sign-In:", error);
