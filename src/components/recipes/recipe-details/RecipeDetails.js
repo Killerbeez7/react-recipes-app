@@ -127,8 +127,8 @@ export const RecipeDetails = () => {
         resetCommentFields();
     };
 
-    const userHasLiked = currentRecipe.likes?.[currentUser?.uid];
-    const likeCount = currentRecipe.likeCount || 0;
+    // const userHasLiked = currentRecipe.likes?.[currentUser?.uid];
+    // const likeCount = currentRecipe.likeCount || 0;
 
     return (
         <div className={styles["recipe-details-wrapper"]}>
@@ -213,7 +213,7 @@ export const RecipeDetails = () => {
                                 />
                                 <div>
                                     <p>
-                                        <strong>{comment.username}:</strong>{" "}
+                                        <Link to={`/user/${comment.userId}`} className={styles["comments-user-profile"]}>{comment.username}:</Link>{" "}
                                         {comment.text}
                                     </p>
                                     {comment.createdAt && (

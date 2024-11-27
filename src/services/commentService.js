@@ -16,17 +16,6 @@ export const create = async (recipeId, comment) => {
         throw error;
     }
 };
-// export const create = async (recipeId, comment) => {
-//     try {
-//         const commentsRef = ref(database, `recipes/${recipeId}/comments`);
-//         const newCommentRef = push(commentsRef);
-//         await set(newCommentRef, comment);
-//             return { id: newCommentRef.key, ...comment };
-//     } catch (error) {
-//         console.error("Error adding comment:", error);
-//         throw error;
-//     }
-// };
 
 export const edit = async (recipeId, commentId, updatedComment) => {
     try {
@@ -56,3 +45,24 @@ export const getByRecipeId = async (recipeId) => {
         return [];
     }
 };
+
+// export const getComments = async (recipeId) => {
+//     try {
+//         const commentsRef = ref(database, `comments/${recipeId}`);
+//         const snapshot = await get(commentsRef);
+//         return snapshot.exists() ? snapshot.val() : [];
+//     } catch (error) {
+//         console.error("Error fetching comments:", error);
+//         return [];
+//     }
+// };
+
+// export const postComment = async (recipeId, commentData) => {
+//     try {
+//         const commentsRef = ref(database, `comments/${recipeId}`);
+//         await push(commentsRef, commentData);
+//     } catch (error) {
+//         console.error("Error posting comment:", error);
+//         throw error;
+//     }
+// };

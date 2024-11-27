@@ -14,6 +14,7 @@ import { Gallery } from "./components/gallery/Gallery";
 import { Forum } from "./components/forum/Forum";
 import { Footer } from "./components/shared/footer/Footer";
 import { NotFound } from "./components/not-found/NotFound";
+import { UserProfile } from "./components/user-profile/UserProfile";
 // auth components
 import { SignUp } from "./components/auth/sign-up/SignUp";
 import { SignIn } from "./components/auth/sign-in/SignIn";
@@ -153,6 +154,10 @@ function App() {
                             <Route
                                 path="/recipes/details/:recipeId"
                                 element={<RecipeDetails />}
+                            />
+                            <Route
+                                path="/user/:userId"
+                                element={<UserProfile />}
                             />
 
                             {/* redirect old paths back to home */}
