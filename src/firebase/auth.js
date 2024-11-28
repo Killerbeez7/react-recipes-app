@@ -1,37 +1,43 @@
-import { auth, googleProvider, database } from './firebaseConfig';
+import { auth, googleProvider, database } from "./firebaseConfig";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signInWithPopup,
-} from 'firebase/auth';
-import { ref, set, onValue } from 'firebase/database';
+} from "firebase/auth";
+import { ref, set, onValue } from "firebase/database";
 
-
-export const addUserToDatabase = async (userId, name, email) => {
+export const addUserToDatabase = async (userId, name, email, photoURL) => {
     try {
-        await set(ref(database, 'users/' + userId), {
-            username: name || 'Anonymous',
+        await set(ref(database, "users/" + userId), {
+            username: name || "Anonymous",
             email: email,
-            savedRecipes: []  // Add savedRecipes field
+            profilePicture: photoURL,
+            savedRecipes: [], // Add savedRecipes field
         });
     } catch (error) {
         console.error("Error adding user to database:", error);
     }
 };
 
-
 export const getUserFromDatabase = (userId, callback) => {
-    const userRef = ref(database, 'users/' + userId);
+    const userRef = ref(database, "users/" + userId);
     onValue(userRef, (snapshot) => {
         const data = snapshot.val();
         callback(data);
     });
 };
 
-
-export const doCreateUserWithEmailAndPassword = async (email, password, name) => {
+export const doCreateUserWithEmailAndPassword = async (
+    email,
+    password,
+    name
+) => {
     try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+        );
         const user = userCredential.user;
         await addUserToDatabase(user.uid, name, email);
         return user;
@@ -41,31 +47,33 @@ export const doCreateUserWithEmailAndPassword = async (email, password, name) =>
     }
 };
 
-
 export const doSignInWithEmailAndPassword = async (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
-}
-
+};
 
 export const doSignInWithGoogle = async () => {
     try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
-        await addUserToDatabase(user.uid, user.displayName, user.email, user.photoURL);
+
+        await addUserToDatabase(
+            user.uid,
+            user.displayName,
+            user.email,
+            user.photoURL
+        );
         return result;
     } catch (error) {
         console.error("Error with Google Sign-In:", error);
         throw error;
     }
-}
+};
 
 export const doSignOut = () => {
     return auth.signOut();
-}
+};
 
-export const updateProfileDetails = () => {
-
-}
+export const updateProfileDetails = () => {};
 
 // ADD PASSWORD RESET
 // export const doPasswordReset = (email) => {
