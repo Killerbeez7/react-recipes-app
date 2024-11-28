@@ -203,7 +203,7 @@ export const RecipeDetails = () => {
                                     alt="User"
                                     className={styles["profile-picture"]}
                                 />
-                                <div>
+                                <div className={styles["comment-box"]}>
                                     <p>
                                         <Link to={`/user/${comment.userId}`} className={styles["comments-user-profile"]}>{comment.username}:</Link>{" "}
                                         {comment.text}

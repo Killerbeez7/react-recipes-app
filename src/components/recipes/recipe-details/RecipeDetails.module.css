@@ -133,14 +133,17 @@
   } */
 
 /* Comments Section */
-.comments-section-wrapper {
-    margin-top: 30px;
-}
-
 .comments-section {
     list-style-type: none;
-    padding: 0;
+    margin: 0;
+    padding: 0 20px;
 }
+
+.comments-section-wrapper {
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
 
 .comment-item {
     display: flex;
@@ -151,6 +154,10 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
 }
 
 .profile-picture {
@@ -202,6 +209,10 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .recipe-details-wrapper{
+        margin: 50px auto;
+        max-width: 90%;
+    }
     .recipe-header {
         flex-direction: column;
         gap: 10px;
@@ -229,7 +240,78 @@
         width: 50%;
         /* text-align: center; */
     }
-    .save-btn {
-        margin: 10px auto;
-    }
 }
+
+.comments-user-profile {
+    text-decoration: none;
+    font-weight: bold;
+    color: #2e2e2e;
+}
+
+
+.comment-actions button {
+    background-color: transparent;
+    color: #3498db;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.comment-actions button:hover {
+    color: #2980b9;
+}
+
+.comment-actions button:focus {
+    outline: none;
+    color: #1c6ea4;
+}
+
+.comment-box {
+    overflow: hidden;
+}
+
+
+/* eventualy add this for post comment button */
+
+/* .save-btn {
+    display: block;
+    margin: 20px auto;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.save-btn:hover {
+    background-color: #27ae60;
+    transform: translateY(-2px);
+}
+
+.save-btn:focus {
+    outline: none;
+    background-color: #1e8449;
+} */
+
+/* @media (max-width: 480px) {
+    .recipe-header {
+        flex-direction: column;
+    }
+
+    .recipe-actions button {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    .comment-text-area {
+        font-size: 0.9rem;
+    }
+
+    .comments-section {
+        padding: 0 10px;
+    }
+} */
+
