@@ -12,7 +12,7 @@ export const addUserToDatabase = async (userId, name, email, photoURL) => {
             username: name || "Anonymous",
             email: email,
             profilePicture: photoURL,
-            savedRecipes: [], // Add savedRecipes field
+            savedRecipes: [],
         });
     } catch (error) {
         console.error("Error adding user to database:", error);
@@ -55,12 +55,14 @@ export const doSignInWithGoogle = async () => {
     try {
         const result = await signInWithPopup(auth, googleProvider);
         const user = result.user;
+        const upscalePhotoURL =  getHighResPhotoURL(user.photoURL)
+        
 
         await addUserToDatabase(
             user.uid,
             user.displayName,
             user.email,
-            user.photoURL
+            upscalePhotoURL
         );
         return result;
     } catch (error) {
@@ -74,6 +76,14 @@ export const doSignOut = () => {
 };
 
 export const updateProfileDetails = () => {};
+
+
+const getHighResPhotoURL = (photoURL) => {
+    if (photoURL.includes("googleusercontent.com")) {
+        return photoURL.replace(/=s\d+-c/, "=s512-c"); // Requests a 512x512 image
+    }
+    return photoURL;
+};
 
 // ADD PASSWORD RESET
 // export const doPasswordReset = (email) => {
