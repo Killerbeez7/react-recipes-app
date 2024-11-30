@@ -33,13 +33,11 @@ export const RecipeAdd = () => {
         e.preventDefault();
         if (isSubmitting) return;
 
-        // Basic validation to ensure the required fields are filled in
         if (!values.title || !values.description || !values.timeToCook) {
             alert("Please fill in all required fields");
             return;
         }
 
-        // Additional validation to ensure data types are correct
         if (isNaN(values.timeToCook) || Number(values.timeToCook) <= 0) {
             alert("Time to cook must be a positive number");
             return;

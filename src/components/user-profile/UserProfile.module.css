@@ -1,6 +1,11 @@
-.userPhoto{
+.userPhoto {
+    width: 250px;
+    height: 250px;
     margin: auto;
-    border-radius: 15px;
+    border-radius: 10%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .recipeList {
     list-style: none;
@@ -9,9 +14,9 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 20px;
-  }
-  
-  .recipeItem {
+}
+
+.recipeItem {
     background-color: #fff;
     border: 1px solid #eaeaea;
     border-radius: 8px;
@@ -24,47 +29,51 @@
     max-width: 200px;
     margin: auto;
     height: 250px;
-  }
-  
-  .recipeItem:hover {
+}
+
+.recipeItem:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  }
-  
-  .recipeItem img {
+}
+
+.recipeItem img {
     width: 100%;
     height: 100px;
     object-fit: cover;
     margin-bottom: 10px;
     border-radius: 4px;
-  }
-  
-  .recipeItem h4 {
+}
+
+.recipeItem h4 {
     font-size: 1rem;
     color: #333;
     margin: 5px 0;
-  }
-  
-  .recipeItem p {
+}
+
+.recipeItem p {
     font-size: 0.8rem;
     color: #666;
     margin: 5px 0;
-  }
-  
-  .recipeItem small {
+}
+
+.recipeItem small {
     font-size: 0.7rem;
     color: #999;
-  }
-  
-  .section {
+}
+
+.section {
     margin-bottom: 40px;
-  }
-  
-  .section h3 {
+}
+
+.section h3 {
     font-size: 1.4rem;
     color: #222;
     margin-bottom: 15px;
     border-bottom: 2px solid #ccc;
     padding-bottom: 5px;
-  }
-  
+}
+
+.userName {
+  text-align: center;
+  margin-top: 30px;
+}

@@ -5,10 +5,6 @@ import * as commentService from "../services/commentService";
 import {
     ref,
     onValue,
-    query,
-    orderByChild,
-    startAt,
-    endAt,
     update,
     get,
 } from "firebase/database";
@@ -84,14 +80,12 @@ export const RecipeProvider = ({ children }) => {
                 ([id, data]) => ({ id, ...data })
             );
 
-            // Check if search is a number for timeToCook filtering
             if (!isNaN(search) && search.trim() !== "") {
                 const maxTime = Number(search.trim());
                 filteredRecipes = allRecipes.filter(
                     (recipe) => recipe.timeToCook <= maxTime
                 );
             } else {
-                // Default to title search if not a number
                 const normalizedSearch = search.toLowerCase().trim();
                 filteredRecipes = allRecipes.filter((recipe) =>
                     recipe.title.toLowerCase().includes(normalizedSearch)

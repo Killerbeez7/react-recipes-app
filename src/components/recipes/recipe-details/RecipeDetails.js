@@ -5,7 +5,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { ref, update } from "firebase/database";
 import { database } from "../../../firebase/firebaseConfig";
-import { addRecipeToFavorites } from "../../../services/addRecipeToFavorites";
+import { addRecipeToFavorites } from "../../../services/recipeService";
 
 import styles from "./RecipeDetails.module.css";
 // import clx from "classnames";
@@ -205,7 +205,7 @@ export const RecipeDetails = () => {
                                 />
                                 <div className={styles["comment-box"]}>
                                     <p>
-                                        <Link to={`/user/${comment.userId}`} className={styles["comments-user-profile"]}>{comment.username}:</Link>{" "}
+                                        <Link to={`/user/${comment.userId}`} className={styles["comments-user-profile"]} value={comment}>{comment.username}:</Link>{" "}
                                         {comment.text}
                                     </p>
                                     {comment.createdAt && (

@@ -1,24 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-import { getAuth } from "firebase/auth";
+import { useAuth } from "../../contexts/AuthContext";
 import { getDatabase, ref, get } from "firebase/database";
+import { RecipeContext } from "../../contexts/RecipeContext";
 import styles from "./UserProfile.module.css";
 
 export const UserProfile = () => {
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
-    const [recipeDetails, setRecipeDetails] = useState({}); // Store detailed recipe data
+    const [recipeDetails, setRecipeDetails] = useState({});
 
-    const auth = getAuth();
-    const authUser = auth.currentUser;
-    const { userId } = useParams();
+    const { currentUser: authUser } = useAuth();
+    const { userId: commentUserId } = useParams();
+    const { recipes } = useContext(RecipeContext);
 
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                console.log("Fetching user data for userId:", userId);
+                console.log(
+                    "Fetching user data for commentUserId:",
+                    commentUserId
+                );
                 const db = getDatabase();
-                const userRef = ref(db, `users/${userId}`);
+                const userRef = ref(db, `users/${commentUserId}`);
                 const snapshot = await get(userRef);
 
                 let fetchedUserData = {};
@@ -33,7 +37,7 @@ export const UserProfile = () => {
                     console.error("User data not found in Realtime Database.");
                 }
 
-                if (authUser && authUser.uid === userId) {
+                if (authUser && authUser.uid === commentUserId) {
                     console.log("User data from Firebase Auth:", {
                         displayName: authUser.displayName,
                         email: authUser.email,
@@ -91,8 +95,8 @@ export const UserProfile = () => {
             }
         };
 
-        if (userId) fetchUserData();
-    }, [userId, authUser]);
+        if (commentUserId) fetchUserData();
+    }, [commentUserId, authUser]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -116,81 +120,69 @@ export const UserProfile = () => {
             </div>
 
             <div className={styles.sectionsContainer}>
-            <section className={styles.section}>
-  <h3>Saved Recipes</h3>
-  <ul className={styles.recipeList}>
-    {userData.savedRecipes &&
-      Object.keys(userData.savedRecipes).map((id) => (
-        <li key={id} className={styles.recipeItem}>
-          <img
-            src={recipeDetails[id]?.imageUrl || "/placeholder-recipe.png"}
-            alt={recipeDetails[id]?.title || "Recipe Image"}
-          />
-          <h4>{recipeDetails[id]?.title || "Unknown Recipe"}</h4>
-          <p>{recipeDetails[id]?.description || "No description available."}</p>
-          <small>Steps: {recipeDetails[id]?.steps || "Not provided"}</small>
-        </li>
-      ))}
-  </ul>
-</section>
-
-<section className={styles.section}>
-  <h3>Favorite Recipes</h3>
-  <ul className={styles.recipeList}>
-    {/* {userData.favoriteRecipes ? (
-      Object.keys(userData.favoriteRecipes).map((id) => (
-        <li key={id} className={styles.recipeItem}>
-          <img
-            src={favoriteDetails[id]?.imageUrl || "/placeholder-recipe.png"}
-            alt={favoriteDetails[id]?.title || "Recipe Image"}
-          />
-          <h4>{favoriteDetails[id]?.title || "Unknown Recipe"}</h4>
-          <p>{favoriteDetails[id]?.description || "No description available."}</p>
-        </li>
-      ))
-    ) : (
-      <p>No favorite recipes yet.</p>
-    )} */}
-  </ul>
-</section>
-
-<section className={styles.section}>
-  <h3>Liked Recipes</h3>
-  <ul className={styles.recipeList}>
-    {/* {userData.likedRecipes ? (
-      Object.keys(userData.likedRecipes).map((id) => (
-        <li key={id} className={styles.recipeItem}>
-          <img
-            src={likedDetails[id]?.imageUrl || "/placeholder-recipe.png"}
-            alt={likedDetails[id]?.title || "Recipe Image"}
-          />
-          <h4>{likedDetails[id]?.title || "Unknown Recipe"}</h4>
-        </li>
-      ))
-    ) : (
-      <p>No liked recipes yet.</p>
-    )} */}
-  </ul>
-</section>
-
-<section className={styles.section}>
-  <h3>Added Recipes</h3>
-  <ul className={styles.recipeList}>
-    {/* {userData.addedRecipes ? (
-      Object.keys(userData.addedRecipes).map((id) => (
-        <li key={id} className={styles.recipeItem}>
-          <img
-            src={addedDetails[id]?.imageUrl || "/placeholder-recipe.png"}
-            alt={addedDetails[id]?.title || "Recipe Image"}
-          />
-          <h4>{addedDetails[id]?.title || "Unknown Recipe"}</h4>
-        </li>
-      ))
-    ) : (
-      <p>No added recipes yet.</p>
-    )} */}
-  </ul>
-</section>
+                <section className={styles.section}>
+                    <h3>Added Recipes</h3>
+                    <ul className={styles.recipeList}>
+                        {recipes &&
+                            recipes
+                                .filter((x) => x.authorId === commentUserId)
+                                .map((recipe) => (
+                                    <li
+                                        key={recipe}
+                                        className={styles.recipeItem}
+                                    >
+                                        <img
+                                            src={
+                                                recipe.imageUrl ||
+                                                "/placeholder-recipe.png"
+                                            }
+                                            alt={recipe.title || "Recipe Image"}
+                                        />
+                                        <h4>
+                                            {recipe.title || "Unknown Recipe"}
+                                        </h4>
+                                        <p>
+                                            {recipe.description ||
+                                                "No description available."}
+                                        </p>
+                                    </li>
+                                ))}
+                    </ul>
+                </section>
+                {/* -------------------------------- saved recipes ------------------------------------------ */}
+                {/* <section className={styles.section}>
+                    <h3>Saved Recipes</h3>
+                    <ul className={styles.recipeList}>
+                        {userData.savedRecipes &&
+                            Object.keys(userData.savedRecipes).map((id) => (
+                                <li key={id} className={styles.recipeItem}>
+                                    <img
+                                        src={
+                                            recipeDetails[id]?.imageUrl ||
+                                            "/placeholder-recipe.png"
+                                        }
+                                        alt={
+                                            recipeDetails[id]?.title ||
+                                            "Recipe Image"
+                                        }
+                                    />
+                                    <h4>
+                                        {recipeDetails[id]?.title ||
+                                            "Unknown Recipe"}
+                                    </h4>
+                                    <p>
+                                        {recipeDetails[id]?.description ||
+                                            "No description available."}
+                                    </p>
+                                    <small>
+                                        Steps:{" "}
+                                        {recipeDetails[id]?.steps ||
+                                            "Not provided"}
+                                    </small>
+                                </li>
+                            ))}
+                    </ul>
+                </section> */}
             </div>
         </div>
     );
