@@ -1,6 +1,7 @@
 /* Recipe Details */
 .recipe-details-wrapper {
     max-width: 1200px;
+    min-width: 500px;
     margin: 3% auto;
     padding: 20px;
     background-color: #f9f9f9;

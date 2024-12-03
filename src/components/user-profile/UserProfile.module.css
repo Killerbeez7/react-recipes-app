@@ -86,6 +86,9 @@
     padding: 10px;
     text-align: center;
     transition: transform 0.3s ease;
+    width: 80%;
+    max-width: 200px;
+    margin: auto;
 }
 
 .recipeItem:hover {
