@@ -1,5 +1,8 @@
-# Getting Started with Create React App
+The project is using firebase auth and firebase realtime databse.
+Its currently running on this link: https://eat-and-amare-f0f08.web.app/
 
+
+# Getting Started with Create React App
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
