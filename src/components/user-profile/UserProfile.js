@@ -5,6 +5,7 @@ import { getDatabase, ref, get } from "firebase/database";
 import { RecipeContext } from "../../contexts/RecipeContext";
 import styles from "./UserProfile.module.css";
 
+
 export const UserProfile = () => {
     const [loading, setLoading] = useState(true);
     const [userData, setUserData] = useState(null);
@@ -17,10 +18,6 @@ export const UserProfile = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                console.log(
-                    "Fetching user data for commentUserId:",
-                    commentUserId
-                );
                 const db = getDatabase();
                 const userRef = ref(db, `users/${commentUserId}`);
                 const snapshot = await get(userRef);
@@ -28,22 +25,12 @@ export const UserProfile = () => {
                 let fetchedUserData = {};
 
                 if (snapshot.exists()) {
-                    console.log(
-                        "User data found in Realtime Database:",
-                        snapshot.val()
-                    );
                     fetchedUserData = snapshot.val();
                 } else {
                     console.error("User data not found in Realtime Database.");
                 }
 
                 if (authUser && authUser.uid === commentUserId) {
-                    console.log("User data from Firebase Auth:", {
-                        displayName: authUser.displayName,
-                        email: authUser.email,
-                        photoURL: authUser.photoURL,
-                    });
-
                     fetchedUserData = {
                         ...fetchedUserData,
                         displayName: authUser.displayName,
@@ -54,7 +41,6 @@ export const UserProfile = () => {
 
                 setUserData(fetchedUserData);
 
-                // Fetch detailed data for saved recipes
                 if (fetchedUserData.savedRecipes) {
                     await fetchRecipeDetails(fetchedUserData.savedRecipes);
                 }
@@ -75,9 +61,7 @@ export const UserProfile = () => {
                         if (recipeSnapshot.exists()) {
                             return { id: recipeId, ...recipeSnapshot.val() };
                         } else {
-                            console.warn(
-                                `Recipe with ID ${recipeId} not found.`
-                            );
+                            console.warn(`Recipe with ID ${recipeId} not found.`);
                             return null;
                         }
                     }
@@ -108,81 +92,56 @@ export const UserProfile = () => {
 
     return (
         <div className={styles.profileContainer}>
-            <div className={styles.userProfileWrapper}>
-                <h2 className={styles.userName}>
-                    {userData.username || "Unknown User"}
-                </h2>
-                <img
-                    src={userData.profilePicture || "/default-avatar.png"}
-                    alt={`${userData.username || "User"}'s avatar`}
-                    className={styles.userPhoto}
-                />
+            <div className={styles.backgroundImage}>
+                <div className={styles.userProfileHeader}>
+                    <img
+                        src={userData.photoURL || "/default-avatar.png"}
+                        alt={`${userData.displayName || "User"}'s avatar`}
+                        className={styles.userPhoto}
+                    />
+                    <h2 className={styles.userName}>
+                        {userData.displayName || "Unknown User"}
+                    </h2>
+                    {/* to add location in user obj */}
+                    <p className={styles.userLocation}>San Francisco, CA</p>         
+                    {/* ----- */}
+                </div>
+            </div>
+
+            <div className={styles.statsContainer}>
+                <div className={styles.statCard}>
+                    <h3>{recipes.filter((r) => r.authorId === commentUserId).length}</h3>
+                    <p>Recipes</p>
+                </div>
+                <div className={styles.statCard}>
+                    <h3>239</h3>
+                    <p>Stars</p>
+                </div>
+                <div className={styles.statCard}>
+                    <h3>125</h3>
+                    <p>Followers</p>
+                </div>
             </div>
 
             <div className={styles.sectionsContainer}>
                 <section className={styles.section}>
-                    <h3>Added Recipes</h3>
+                    <h3>{userData.displayName.split(" ")[0]}'s Recipes</h3>
                     <ul className={styles.recipeList}>
                         {recipes &&
                             recipes
                                 .filter((x) => x.authorId === commentUserId)
                                 .map((recipe) => (
-                                    <li
-                                        key={recipe}
-                                        className={styles.recipeItem}
-                                    >
+                                    <li key={recipe.id} className={styles.recipeItem}>
                                         <img
-                                            src={
-                                                recipe.imageUrl ||
-                                                "/placeholder-recipe.png"
-                                            }
+                                            src={recipe.imageUrl || "/placeholder-recipe.png"}
                                             alt={recipe.title || "Recipe Image"}
                                         />
-                                        <h4>
-                                            {recipe.title || "Unknown Recipe"}
-                                        </h4>
-                                        <p>
-                                            {recipe.description ||
-                                                "No description available."}
-                                        </p>
+                                        <h4>{recipe.title || "Unknown Recipe"}</h4>
+                                        <p>{recipe.description || "No description available."}</p>
                                     </li>
                                 ))}
                     </ul>
                 </section>
-                {/* -------------------------------- saved recipes ------------------------------------------ */}
-                {/* <section className={styles.section}>
-                    <h3>Saved Recipes</h3>
-                    <ul className={styles.recipeList}>
-                        {userData.savedRecipes &&
-                            Object.keys(userData.savedRecipes).map((id) => (
-                                <li key={id} className={styles.recipeItem}>
-                                    <img
-                                        src={
-                                            recipeDetails[id]?.imageUrl ||
-                                            "/placeholder-recipe.png"
-                                        }
-                                        alt={
-                                            recipeDetails[id]?.title ||
-                                            "Recipe Image"
-                                        }
-                                    />
-                                    <h4>
-                                        {recipeDetails[id]?.title ||
-                                            "Unknown Recipe"}
-                                    </h4>
-                                    <p>
-                                        {recipeDetails[id]?.description ||
-                                            "No description available."}
-                                    </p>
-                                    <small>
-                                        Steps:{" "}
-                                        {recipeDetails[id]?.steps ||
-                                            "Not provided"}
-                                    </small>
-                                </li>
-                            ))}
-                    </ul>
-                </section> */}
             </div>
         </div>
     );
