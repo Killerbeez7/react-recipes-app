@@ -1,4 +1,4 @@
-The project is using firebase auth and firebase realtime databse.
+The project is using firebase auth and firebase realtime database.
 Its currently running on this link: https://eat-and-amare-f0f08.web.app/
 
 
