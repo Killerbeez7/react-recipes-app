@@ -9,7 +9,6 @@ const firebaseConfig = {
     authDomain: "eat-and-amare-f0f08.firebaseapp.com",
     databaseURL: 'https://eat-and-amare-f0f08-default-rtdb.europe-west1.firebasedatabase.app/',
     projectId: "eat-and-amare-f0f08",
-    // storageBucket: "eat-and-amare-f0f08.appspot.com",
     storageBucket: "gs://eat-and-amare-f0f08.firebasestorage.app",
     messagingSenderId: "152325611922",
     appId: "1:152325611922:web:4b3be847d5b531ea3be14b"

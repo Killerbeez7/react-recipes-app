@@ -1,7 +1,6 @@
 import { database } from '../firebase/firebaseConfig';
 import { ref, push, update, remove, set, get, child } from 'firebase/database';
-import { formatISO } from 'date-fns';  // Import date-fns for timestamp creation
-
+import { formatISO } from 'date-fns';
 
 export const create = async (recipeId, comment) => {
     try {

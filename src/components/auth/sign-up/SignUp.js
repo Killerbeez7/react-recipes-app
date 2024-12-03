@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from '../../../contexts/AuthContext';
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../../../firebase/firebaseConfig"; // Import auth instance from firebaseConfig
+import { auth } from "../../../firebase/firebaseConfig";
 import { ref, set } from "firebase/database";
-import { database } from "../../../firebase/firebaseConfig"; // Import database configuration
+import { database } from "../../../firebase/firebaseConfig";
 
 import styles from "./SignUp.module.css";
 
 export const SignUp = () => {
-    const { userLoggedIn, setCurrentUser } = useAuth(); // Use setCurrentUser from context
+    const { userLoggedIn, setCurrentUser } = useAuth();
 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -42,19 +42,15 @@ export const SignUp = () => {
         }
 
         try {
-            // Step 1: Create the user using Firebase Authentication
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
-            // Step 2: Update the user's displayName with the given username
             await updateProfile(user, {
                 displayName: username,
             });
 
-            // Step 3: Manually update the currentUser in the AuthContext to reflect the new displayName
             setCurrentUser({ ...user, displayName: username });
 
-            // Step 4: Save user data to Firebase Realtime Database under 'users' collection
             const userRef = ref(database, `users/${user.uid}`);
             await set(userRef, {
                 username: username,

@@ -1,23 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { getComments, postComment } from "../../services/commentService"; // Adjust path if necessary
+import { getComments, postComment } from "../../services/commentService";
 import styles from "./Comments.module.css";
 
 export const Comments = ({ recipeId, currentUser }) => {
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
 
-    // Fetch comments when the component mounts or recipeId changes
     useEffect(() => {
         if (recipeId) {
             getComments(recipeId).then((data) => {
-                setComments(data || []); // Ensure we handle null or undefined gracefully
+                setComments(data || []);
             });
         }
     }, [recipeId]);
 
-    // Handle posting a new comment
     const handlePostComment = async () => {
-        if (!newComment.trim()) return; // Prevent empty comments
+        if (!newComment.trim()) return;
 
         const commentData = {
             text: newComment,
@@ -27,9 +25,9 @@ export const Comments = ({ recipeId, currentUser }) => {
         };
 
         try {
-            await postComment(recipeId, commentData); // Add comment to database
-            setComments((prevComments) => [...prevComments, commentData]); // Update local state
-            setNewComment(""); // Clear input field
+            await postComment(recipeId, commentData);
+            setComments((prevComments) => [...prevComments, commentData]);
+            setNewComment("");
         } catch (error) {
             console.error("Error posting comment:", error);
         }

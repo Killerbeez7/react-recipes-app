@@ -57,7 +57,6 @@ export const doSignInWithGoogle = async () => {
         const user = result.user;
         const upscalePhotoURL =  getHighResPhotoURL(user.photoURL)
         
-
         await addUserToDatabase(
             user.uid,
             user.displayName,

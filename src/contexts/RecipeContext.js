@@ -28,12 +28,6 @@ const recipeReducer = (state, action) => {
             return state.filter((recipe) => recipe.id !== action.recipeId);
         case "ADD_RECIPE":
             return [...state, action.payload];
-        // case 'ADD_COMMENT':
-        //     return state.map(recipe =>
-        //         recipe.id === action.payload.recipeId
-        //             ? { ...recipe, comments: [...(recipe.comments || []), action.payload.comment] }
-        //             : recipe
-        //     );
         case "TOGGLE_LIKE":
             return state.map((recipe) =>
                 recipe.id === action.recipeId
@@ -161,10 +155,8 @@ export const RecipeProvider = ({ children }) => {
         const userHasLiked = likes[user.uid];
 
         if (userHasLiked) {
-            // Unlike the recipe
             delete likes[user.uid];
         } else {
-            // Like the recipe
             likes[user.uid] = true;
         }
 
@@ -186,18 +178,15 @@ export const RecipeProvider = ({ children }) => {
     return (
         <RecipeContext.Provider
             value={{
-                //recipes
                 recipes,
                 addRecipe,
                 editRecipe,
                 deleteRecipe,
                 selectRecipe,
-                //comments
                 addComment,
                 editComment,
                 deleteComment,
                 toggleLike,
-                //filter
                 filterRecipes,
             }}
         >

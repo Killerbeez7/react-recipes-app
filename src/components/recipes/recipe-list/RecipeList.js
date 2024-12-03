@@ -8,7 +8,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 export const RecipeList = () => {
     const { currentUser } = useAuth();
-    const { recipes } = useContext(RecipeContext); // Get recipes from context
+    const { recipes } = useContext(RecipeContext);
 
     return (
         <>
