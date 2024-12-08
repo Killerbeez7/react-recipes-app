@@ -33,7 +33,7 @@
 }
 
 .brand a {
-    font-size: 2.3rem;
+    font-size: 1.5rem;
     text-decoration: none;
     color: #333;
 }
@@ -41,7 +41,7 @@
 .menuButton {
     background: none;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     cursor: pointer;
     display: none;
 }
@@ -89,6 +89,8 @@
         display: flex;
         align-items: center;
         z-index: 10;
+        height: 95vh;
+        top: 5vh;
     }
 }
 
@@ -123,6 +125,7 @@
 
 .dropdownMenu li a {
     color: #333;
+    font-size: 1rem;
     text-decoration: none;
     font-size: 0.9rem;
 }
@@ -130,4 +133,68 @@
 .dropdownMenu li a:hover {
     background-color: #f8f8f8;
     color: #ff9800;
+}
+
+/* Mobile-Specific Styling */
+
+@media (max-width: 768px) {
+    .menuButton {
+        display: block;
+    }
+
+    .navLinks {
+        display: none;
+        flex-direction: column;
+        background-color: #333;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        z-index: 100;
+        padding: 10px 20px;
+    }
+
+    .navLinks.open {
+        display: flex;
+    }
+
+    .dropdown {
+        /* width: 100%; */
+    }
+
+    .dropdownMenu {
+        list-style: none;
+        display: none;
+        flex-direction: column;
+        padding: 10px 20px;
+        background-color: #444;
+    }
+
+    .dropdownOpen .dropdownMenu {
+        display: flex;
+    }
+
+    .dropdownToggle {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 1.2rem;
+        text-align: left;
+        cursor: pointer;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .dropdownMenu li {
+        padding: 10px 0;
+    }
+
+    .dropdownMenu li a {
+        color: white;
+        text-decoration: none;
+    }
+
+    .dropdownMenu li a:hover {
+        color: #ff9800;
+    }
 }

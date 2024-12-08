@@ -21,7 +21,7 @@ export const RecipeEdit = () => {
                     setCurrentRecipe({ id: recipeId, ...recipeData });
                 } else {
                     alert("Recipe not found");
-                    navigate("/recipes");
+                    navigate("/recipes/all");
                 }
             } catch (error) {
                 console.error("Error fetching recipe details:", error);

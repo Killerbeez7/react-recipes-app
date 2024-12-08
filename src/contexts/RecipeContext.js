@@ -102,12 +102,12 @@ export const RecipeProvider = ({ children }) => {
         const updatedRecipe = await recipeService.getOne(recipeId);
         dispatch({ type: "EDIT_RECIPE", recipeId, payload: updatedRecipe });
 
-        navigate(`/recipes`);
+        navigate(`/recipes/all`);
     };
 
     const deleteRecipe = async (recipeId) => {
         await recipeService.del(recipeId);
-        navigate("/recipes");
+        navigate("/recipes/all");
     };
 
     const selectRecipe = (recipeId) => {
