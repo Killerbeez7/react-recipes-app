@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { RecipeItem } from "../recipe-item/RecipeItem";
 import styles from "./RecipeList.module.css";
@@ -9,6 +9,20 @@ import { useAuth } from "../../../contexts/AuthContext";
 export const RecipeList = () => {
     const { currentUser } = useAuth();
     const { recipes } = useContext(RecipeContext);
+    const { category } = useParams(); // Get the category from the URL
+    const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+
+    useEffect(() => {
+        if (category) {
+            // Filter recipes based on category
+            const filtered = recipes.filter(
+                (recipe) => recipe.category?.toLowerCase() === category.toLowerCase()
+            );
+            setFilteredRecipes(filtered);
+        } else {
+            setFilteredRecipes(recipes); // Show all recipes if no category is selected
+        }
+    }, [category, recipes]);
 
     return (
         <>
@@ -23,15 +37,15 @@ export const RecipeList = () => {
             </form>
             <div className={styles["section"]}>
                 <ul className={styles["recipe-list-wrapper"]}>
-                    {recipes.length > 0 ? (
-                        recipes.map((recipe) => (
-                            <div>
-                                <RecipeItem key={recipe.id} recipe={recipe} />
+                    {filteredRecipes.length > 0 ? (
+                        filteredRecipes.map((recipe) => (
+                            <div key={recipe.id}>
+                                <RecipeItem recipe={recipe} />
                             </div>
                         ))
                     ) : (
                         <h1 className={styles["no-recipes-message"]}>
-                            No recipes yet!
+                            No recipes found for this category!
                         </h1>
                     )}
                 </ul>

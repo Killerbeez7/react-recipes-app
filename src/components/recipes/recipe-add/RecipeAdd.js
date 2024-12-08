@@ -9,13 +9,14 @@ export const RecipeAdd = () => {
     const { currentUser } = useAuth();
     const [values, setValues] = useState({
         title: "",
+        category: "",
         description: "",
         ingredients: "",
         steps: "",
         authorId: currentUser.uid,
         imageUrl: "",
         likes: 0,
-        timeToCook: ""
+        timeToCook: "",
     });
 
     const { addRecipe } = useContext(RecipeContext);
@@ -52,7 +53,7 @@ export const RecipeAdd = () => {
 
         try {
             await addRecipe(values);
-            navigate(`/recipes`);
+            navigate(`/recipes/all`);
         } catch (error) {
             console.error("Error adding recipe:", error);
             alert("There was an error adding the recipe. Please try again.");
@@ -81,6 +82,16 @@ export const RecipeAdd = () => {
                         name="title"
                         placeholder="Recipe title"
                         value={values.title}
+                        onChange={changeHandler}
+                    />
+                </div>
+                <div className={styles['form-group']}>
+                    <input
+                        type="text"
+                        id="category"
+                        name="category"
+                        placeholder="Category"
+                        value={values.category}
                         onChange={changeHandler}
                     />
                 </div>
@@ -143,7 +154,7 @@ export const RecipeAdd = () => {
                     >
                         Submit
                     </button>
-                    <Link className={styles.btn} to={`/recipes`}>Cancel</Link>
+                    <Link className={styles.btn} to={`/recipes/all`}>Cancel</Link>
                 </div>
             </form>
         </div>

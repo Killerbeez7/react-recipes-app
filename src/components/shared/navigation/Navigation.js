@@ -8,10 +8,15 @@ import styles from "./Navigation.module.css";
 
 export const Navigation = (props) => {
     const [menuOpen, setMenuOpen] = useState(false);
-
+    const [dropdownOpen, setDropdownOpen] = useState(false);
     const toggleMenu = () => {
         setMenuOpen((prev) => !prev);
     };
+
+    const toggleDropdown = () => {
+        setDropdownOpen((prev) => !prev);
+    };
+
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
 
@@ -37,10 +42,148 @@ export const Navigation = (props) => {
                         Home
                     </Link>
                 </li>
-                <li>
-                    <Link to="/recipes" onClick={handleLinkClick}>
+                <li
+                    className={styles.dropdown}
+                    onMouseEnter={() => setDropdownOpen(true)}
+                    onMouseLeave={() => setDropdownOpen(false)}
+                >
+                    <Link to="#" onClick={handleLinkClick}>
                         Recipes
                     </Link>
+                    {dropdownOpen && (
+                        <ul className={styles.dropdownMenu}>
+                            <li>
+                                <Link
+                                    to="/recipes/breakfast"
+                                    onClick={handleLinkClick}
+                                >
+                                    Breakfast & Brunch
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/lunch"
+                                    onClick={handleLinkClick}
+                                >
+                                    Lunch
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/appetizers"
+                                    onClick={handleLinkClick}
+                                >
+                                    Appetizers & Snacks
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/dinner"
+                                    onClick={handleLinkClick}
+                                >
+                                    Dinner
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/desserts"
+                                    onClick={handleLinkClick}
+                                >
+                                    Dessert
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/all"
+                                    onClick={handleLinkClick}
+                                >
+                                    See More
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/drinks"
+                                    onClick={handleLinkClick}
+                                >
+                                    Drink & Cocktail
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/side-dish"
+                                    onClick={handleLinkClick}
+                                >
+                                    Side Dish
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/bbq"
+                                    onClick={handleLinkClick}
+                                >
+                                    Grilling & BBQ
+                                </Link>
+                            </li>
+
+                            <li>
+                                <Link
+                                    to="/recipes/microwave"
+                                    onClick={handleLinkClick}
+                                >
+                                    Microwave
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/easy"
+                                    onClick={handleLinkClick}
+                                >
+                                    Quick & Easy
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/slow"
+                                    onClick={handleLinkClick}
+                                >
+                                    Slow-Cooker
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/fryer"
+                                    onClick={handleLinkClick}
+                                >
+                                    Air Fryer
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/pot"
+                                    onClick={handleLinkClick}
+                                >
+                                    Instant Pot
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    to="/recipes/baking"
+                                    onClick={handleLinkClick}
+                                >
+                                    Baking
+                                </Link>
+                            </li>
+                            <br></br>
+                            <li>
+                                <Link
+                                    to="/recipes/all"
+                                    onClick={handleLinkClick}
+                                >
+                                    See More
+                                </Link>
+                            </li>
+                        </ul>
+                    )}
                 </li>
                 <li>
                     <Link to="/gallery" onClick={handleLinkClick}>

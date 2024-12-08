@@ -70,8 +70,7 @@ function App() {
             new window.google.translate.TranslateElement(
                 {
                     pageLanguage: "en",
-                    layout: google.translate.TranslateElement.InlineLayout
-                        .SIMPLE,
+                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
                     // autoDisplay: isIOS,
                 },
 
@@ -85,21 +84,15 @@ function App() {
 
     const handleTranslateClick = () => {
         if (window.google && window.google.translate) {
-            const translateElement =
-                new window.google.translate.TranslateElement({
-                    pageLanguage: "en",
-                    includedLanguages: userLang,
-                    layout: google.translate.TranslateElement.InlineLayout
-                        .SIMPLE,
-                });
+            const translateElement = new window.google.translate.TranslateElement({
+                pageLanguage: "en",
+                includedLanguages: userLang,
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            });
             translateElement.showBanner(true);
-            const iframe = document.querySelector(
-                "iframe.goog-te-banner-frame"
-            );
+            const iframe = document.querySelector("iframe.goog-te-banner-frame");
             if (iframe) {
-                iframe.contentWindow.document
-                    .getElementById(":1.container")
-                    .click();
+                iframe.contentWindow.document.getElementById(":1.container").click();
             }
         } else {
             console.warn("Google Translate is not initialized yet.");
@@ -115,10 +108,7 @@ function App() {
                     <Navigation />
                     {showTranslateButton && (
                         <>
-                            <button
-                                onClick={handleTranslateClick}
-                                className="translate-button"
-                            >
+                            <button onClick={handleTranslateClick} className="translate-button">
                                 {translations[userLang] || translations["en"]}
                             </button>
                             <div id="google_translate_element"></div>
@@ -132,39 +122,25 @@ function App() {
                             <Route path="/gallery" element={<Gallery />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/forum" element={<Forum />} />
+
                             <Route path="/auth/sign-up" element={<SignUp />} />
                             <Route path="/auth/sign-in" element={<SignIn />} />
                             <Route path="/auth/logout" element={<Logout />} />
-                            <Route
-                                path="/auth/:userId/details"
-                                element={<ProfileDetails />}
-                            />
+                            <Route path="/auth/:userId/details" element={<ProfileDetails />} />
 
-                            <Route path="/recipes" element={<RecipeList />} />
+                            <Route path="/recipes/all" element={<RecipeList />} />
+                            <Route path="/recipes/:category" element={<RecipeList />} />
+                            <Route path="/recipes/details/:recipeId" element={<RecipeDetails />} />
+
                             <Route element={<PrivateRoute />}>
-                                <Route
-                                    path="/recipes/add"
-                                    element={<RecipeAdd />}
-                                />
-                                <Route
-                                    path="/recipes/edit/:recipeId"
-                                    element={<RecipeEdit />}
-                                />
+                                <Route path="/recipes/add" element={<RecipeAdd />} />
+                                <Route path="/recipes/edit/:recipeId" element={<RecipeEdit />} />
                             </Route>
-                            <Route
-                                path="/recipes/details/:recipeId"
-                                element={<RecipeDetails />}
-                            />
-                            <Route
-                                path="/user/:userId"
-                                element={<UserProfile />}
-                            />
+                            <Route path="/recipes/details/:recipeId" element={<RecipeDetails />} />
+                            <Route path="/user/:userId" element={<UserProfile />} />
 
                             {/* redirect old paths back to home */}
-                            <Route
-                                path="/old-path"
-                                element={<Navigate to="/" replace />}
-                            />
+                            <Route path="/old-path" element={<Navigate to="/" replace />} />
                             <Route path="/*" element={<NotFound />} />
                         </Routes>
                     </RecipeProvider>
