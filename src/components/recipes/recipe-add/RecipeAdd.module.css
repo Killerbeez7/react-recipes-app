@@ -93,3 +93,31 @@ a.btn:hover {
         text-align: center;
     }
 }
+
+/* Category Checkboxes */
+.category-section {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    gap: 15px; /* Spacing between checkboxes */
+    padding: 0 10px; /* Padding around the section */
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.checkbox-label:hover {
+    color: #3498db; /* Highlight on hover */
+}
+
+.checkbox-label input {
+    margin-right: 10px;
+    transform: scale(1.2); /* Make checkboxes slightly larger */
+}

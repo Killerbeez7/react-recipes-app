@@ -53,132 +53,84 @@ export const Navigation = (props) => {
                     {dropdownOpen && (
                         <ul className={styles.dropdownMenu}>
                             <li>
-                                <Link
-                                    to="/recipes/breakfast"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/breakfast" onClick={handleLinkClick}>
                                     Breakfast & Brunch
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/lunch"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/lunch" onClick={handleLinkClick}>
                                     Lunch
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/appetizers"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/appetizers" onClick={handleLinkClick}>
                                     Appetizers & Snacks
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/dinner"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/dinner" onClick={handleLinkClick}>
                                     Dinner
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/desserts"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/desserts" onClick={handleLinkClick}>
                                     Dessert
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/all"
-                                    onClick={handleLinkClick}
-                                >
-                                    See More
-                                </Link>
-                            </li>
-                            <li>
-                                <Link
-                                    to="/recipes/drinks"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/drinks" onClick={handleLinkClick}>
                                     Drink & Cocktail
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/side-dish"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/side-dish" onClick={handleLinkClick}>
                                     Side Dish
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/bbq"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/grilling" onClick={handleLinkClick}>
                                     Grilling & BBQ
                                 </Link>
                             </li>
 
                             <li>
-                                <Link
-                                    to="/recipes/microwave"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/microwave" onClick={handleLinkClick}>
                                     Microwave
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/easy"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/easy" onClick={handleLinkClick}>
                                     Quick & Easy
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/slow"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/slow" onClick={handleLinkClick}>
                                     Slow-Cooker
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/fryer"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/fryer" onClick={handleLinkClick}>
                                     Air Fryer
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/pot"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/instant-pot" onClick={handleLinkClick}>
                                     Instant Pot
                                 </Link>
                             </li>
                             <li>
-                                <Link
-                                    to="/recipes/baking"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/baking" onClick={handleLinkClick}>
                                     Baking
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/recipes/vegetarian" onClick={handleLinkClick}>
+                                    Vegetarian
                                 </Link>
                             </li>
                             <br></br>
                             <li>
-                                <Link
-                                    to="/recipes/all"
-                                    onClick={handleLinkClick}
-                                >
+                                <Link to="/recipes/all" onClick={handleLinkClick}>
                                     See More
                                 </Link>
                             </li>
@@ -203,10 +155,7 @@ export const Navigation = (props) => {
                 {currentUser ? (
                     <>
                         <li>
-                            <Link
-                                to={`/auth/${userId}/details`}
-                                onClick={handleLinkClick}
-                            >
+                            <Link to={`/auth/${userId}/details`} onClick={handleLinkClick}>
                                 {currentUser?.displayName || currentUser?.email}
                             </Link>
                         </li>

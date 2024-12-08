@@ -9,18 +9,17 @@ import { useAuth } from "../../../contexts/AuthContext";
 export const RecipeList = () => {
     const { currentUser } = useAuth();
     const { recipes } = useContext(RecipeContext);
-    const { category } = useParams(); // Get the category from the URL
-    const [filteredRecipes, setFilteredRecipes] = useState(recipes);
+    const { category } = useParams();
+    const [filteredRecipes, setFilteredRecipes] = useState([]);
 
     useEffect(() => {
         if (category) {
-            // Filter recipes based on category
             const filtered = recipes.filter(
-                (recipe) => recipe.category?.toLowerCase() === category.toLowerCase()
+                (recipe) => recipe.categories?.includes(category)
             );
             setFilteredRecipes(filtered);
         } else {
-            setFilteredRecipes(recipes); // Show all recipes if no category is selected
+            setFilteredRecipes(recipes);
         }
     }, [category, recipes]);
 

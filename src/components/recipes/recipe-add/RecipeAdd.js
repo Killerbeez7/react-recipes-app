@@ -9,7 +9,6 @@ export const RecipeAdd = () => {
     const { currentUser } = useAuth();
     const [values, setValues] = useState({
         title: "",
-        category: "",
         description: "",
         ingredients: "",
         steps: "",
@@ -19,15 +18,45 @@ export const RecipeAdd = () => {
         timeToCook: "",
     });
 
+    const [categories, setCategories] = useState([]);
+
     const { addRecipe } = useContext(RecipeContext);
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const availableCategories = [
+        "breakfast",
+        "lunch",
+        "appetizers",
+        "dinner",
+        "dessert",
+        "drinks",
+        "side-dish",
+        "grilling",
+        "microwave",
+        "easy",
+        "slow",
+        "fryer",
+        "instant-pot",
+        "baking",
+        "vegetarian",
+    ];
 
     const changeHandler = (e) => {
         setValues((state) => ({
             ...state,
             [e.target.name]: e.target.value,
         }));
+    };
+
+    const handleCategoryChange = (e) => {
+        const { value, checked } = e.target;
+
+        if (checked) {
+            setCategories((prev) => [...prev, value]);
+        } else {
+            setCategories((prev) => prev.filter((cat) => cat !== value));
+        }
     };
 
     const onSubmit = async (e) => {
@@ -52,7 +81,7 @@ export const RecipeAdd = () => {
         setIsSubmitting(true);
 
         try {
-            await addRecipe(values);
+            await addRecipe({ ...values, categories });
             navigate(`/recipes/all`);
         } catch (error) {
             console.error("Error adding recipe:", error);
@@ -75,7 +104,7 @@ export const RecipeAdd = () => {
         <div className={styles["form-container"]}>
             <h1 className={styles["add-recipe-title"]}>Add Recipe</h1>
             <form id="create" className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
-                <div className={styles['form-group']}>
+                <div className={styles["form-group"]}>
                     <input
                         type="text"
                         id="title"
@@ -85,17 +114,7 @@ export const RecipeAdd = () => {
                         onChange={changeHandler}
                     />
                 </div>
-                <div className={styles['form-group']}>
-                    <input
-                        type="text"
-                        id="category"
-                        name="category"
-                        placeholder="Category"
-                        value={values.category}
-                        onChange={changeHandler}
-                    />
-                </div>
-                <div className={styles['form-group']}>
+                <div className={styles["form-group"]}>
                     <input
                         type="text"
                         id="description"
@@ -105,7 +124,7 @@ export const RecipeAdd = () => {
                         onChange={changeHandler}
                     />
                 </div>
-                <div className={styles['form-group']}>
+                <div className={styles["form-group"]}>
                     <input
                         type="text"
                         id="imageUrl"
@@ -115,7 +134,7 @@ export const RecipeAdd = () => {
                         onChange={changeHandler}
                     />
                 </div>
-                <div className={styles['form-group']}>
+                <div className={styles["form-group"]}>
                     <input
                         type="text"
                         id="timeToCook"
@@ -125,7 +144,7 @@ export const RecipeAdd = () => {
                         onChange={changeHandler}
                     />
                 </div>
-                <div className={styles['form-group']}>
+                <div className={styles["form-group"]}>
                     <input
                         type="text"
                         id="ingredients"
@@ -135,7 +154,7 @@ export const RecipeAdd = () => {
                         onChange={changeHandler}
                     />
                 </div>
-                <div className={styles['form-group']}>
+                <div className={styles["form-group"]}>
                     <input
                         type="text"
                         id="steps"
@@ -145,16 +164,27 @@ export const RecipeAdd = () => {
                         onChange={changeHandler}
                     />
                 </div>
+                <div className={styles["category-section"]}>
+                    <h4>Select Categories:</h4>
+                    {availableCategories.map((category) => (
+                        <label key={category} className={styles["checkbox-label"]}>
+                            <input
+                                type="checkbox"
+                                value={category}
+                                onChange={handleCategoryChange}
+                            />
+                            {category}
+                        </label>
+                    ))}
+                </div>
 
                 <div className={styles["buttons-form"]}>
-                    <button
-                        type="submit"
-                        className={styles.btn}
-                        disabled={isSubmitting}
-                    >
+                    <button type="submit" className={styles.btn} disabled={isSubmitting}>
                         Submit
                     </button>
-                    <Link className={styles.btn} to={`/recipes/all`}>Cancel</Link>
+                    <Link className={styles.btn} to={`/recipes/all`}>
+                        Cancel
+                    </Link>
                 </div>
             </form>
         </div>
