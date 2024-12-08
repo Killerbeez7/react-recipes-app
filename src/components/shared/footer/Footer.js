@@ -10,7 +10,7 @@ export const Footer = () => {
                 <div className={styles.linksSection}>
                     <h4>Quick Links</h4>
                     <ul className={styles.quickLinksList}>
-                        <li className={styles.quickLinkItem}><Link to="/recipes">Recipes</Link></li>
+                        <li className={styles.quickLinkItem}><Link to="/recipes/all">Recipes</Link></li>
                         <li className={styles.quickLinkItem}><Link to="/about">About Us</Link></li>
                         <li className={styles.quickLinkItem}><Link to="/forum">Forum</Link></li>
                         <li className={styles.quickLinkItem}><Link to="/contact">Contact</Link></li>

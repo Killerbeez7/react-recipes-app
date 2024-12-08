@@ -156,11 +156,6 @@ export const Navigation = () => {
                         Forum
                     </Link>
                 </li>
-                <li>
-                    <Link to="/about" onClick={closeMenu}>
-                        About
-                    </Link>
-                </li>
                 {currentUser ? (
                     <>
                         <li>
@@ -176,13 +171,16 @@ export const Navigation = () => {
                     </>
                 ) : (
                     <>
-                        <Link to="/auth/sign-in" onClick={closeMenu}>
-                            Sign In
-                        </Link>
-
-                        <Link to="/auth/sign-up" onClick={closeMenu}>
-                            Try It Free
-                        </Link>
+                        <li>
+                            <Link to="/auth/sign-in" onClick={closeMenu}>
+                                Sign In
+                            </Link>
+                        </li>
+                        <li>
+                            <Link to="/auth/sign-up" onClick={closeMenu}>
+                                Try It Free
+                            </Link>
+                        </li>
                     </>
                 )}
             </ul>
