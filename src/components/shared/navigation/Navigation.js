@@ -22,9 +22,19 @@ export const Navigation = () => {
         setDropdownOpen(false);
     };
 
-    useEffect(() => {
-        document.body.style.overflow = menuOpen ? "hidden" : "auto";
-    }, [menuOpen]);
+ useEffect(() => {
+    const body = document.body;
+
+    if (menuOpen) {
+        body.style.overflow = "hidden"; // Disable body scrolling
+    } else {
+        body.style.overflow = "auto"; // Re-enable body scrolling
+    }
+
+    return () => {
+        body.style.overflow = "auto"; // Cleanup when the component unmounts
+    };
+}, [menuOpen]);
 
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;

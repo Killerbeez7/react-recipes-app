@@ -138,51 +138,35 @@
 /* Mobile-Specific Styling */
 
 @media (max-width: 768px) {
-    .menuButton {
-        display: block;
-    }
-
     .navLinks {
         display: none;
         flex-direction: column;
         background-color: #333;
-        position: absolute;
-        top: 60px;
+        position: fixed;
+        top: 60px; /* Start below the navbar */
         left: 0;
         width: 100%;
+        height: calc(100vh - 60px); /* Full height minus the navbar */
         z-index: 100;
-        padding: 10px 20px;
+        padding: 20px;
+        overflow-y: auto; /* Enable scrolling */
     }
 
     .navLinks.open {
-        display: flex;
+        display: flex; /* Show the menu */
     }
 
-    .dropdown {
-        /* width: 100%; */
-    }
-
+    /* Dropdown menu styles */
     .dropdownMenu {
         list-style: none;
         display: none;
         flex-direction: column;
-        padding: 10px 20px;
+        padding: 10px;
         background-color: #444;
     }
 
     .dropdownOpen .dropdownMenu {
         display: flex;
-    }
-
-    .dropdownToggle {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.2rem;
-        text-align: left;
-        cursor: pointer;
-        width: 100%;
-        padding: 10px 0;
     }
 
     .dropdownMenu li {
