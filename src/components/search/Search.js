@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { RecipeContext } from "../../contexts/RecipeContext";
 import styles from "./Search.module.css";
 import cx from "classnames";
@@ -8,36 +8,17 @@ export const Search = () => {
     const [search, setSearch] = useState("");
     const [criteria, setCriteria] = useState("title");
 
-    useEffect(() => {
-        const handleGlobalClick = (e) => {
-            const target = e.target;
-
-            if (
-                target.tagName === "A" ||
-                (target.tagName === "BUTTON" && !target.dataset.noReset)
-            ) {
-                onResetSearch();
-            }
-        };
-
-        document.addEventListener("click", handleGlobalClick);
-
-        return () => {
-            document.removeEventListener("click", handleGlobalClick);
-        };
-    }, []);
-
     const onSearchChange = (e) => {
-        setSearch(e.target.value);
-    };
+        const newSearch = e.target.value;
+        setSearch(newSearch);
 
-    const onSearchSubmit = (e) => {
-        e.preventDefault();
-        filterRecipes(search, criteria);
+        filterRecipes(newSearch, criteria);
     };
 
     const onSearchCriteriaChange = (e) => {
-        setCriteria(e.target.value);
+        const newCriteria = e.target.value;
+        setCriteria(newCriteria);
+        filterRecipes(search, newCriteria);
     };
 
     const onResetSearch = () => {
@@ -46,9 +27,8 @@ export const Search = () => {
         filterRecipes("", "title");
     };
 
-
     return (
-        <form className={styles["search-form"]} onSubmit={onSearchSubmit}>
+        <form className={styles["search-form"]}>
             <h2>
                 <span>Search Recipes</span>
             </h2>
@@ -67,17 +47,9 @@ export const Search = () => {
                         data-no-reset
                         onClick={onResetSearch}
                     >
-                        X{" "}
+                        X
                     </button>
                 )}
-                <button
-                    className={styles["btn"]}
-                    title="Search"
-                    type="submit"
-                    data-no-reset
-                >
-                    🔍  
-                </button>
             </div>
 
             <div className={styles["filter"]}>

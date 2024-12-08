@@ -1,7 +1,7 @@
 .profileContainer {
     width: 90%;
     max-width: 800px;
-    margin: 20px auto;
+    margin: 50px auto;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 15px;
@@ -21,16 +21,18 @@
 }
 
 .userPhoto {
-    width: 120px;
-    height: 120px;
+    width: 150px;
+    height: 150px;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #fff;
     margin-bottom: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin: auto;
 }
 
 .userName {
+    margin-top: 20px;
     font-size: 1.6rem;
     color: #fff;
     margin-bottom: 5px;
@@ -90,7 +92,9 @@
     padding: 10px;
     text-align: center;
     transition: transform 0.3s ease;
-    margin: 1%;
+    margin: 2% auto;
+    width: 150px;
+
 }
 
 .recipeItem:hover {
@@ -119,8 +123,8 @@
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
     .userPhoto {
-        width: 100px;
-        height: 100px;
+        width: 120px;
+        height: 120px;
     }
 
     .userName {
@@ -136,7 +140,7 @@
     }
 
     .recipeList {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
 
     .recipeItem img {

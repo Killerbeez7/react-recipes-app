@@ -2,12 +2,7 @@ import { createContext, useEffect, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import * as recipeService from "../services/recipeService";
 import * as commentService from "../services/commentService";
-import {
-    ref,
-    onValue,
-    update,
-    get,
-} from "firebase/database";
+import { ref, onValue, update, get } from "firebase/database";
 import { database } from "../firebase/firebaseConfig";
 
 export const RecipeContext = createContext();
@@ -74,16 +69,20 @@ export const RecipeProvider = ({ children }) => {
                 ([id, data]) => ({ id, ...data })
             );
 
-            if (!isNaN(search) && search.trim() !== "") {
-                const maxTime = Number(search.trim());
-                filteredRecipes = allRecipes.filter(
-                    (recipe) => recipe.timeToCook <= maxTime
-                );
-            } else {
+            if (criteria === "title") {
                 const normalizedSearch = search.toLowerCase().trim();
                 filteredRecipes = allRecipes.filter((recipe) =>
                     recipe.title.toLowerCase().includes(normalizedSearch)
                 );
+            } else if (criteria === "timeToCook") {
+                const maxTime = Number(search.trim());
+                if (!isNaN(maxTime) && maxTime > 0) {
+                    filteredRecipes = allRecipes.filter(
+                        (recipe) => Number(recipe.timeToCook) <= maxTime
+                    );
+                } else {
+                    filteredRecipes = allRecipes
+                }
             }
         }
 
