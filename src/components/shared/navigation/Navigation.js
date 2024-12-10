@@ -6,7 +6,6 @@ import { useMediaQuery } from "react-responsive";
 
 import styles from "./Navigation.module.css";
 
-
 const categories = [
     { path: "/recipes/breakfast", label: "Breakfast & Brunch" },
     { path: "/recipes/lunch", label: "Lunch" },
@@ -44,12 +43,11 @@ export const Navigation = () => {
     };
 
     const toggleDropdown = () => {
-        if (!menuOpen) {
-            setMenuOpen(true);
-        }
+        // if (!menuOpen) {
+        //     setMenuOpen(true);
+        // }
         setDropdownOpen((prev) => !prev);
     };
-    
 
     const closeMenu = () => {
         setMenuOpen(false);

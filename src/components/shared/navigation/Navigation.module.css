@@ -157,7 +157,7 @@
         flex-direction: column;
         background-color: #f8f8f8;
         position: fixed;
-        overflow-y: auto;
+        /* overflow-y: auto; */
 
         top: 56.19px;
         left: 0;
@@ -210,4 +210,8 @@
     .dropdownMenu li a:hover {
         color: #ff9800;
     }
+
+    /* .dropdown i {
+        display: none;
+    } */
 }
