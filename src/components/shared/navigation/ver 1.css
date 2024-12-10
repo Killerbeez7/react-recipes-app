@@ -1,0 +1,11 @@
+.dropdownMenu {
+    display: none;
+    flex-direction: column;
+    background-color: transparent;
+    /* background-color: #444;         to check if its better
+        list-style: none;
+        padding: 10px;
+    */
+
+    position: static; /* ---new--- */
+}

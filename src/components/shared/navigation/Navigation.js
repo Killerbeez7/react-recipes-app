@@ -2,39 +2,72 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { doSignOut } from "../../../firebase/auth";
+import { useMediaQuery } from "react-responsive";
 
 import styles from "./Navigation.module.css";
+
+
+const categories = [
+    { path: "/recipes/breakfast", label: "Breakfast & Brunch" },
+    { path: "/recipes/lunch", label: "Lunch" },
+    { path: "/recipes/appetizers", label: "Appetizers & Snacks" },
+    { path: "/recipes/dinner", label: "Dinner" },
+    { path: "/recipes/desserts", label: "Dessert" },
+    { path: "/recipes/drinks", label: "Drink & Cocktail" },
+    { path: "/recipes/side-dish", label: "Side Dish" },
+    { path: "/recipes/grilling", label: "Grilling & BBQ" },
+    { path: "/recipes/microwave", label: "Microwave" },
+    { path: "/recipes/easy", label: "Quick & Easy" },
+    { path: "/recipes/slow", label: "Slow-Cooker" },
+    { path: "/recipes/fryer", label: "Air Fryer" },
+    { path: "/recipes/instant-pot", label: "Instant Pot" },
+    { path: "/recipes/baking", label: "Baking" },
+    { path: "/recipes/vegetarian", label: "Vegetarian" },
+    { path: "/recipes/all", label: "All Recipes" },
+];
 
 export const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+
+    useEffect(() => {
+        if (!menuOpen) {
+            setDropdownOpen(false);
+        }
+    }, [menuOpen]);
+
     const toggleMenu = () => {
         setMenuOpen((prev) => !prev);
     };
 
-    const toggleDropMenu = () => {
+    const toggleDropdown = () => {
+        if (!menuOpen) {
+            setMenuOpen(true);
+        }
         setDropdownOpen((prev) => !prev);
     };
+    
 
     const closeMenu = () => {
         setMenuOpen(false);
-        setDropdownOpen(false);
     };
 
- useEffect(() => {
-    const body = document.body;
+    useEffect(() => {
+        const body = document.body;
 
-    if (menuOpen) {
-        body.style.overflow = "hidden"; // Disable body scrolling
-    } else {
-        body.style.overflow = "auto"; // Re-enable body scrolling
-    }
+        if (menuOpen) {
+            body.style.overflow = "hidden";
+        } else {
+            body.style.overflow = "auto";
+        }
 
-    return () => {
-        body.style.overflow = "auto"; // Cleanup when the component unmounts
-    };
-}, [menuOpen]);
+        return () => {
+            body.style.overflow = "auto";
+        };
+    }, [menuOpen]);
 
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
@@ -58,101 +91,38 @@ export const Navigation = () => {
                 </button>
             </div>
             <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
-                <li>
+                {/* <li>
                     <Link to="/" onClick={closeMenu}>
                         Home
                     </Link>
-                </li>
+                </li> */}
+                {/* ---------------------------------------------------------------------------------*/}
                 <li
-                    className={styles.dropdown}
+                    // className={styles.dropdown}
+                    className={`${styles.dropdown} ${dropdownOpen ? styles.dropdownOpen : ""}`}
                     onMouseEnter={() => setDropdownOpen(true)}
                     onMouseLeave={() => setDropdownOpen(false)}
                 >
-                    <Link to="#">Recipes {menuOpen && <i class="fa-solid fa-arrow-down" />}</Link>
+                    <Link to="#" className={styles.dropdownToggle} onClick={toggleDropdown}>
+                        {" "}
+                        Recipes{" "}
+                        {menuOpen && (
+                            <i
+                                className={`fa-solid ${
+                                    dropdownOpen ? "fa-chevron-up" : "fa-chevron-down"
+                                }`}
+                            ></i>
+                        )}
+                    </Link>
                     {dropdownOpen && (
-                        <ul className={styles.dropdownMenu}>
-                            <li>
-                                <Link to="/recipes/breakfast" onClick={closeMenu}>
-                                    Breakfast & Brunch
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/lunch" onClick={closeMenu}>
-                                    Lunch
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/appetizers" onClick={closeMenu}>
-                                    Appetizers & Snacks
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/dinner" onClick={closeMenu}>
-                                    Dinner
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/desserts" onClick={closeMenu}>
-                                    Dessert
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/drinks" onClick={closeMenu}>
-                                    Drink & Cocktail
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/side-dish" onClick={closeMenu}>
-                                    Side Dish
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/grilling" onClick={closeMenu}>
-                                    Grilling & BBQ
-                                </Link>
-                            </li>
-
-                            <li>
-                                <Link to="/recipes/microwave" onClick={closeMenu}>
-                                    Microwave
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/easy" onClick={closeMenu}>
-                                    Quick & Easy
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/slow" onClick={closeMenu}>
-                                    Slow-Cooker
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/fryer" onClick={closeMenu}>
-                                    Air Fryer
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/instant-pot" onClick={closeMenu}>
-                                    Instant Pot
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/baking" onClick={closeMenu}>
-                                    Baking
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/recipes/vegetarian" onClick={closeMenu}>
-                                    Vegetarian
-                                </Link>
-                            </li>
-                            <br></br>
-                            <li>
-                                <Link to="/recipes/all" onClick={closeMenu}>
-                                    All Recipes
-                                </Link>
-                            </li>
+                        <ul className={`${styles.dropdownMenu} ${dropdownOpen ? styles.open : ""}`}>
+                            {categories.map(({ path, label }) => (
+                                <li key={path}>
+                                    <Link to={path} onClick={closeMenu}>
+                                        {label}
+                                    </Link>
+                                </li>
+                            ))}
                         </ul>
                     )}
                 </li>
