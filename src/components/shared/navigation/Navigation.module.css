@@ -58,7 +58,6 @@
     text-decoration: none;
 
     color: #8a8a8a;
-    /* color: #555; */
     transition: color 0.3s ease, font-weight 0.2s ease;
 }
 
@@ -66,33 +65,6 @@
     border-bottom: 1px solid #8a8a8a;
     color: #555;
 }
-
-/* @media (max-width: 1120px) {
-    .menuButton {
-        display: block;
-    }
-
-    .navLinks {
-        display: none;
-        flex-direction: column;
-        gap: 10px;
-        background-color: #f9f9f9;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        width: 100%;
-        padding: 20px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .navLinks.open {
-        display: flex;
-        align-items: center;
-        z-index: 10;
-        height: 95vh;
-        top: 5vh;
-    }
-} */
 
 /* Dropdown Menu */
 .dropdown {
@@ -121,13 +93,6 @@
     display: flex;
 }
 
-/* .dropdownMenu li {               to check if its needed
-    padding: 5px 10px;
-    font-size: 0.9rem;
-    line-height: 1.2rem;
-    background-color: #ff9800;
-} */
-
 .dropdownMenu li a {
     color: #333;
     font-size: 1rem;
@@ -140,8 +105,7 @@
     color: #ff9800;
 }
 
-/* Mobile-Specific Styling */
-
+/* Mobile Styling */
 @media (max-width: 768px) {
     .menuButton {
         display: block;
@@ -156,7 +120,6 @@
         flex-direction: column;
         background-color: #f8f8f8;
         position: fixed;
-        overflow-y: auto;
 
         top: 56.19px;
         left: 0;
@@ -165,11 +128,6 @@
         z-index: 100;
         margin: 0;
         padding: 20px 20px;
-
-        /* top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;  */
     }
 
     .navLinks a:hover {
@@ -178,6 +136,8 @@
 
     .navLinks.open {
         display: flex;
+        overflow-y: auto; /* Enable scrolling inside the menu */
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling for iOS */
     }
 
     /* Dropdown menu styles */
@@ -185,12 +145,8 @@
         display: none;
         flex-direction: column;
         background-color: transparent;
-        /* background-color: #444;         to check if its better
-            list-style: none;
-            padding: 10px;
-        */
 
-        position: static; /* ---new--- */
+        position: static;
     }
 
     .dropdownOpen .dropdownMenu {
@@ -209,16 +165,12 @@
     .dropdownMenu li a:hover {
         color: #ff9800;
     }
-
-    /* .dropdown i {
-        display: none;
-    } */
 }
-
-
 
 /* Prevent scrolling when menu is open */
 .bodyNoScroll {
     overflow: hidden;
+    position: fixed;
     height: 100vh;
+    height: 100svh;    
 }
