@@ -31,90 +31,11 @@ import "./App.css";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 function App() {
-    // ------------------------------------------------------------------------------------- Language translate ---------------------------------------------------
-    const [showTranslateButton, setShowTranslateButton] = useState(false);
-    const [userLang, setUserLang] = useState("en");
-
-    const translations = {
-        en: "Translate",
-        bg: "Преведи",
-        es: "Traducir",
-        fr: "Traduire",
-        de: "Übersetzen",
-        it: "Traduci",
-        zh: "翻译",
-        ja: "翻訳",
-        // Add more languages as needed
-    };
-
-    // useEffect(() => {
-    //     const userLang = navigator.language || navigator.userLanguage;
-    //     if (!userLang.toLowerCase().startsWith("en")) {
-    //         setShowTranslateButton(true);
-    //         setUserLang(userLang);
-    //     }
-
-    //     const addGoogleTranslateScript = () => {
-    //         if (!window.google) {
-    //             const script = document.createElement("script");
-    //             script.src =
-    //                 "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-    //             script.async = true;
-    //             document.body.appendChild(script);
-    //         }
-    //     };
-
-    //     // ----------------------- this keeps the translated page persistent, not sure if is better or not -----------------
-    //     window.googleTranslateElementInit = () => {
-    //         // const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-    //         new window.google.translate.TranslateElement(
-    //             {
-    //                 pageLanguage: "en",
-    //                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-    //                 // autoDisplay: isIOS,
-    //             },
-
-    //             "google_translate_element"
-    //         );
-    //     };
-    //     // -------------------------------------------------------------------------------------------------------------------
-
-    //     addGoogleTranslateScript();
-    // }, []);
-
-    const handleTranslateClick = () => {
-        if (window.google && window.google.translate) {
-            const translateElement = new window.google.translate.TranslateElement({
-                pageLanguage: "en",
-                includedLanguages: userLang,
-                layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-            });
-            translateElement.showBanner(true);
-            const iframe = document.querySelector("iframe.goog-te-banner-frame");
-            if (iframe) {
-                iframe.contentWindow.document.getElementById(":1.container").click();
-            }
-        } else {
-            console.warn("Google Translate is not initialized yet.");
-        }
-    };
-
-    // --------------------------------------------------------------------------------- end of lang translate ----------------------------------------------------
-
     return (
         <ErrorBoundary>
             <AuthProvider>
                 <div className="body">
                     <Navigation />
-                    {showTranslateButton && (
-                        <>
-                            <button onClick={handleTranslateClick} className="translate-button">
-                                {translations[userLang] || translations["en"]}
-                            </button>
-                            <div id="google_translate_element"></div>
-                        </>
-                    )}
-
                     {/* Main content */}
                     <RecipeProvider>
                         <Routes>
