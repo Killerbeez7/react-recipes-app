@@ -28,8 +28,10 @@
 
 .table-item {
     position: relative;
-    margin: 5%;
+    margin: 50px auto;
     height: 40vh;
+    width: 20vw;
+    /* height: 40vh; */
     box-shadow: 0 5px 10px rgb(40, 40, 40);
 }
 
@@ -67,4 +69,60 @@
 .table-item:hover .overlay {
     opacity: 0.6;
     color: white;
+}
+
+@media(max-width: 1920px) {
+    .table-item {
+        position: relative;
+        margin: 50px auto;
+        height: 20vh;
+        width: 20vw;
+        /* height: 40vh; */
+        box-shadow: 0 5px 10px rgb(40, 40, 40);
+    }
+}
+
+@media(max-width: 1920px) {
+    .table-item {
+        position: relative;
+        margin: 50px auto;
+        height: 25vh;
+        width: 20vw;
+        /* height: 40vh; */
+        box-shadow: 0 5px 10px rgb(40, 40, 40);
+    }
+}
+
+@media(max-width: 1120px) {
+    .table-item {
+        display: flex;
+        flex-direction: column;
+        margin: 20px auto;
+        height: 15vh;
+        width: 25vw;
+        /* height: 40vh; */
+        box-shadow: 0 5px 10px rgb(40, 40, 40);
+    }
+    .gallery-title{
+        text-align: center;
+        font-size: 1rem;
+        padding-bottom: 20px;
+    }
+}
+
+@media(max-width: 400px) {
+    .table-item {
+        display: flex;
+        flex-direction: column;
+        margin: 20px auto;
+        height: 10vh;
+        width: 25vw;
+        /* height: 40vh; */
+        box-shadow: 0 5px 10px rgb(40, 40, 40);
+    }
+    .gallery-title{
+        text-align: center;
+        font-size: 0.9rem;
+        padding-bottom: 20px;
+    }
 }
