@@ -47,40 +47,40 @@ function App() {
         // Add more languages as needed
     };
 
-    useEffect(() => {
-        const userLang = navigator.language || navigator.userLanguage;
-        if (!userLang.toLowerCase().startsWith("en")) {
-            setShowTranslateButton(true);
-            setUserLang(userLang);
-        }
+    // useEffect(() => {
+    //     const userLang = navigator.language || navigator.userLanguage;
+    //     if (!userLang.toLowerCase().startsWith("en")) {
+    //         setShowTranslateButton(true);
+    //         setUserLang(userLang);
+    //     }
 
-        const addGoogleTranslateScript = () => {
-            if (!window.google) {
-                const script = document.createElement("script");
-                script.src =
-                    "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-                script.async = true;
-                document.body.appendChild(script);
-            }
-        };
+    //     const addGoogleTranslateScript = () => {
+    //         if (!window.google) {
+    //             const script = document.createElement("script");
+    //             script.src =
+    //                 "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    //             script.async = true;
+    //             document.body.appendChild(script);
+    //         }
+    //     };
 
-        // ----------------------- this keeps the translated page persistent, not sure if is better or not -----------------
-        window.googleTranslateElementInit = () => {
-            // const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-            new window.google.translate.TranslateElement(
-                {
-                    pageLanguage: "en",
-                    layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                    // autoDisplay: isIOS,
-                },
+    //     // ----------------------- this keeps the translated page persistent, not sure if is better or not -----------------
+    //     window.googleTranslateElementInit = () => {
+    //         // const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    //         new window.google.translate.TranslateElement(
+    //             {
+    //                 pageLanguage: "en",
+    //                 layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+    //                 // autoDisplay: isIOS,
+    //             },
 
-                "google_translate_element"
-            );
-        };
-        // -------------------------------------------------------------------------------------------------------------------
+    //             "google_translate_element"
+    //         );
+    //     };
+    //     // -------------------------------------------------------------------------------------------------------------------
 
-        addGoogleTranslateScript();
-    }, []);
+    //     addGoogleTranslateScript();
+    // }, []);
 
     const handleTranslateClick = () => {
         if (window.google && window.google.translate) {

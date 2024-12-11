@@ -38,34 +38,32 @@ export const Navigation = () => {
         }
     }, [menuOpen]);
 
+    useEffect(() => {
+        const body = document.body;
+
+        if (menuOpen) {
+            body.classList.add(styles.bodyNoScroll);
+        } else {
+            body.classList.remove(styles.bodyNoScroll);
+        }
+
+        return () => {
+            body.classList.remove(styles.bodyNoScroll);
+        };
+    }, [menuOpen]);
+
     const toggleMenu = () => {
         setMenuOpen((prev) => !prev);
     };
 
     const toggleDropdown = () => {
-        // if (!menuOpen) {
-        //     setMenuOpen(true);
-        // }
         setDropdownOpen((prev) => !prev);
     };
 
     const closeMenu = () => {
         setMenuOpen(false);
+        setDropdownOpen(false);
     };
-
-    useEffect(() => {
-        const body = document.body;
-
-        if (menuOpen) {
-            body.style.overflow = "hidden";
-        } else {
-            body.style.overflow = "auto";
-        }
-
-        return () => {
-            body.style.overflow = "auto";
-        };
-    }, [menuOpen]);
 
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
@@ -89,19 +87,18 @@ export const Navigation = () => {
                 </button>
             </div>
             <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
-                {/* <li>
-                    <Link to="/" onClick={closeMenu}>
-                        Home
-                    </Link>
-                </li> */}
-                {/* ---------------------------------------------------------------------------------*/}
                 <li
-                    // className={styles.dropdown}
                     className={`${styles.dropdown} ${dropdownOpen ? styles.dropdownOpen : ""}`}
-                    onMouseEnter={() => setDropdownOpen(true)}
-                    onMouseLeave={() => setDropdownOpen(false)}
+                    {...(isDesktop && {
+                        onMouseEnter: () => setDropdownOpen(true),
+                        onMouseLeave: () => setDropdownOpen(false),
+                    })}
                 >
-                    <Link to="#" className={styles.dropdownToggle} onClick={toggleDropdown}>
+                    <Link
+                        to="#"
+                        className={styles.dropdownToggle}
+                        onClick={(e) => (isDesktop ? e.preventDefault() : toggleDropdown())}
+                    >
                         {" "}
                         Recipes{" "}
                         {menuOpen && (

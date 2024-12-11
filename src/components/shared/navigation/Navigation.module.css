@@ -110,7 +110,7 @@
     width: 200px;
     z-index: 100;
     padding: 20px 15px;
-    flex-direction: column; /*---new---*/
+    flex-direction: column;
 }
 
 .dropdown:hover .dropdownMenu {
@@ -118,7 +118,6 @@
 }
 
 .dropdownOpen .dropdownMenu {
-    /*---new---*/
     display: flex;
 }
 
@@ -157,7 +156,7 @@
         flex-direction: column;
         background-color: #f8f8f8;
         position: fixed;
-        /* overflow-y: auto; */
+        overflow-y: auto;
 
         top: 56.19px;
         left: 0;
@@ -214,4 +213,12 @@
     /* .dropdown i {
         display: none;
     } */
+}
+
+
+
+/* Prevent scrolling when menu is open */
+.bodyNoScroll {
+    overflow: hidden;
+    height: 100vh;
 }
