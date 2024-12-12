@@ -47,7 +47,7 @@ export const Navigation = () => {
                 body.classList.add(styles.mobile);
             } else if (menuOpen && isDesktop) {
                 body.classList.remove(styles.mobile);
-                closeMenu()
+                closeMenu();
             }
         };
 
@@ -91,16 +91,51 @@ export const Navigation = () => {
         <div id="header-wrap" className={styles["view-nav"]}>
             {/* <header> */}
             <div className={styles.brand}>
-                <Link to="/" onClick={closeMenu}>
-                    Eat & Amare
-                </Link>
-                <button className={styles.menuButton} onClick={toggleMenu}>
-                    {menuOpen ? (
-                        <i className="fa-solid fa-xmark"></i>
-                    ) : (
-                        <i className="fa-solid fa-bars"></i>
-                    )}
-                </button>
+                <div className={styles["nav-icons"]}>
+                    <button className={styles.menuButton} onClick={toggleMenu}>
+                        {menuOpen ? (
+                            <i className="fa-solid fa-xmark"></i>
+                        ) : (
+                            <i className="fa-solid fa-bars"></i>
+                        )}
+                    </button>
+                    <Link to="/" className={styles.logo} onClick={closeMenu}>
+                        <span style={{ color: "yellow" }}>Eat</span>
+                        <span style={{ color: "gray" }}> & </span>
+                        <span style={{ color: "red" }}>Amare</span>
+                    </Link>
+                </div>
+                <div className={styles["auth-icons"]}>
+                    <ul className={styles.navLinks}>
+                        {currentUser ? (
+                            <>
+                                <li>
+                                    <Link to={`/auth/${userId}/details`} onClick={closeMenu}>
+                                        {currentUser?.displayName || currentUser?.email}
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/" onClick={logoutHandler}>
+                                        Logout
+                                    </Link>
+                                </li>
+                            </>
+                        ) : (
+                            <>
+                                <li>
+                                    <Link to="/auth/sign-in" onClick={closeMenu}>
+                                        Sign In
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link to="/auth/sign-up" onClick={closeMenu}>
+                                        Try It Free
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                    </ul>
+                </div>
             </div>
             <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
                 <li
@@ -151,12 +186,14 @@ export const Navigation = () => {
                     <>
                         <li>
                             <Link to={`/auth/${userId}/details`} onClick={closeMenu}>
+                                {/* {<i class="fa-regular fa-user" /> || currentUser?.email} */}
                                 {currentUser?.displayName || currentUser?.email}
                             </Link>
                         </li>
                         <li>
                             <Link to="/" onClick={logoutHandler}>
                                 Logout
+                                {/* <i class="fa-solid fa-arrow-right-from-bracket"></i> */}
                             </Link>
                         </li>
                     </>

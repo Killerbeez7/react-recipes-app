@@ -5,6 +5,7 @@
     padding: 5px 50px;
     background-color: #333;
     /* background-color: #5c5c5c; */
+    height: 70px;
 
     border-bottom: 1px solid #ddd;
 
@@ -12,11 +13,6 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-
-    /* position: sticky;
-    top: 0;
-    z-index: 999999;
-    transform: translateZ(0); */
 }
 
 .view-nav a,
@@ -39,10 +35,14 @@
     width: 100%;
 }
 
-.brand a {
+.logo {
     font-size: 1.5rem;
     text-decoration: none;
     color: #dddddd;
+}
+
+.auth-icons {
+    display: none;
 }
 
 .menuButton {
@@ -52,7 +52,6 @@
     cursor: pointer;
     display: none;
     color: #dddddd;
-
 }
 
 .navLinks {
@@ -91,7 +90,7 @@
     left: -30px;
     width: 200px;
     z-index: 999999;
-    transform: translateZ(0); /* Force a new rendering layer */
+    transform: translateZ(0);
     padding: 20px 15px;
     flex-direction: column;
 }
@@ -137,10 +136,17 @@
         top: 0;
         z-index: 999999;
         transform: translateZ(0);
+        padding: 20px;
     }
+    /* .brand{
+        justify-content: flex-start;
+        gap: 20px;
+    } */
 
     .menuButton {
         display: block;
+        height: 40px;
+        width: 40px;
     }
 
     .dropdown {
@@ -215,25 +221,27 @@
     .dropdownMenu li a:hover {
         color: #8f8f8f;
     }
+
+    .nav-icons {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        align-items: center;
+    }
+
+    .auth-icons {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        justify-content: flex-start;
+        color: #8a8a8a;
+        gap: 20px;
+    }
 }
 
-/* Prevent scrolling when menu is open */
-/* .bodyNoScroll {
-    overflow: hidden;
-    position: fixed;
-    height: 100vh;
-    height: 100svh;
-} */
 .mobile {
     overflow: hidden;
     position: fixed;
     height: 100vh;
     height: 100svh;
 }
-
-/* .desktop {
-    overflow: hidden;
-    position: fixed;
-    height: 100vh;
-    height: 100svh;
-} */
