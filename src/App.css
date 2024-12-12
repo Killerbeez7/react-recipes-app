@@ -8,8 +8,8 @@ html {
     justify-content: space-between;
     font-family: Helvetica, sans-serif;
     min-height: 100vh;
-    overflow-x: hidden;
-    overflow-y: auto;
+    /* overflow-x: hidden; */
+    /* overflow-y: auto; */
 }
 
 .container {

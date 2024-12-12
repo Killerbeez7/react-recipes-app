@@ -25,9 +25,9 @@ export const RecipeList = () => {
 
     return (
         <>
-            <Search />
+            {/* <Search /> */}
 
-            <form style={{ marginLeft: "3%" }}>
+            <form>
                 {currentUser && (
                     <Link to="/recipes/add" className={styles["add-btn"]}>
                         Add recipe

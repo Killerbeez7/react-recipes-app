@@ -29,8 +29,9 @@ export const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
-    const isDesktop = useMediaQuery({ query: "(min-width: 1024px)" });
-    const isMobile = useMediaQuery({ query: "(max-width: 1023px)" });
+    const isDesktop = useMediaQuery({ query: "(min-width: 1210px)" });
+    const isTablet = useMediaQuery({ query: "(max-width: 1023px)" });
+    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
     useEffect(() => {
         if (!menuOpen) {
@@ -41,15 +42,29 @@ export const Navigation = () => {
     useEffect(() => {
         const body = document.body;
 
-        if (menuOpen) {
-            body.classList.add(styles.bodyNoScroll);
-        } else {
-            body.classList.remove(styles.bodyNoScroll);
-        }
+        const handleResize = () => {
+            if (menuOpen && isMobile) {
+                body.classList.add(styles.mobile);
+            } else if (menuOpen && isDesktop) {
+                body.classList.remove(styles.mobile);
+                closeMenu()
+            }
+        };
+
+        handleResize();
+
+        window.addEventListener("resize", handleResize);
 
         return () => {
-            body.classList.remove(styles.bodyNoScroll);
+            body.classList.remove(styles.mobile);
+            window.removeEventListener("resize", handleResize);
         };
+    }, [menuOpen, isMobile, isDesktop]);
+
+    useEffect(() => {
+        if (isDesktop) {
+            closeMenu();
+        }
     }, [menuOpen]);
 
     const toggleMenu = () => {
@@ -73,7 +88,8 @@ export const Navigation = () => {
     };
 
     return (
-        <nav className={styles.navbar}>
+        <div id="header-wrap" className={styles["view-nav"]}>
+            {/* <header> */}
             <div className={styles.brand}>
                 <Link to="/" onClick={closeMenu}>
                     Eat & Amare
@@ -159,6 +175,7 @@ export const Navigation = () => {
                     </>
                 )}
             </ul>
-        </nav>
+            {/* </header> */}
+        </div>
     );
 };
