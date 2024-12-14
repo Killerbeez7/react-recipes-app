@@ -233,11 +233,6 @@ export const Navigation = () => {
                                     Sign In
                                 </Link>
                             </li>
-                            <li>
-                                <Link to="/auth/sign-up" onClick={closeMenu}>
-                                    Try It Free
-                                </Link>
-                            </li>
                         </>
                     )}
                 </ul>

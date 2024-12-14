@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 // context
 import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
@@ -34,11 +34,18 @@ import { WinterRecipes } from "./components/seasonal-recipes/winter-recipes/Wint
 import "./App.css";
 
 function App() {
+    const currentLocation = useLocation(); // Avoid shadowing by renaming
+    // Define routes where navigation and footer should not appear
+    const hideNavigationAndFooter = ["/auth/sign-in", "/auth/sign-up"];
+
+    const isHidden = hideNavigationAndFooter.includes(currentLocation.pathname);
+
     return (
         <ErrorBoundary>
             <AuthProvider>
                 <div className="body">
-                    <Navigation />
+                    {/* Conditionally render Navigation */}
+                    {!isHidden && <Navigation />}
                     {/* main content */}
                     <RecipeProvider>
                         <Routes>
@@ -84,7 +91,8 @@ function App() {
                     </RecipeProvider>
                     {/* end of main content */}
 
-                    <Footer />
+                    {/* Conditionally render Footer */}
+                    {!isHidden && <Footer />}
                 </div>
             </AuthProvider>
         </ErrorBoundary>
