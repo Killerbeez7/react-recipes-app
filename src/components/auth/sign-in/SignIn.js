@@ -102,7 +102,7 @@ export const SignIn = () => {
                     <button onClick={onGoogleSignIn} className={styles["auth-btn"]}>
                         {isSigningInWithGoogle
                             ? "Signing with Google..."
-                            : "Sign In with Google"}
+                            : "with Google"}
                     </button>
 
                     <div className={styles["extra-options"]}>

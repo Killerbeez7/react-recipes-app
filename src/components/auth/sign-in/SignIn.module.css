@@ -121,3 +121,39 @@
 .goBackButton:hover {
     background-color: #5a6268; /* Darker gray on hover */
 }
+
+
+@media (max-width: 768px) {
+    .main {
+        flex-direction: column; /* Stack sections vertically */
+    }
+
+    .left-section {
+        display: none; /* Hide the background section on mobile for simplicity */
+    }
+
+    .right-section {
+        flex: none;
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .right-section h1 {
+        font-size: 2rem;
+    }
+
+    .auth-btn {
+        font-size: 0.9rem;
+    }
+
+    .extra-options {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .extra-options a {
+        font-size: 0.9rem;
+    }
+}
