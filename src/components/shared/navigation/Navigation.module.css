@@ -78,12 +78,13 @@
     /* color: rgb(245, 213, 73); */
 }
 
-/* Dropdown Menu */
+/* Recipes Dropdown Menu */
 .dropdown {
     position: relative;
 }
 
-.dropdownMenu {
+.recipesDropdown,
+.seasonalDropdown {
     display: none;
     list-style: none;
     position: absolute;
@@ -98,24 +99,27 @@
     flex-direction: column;
 }
 
-.dropdown:hover .dropdownMenu {
+.dropdown:hover .recipesDropdown,
+.dropdown:hover .seasonalDropdown {
     display: block;
 }
 
-.dropdownOpen .dropdownMenu {
+.recipesOpen .recipesDropdown,
+.seasonalOpen .seasonalDropdown {
     display: flex;
 }
 
-.dropdownMenu li a {
+.recipesDropdown li a,
+.seasonalDropdown li a {
     color: #dddddd;
     font-size: 1rem;
     text-decoration: none;
     font-size: 0.9rem;
 }
 
-.dropdownMenu li a:hover {
+.recipesDropdown li a:hover,
+.seasonalDropdown li a:hover {
     color: #8f8f8f;
-
 }
 
 @media (max-width: 1210px) {
@@ -185,7 +189,8 @@
     }
 
     /* Dropdown menu styles */
-    .dropdownMenu {
+    .recipesDropdown,
+    .seasonalDropdown {
         display: none;
         flex-direction: column;
         background-color: transparent;
@@ -193,20 +198,24 @@
         position: static;
     }
 
-    .dropdownOpen .dropdownMenu {
+    .recipesOpen .recipesDropdown,
+    .seasonalOpen .seasonalDropdown {
         display: flex;
     }
 
-    .dropdownMenu li {
+    .recipesDropdown li,
+    .seasonalDropdown li {
         padding: 10px 0;
     }
 
-    .dropdownMenu li a {
+    .recipesDropdown li a,
+    .seasonalDropdown li a {
         color: 8a8a8a;
         text-decoration: none;
     }
 
-    .dropdownMenu li a:hover {
+    .recipesDropdown li a:hover,
+    .seasonalDropdown li a:hover {
         color: #8f8f8f;
     }
 
@@ -229,7 +238,7 @@
 
 /* Mobile Styling                   -- show menu here*/
 @media (max-width: 768px) {
-    .view-nav{
+    .view-nav {
         padding-left: 10px;
     }
     /* #navLinks {

@@ -4,7 +4,7 @@ export const FallRecipes = () => {
     return (
         <>
             <div className={styles["section"]}>
-                <h1>Hello fromn seasonal</h1>
+                <h1>No fall season recieps, yet! </h1>
             </div>
         </>
     );

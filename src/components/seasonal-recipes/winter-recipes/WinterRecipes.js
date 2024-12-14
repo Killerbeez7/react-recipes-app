@@ -4,7 +4,7 @@ export const WinterRecipes = () => {
     return (
         <>
         <div className={styles["section"]}>
-            <h1>Hello fromn seasonal</h1>
+            <h1>No winter season recipes, yet!</h1>
         </div>
           
         </>
