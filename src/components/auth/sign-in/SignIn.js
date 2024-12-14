@@ -100,17 +100,19 @@ export const SignIn = () => {
                         {isSigningIn ? "Signing In..." : "Sign In"}
                     </button>
                     <button onClick={onGoogleSignIn} className={styles["auth-btn"]}>
-                        {isSigningInWithGoogle
-                            ? "Signing with Google..."
-                            : "with Google"}
+                        {isSigningInWithGoogle ? "Signing with Google..." : "with Google"}
                     </button>
 
                     <div className={styles["extra-options"]}>
-                        <label>
-                            <input type="checkbox" /> Remember me
-                        </label>
                         <a href="/forgot-password">Forgot Password?</a>
+                        {/* <label>
+                            <input type="checkbox" /> Remember me
+                        </label> */}
+                        <p>
+                            No account?<a href="/auth/sign-up"> Sign up</a>
+                        </p>
                     </div>
+                    <div className={styles["extra-options"]}></div>
                 </form>
             </div>
         </div>

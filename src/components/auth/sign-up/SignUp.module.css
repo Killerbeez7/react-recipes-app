@@ -1,45 +1,159 @@
-.title-style {
-    margin-bottom: 2%;
-}
-
+/* Full-page styling */
 .main {
-    margin: 7.6% auto;
-    padding: 1.5% 3% 2% 3%;
-    border-radius: 15px;
-    border: 2px solid lightgrey;
-    background-color: rgb(255 217 197 / 5%);
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+/* Left side - Background */
+.left-section {
+    flex: 1.5;
+    background: url("../../../../public/assets/backgorund/bg.png") center/cover no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.left-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Adds a dark overlay */
+}
+
+/* Right side - Form */
+.right-section {
+    flex: 1;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.right-section h1 {
+    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
     text-align: center;
 }
 
-.containers {
-    margin: 10px;
+/* Form */
+.form {
+    width: 45%;
 }
 
+/* Input fields */
 .containers > input {
-    padding: 5px 10px;
-    border-radius: 10px;
-    border: 2px solid lightgray;
+    margin: 1rem 0;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    font-size: 1rem;
 }
 
+.containers > input:focus {
+    outline: none;
+    border-color: #5b9bd5;
+    box-shadow: 0 0 5px rgba(91, 155, 213, 0.5);
+}
+
+/* Buttons */
 .auth-btn {
-    display: inline-block;
-    font-size: 1.15em;
-    /* height: 30px;
-    width: 120px; */
-    background-color: white;
-    text-transform: uppercase;
-    text-decoration: none;
-    text-align: center;
-    color: #888787;
-    transition: all 0.15s;
-    border: 0.1em solid #888787;
-    border-radius: 15px;
-    padding: 0 15px;
+    width: 100%;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: #5b9bd5;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .auth-btn:hover {
-    color: #6d6d6d;
-    border: 0.1em solid #888787;
-    background-color: rgb(230, 230, 230);
+    background-color: #497cb1;
 }
 
+.auth-btn:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Terms and Conditions */
+.terms {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.terms label {
+    color: #333;
+    cursor: pointer;
+}
+
+.terms input {
+    margin-right: 8px;
+}
+
+.goBackButton {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #fff;
+    background-color: #6c757d; /* Gray background */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.goBackButton:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .main {
+        flex-direction: column; /* Stack sections vertically */
+    }
+
+    .left-section {
+        display: none; /* Hide the background section on mobile */
+    }
+
+    .right-section {
+        flex: none;
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    .right-section h1 {
+        font-size: 2rem;
+    }
+
+    .auth-btn {
+        font-size: 0.9rem;
+    }
+
+    .terms {
+        font-size: 0.8rem;
+    }
+
+    .form {
+        width: 80%;
+    }
+}
