@@ -105,39 +105,8 @@ export const Navigation = () => {
                         <span style={{ color: "red" }}>Amare</span>
                     </Link>
                 </div>
-                <div className={styles["auth-icons"]}>
-                    <ul className={styles.navLinks}>
-                        {currentUser ? (
-                            <>
-                                <li>
-                                    <Link to={`/auth/${userId}/details`} onClick={closeMenu}>
-                                        {currentUser?.displayName || currentUser?.email}
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/" onClick={logoutHandler}>
-                                        Logout
-                                    </Link>
-                                </li>
-                            </>
-                        ) : (
-                            <>
-                                <li>
-                                    <Link to="/auth/sign-in" onClick={closeMenu}>
-                                        Sign In
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link to="/auth/sign-up" onClick={closeMenu}>
-                                        Try It Free
-                                    </Link>
-                                </li>
-                            </>
-                        )}
-                    </ul>
-                </div>
             </div>
-            <ul className={`${styles.navLinks} ${menuOpen ? styles.open : ""}`}>
+            <ul className={`${styles.navLinks} ${styles.hideLinks} ${menuOpen ? styles.open : ""}`}>
                 <li
                     className={`${styles.dropdown} ${dropdownOpen ? styles.dropdownOpen : ""}`}
                     {...(isDesktop && {
@@ -182,36 +151,38 @@ export const Navigation = () => {
                         Forum
                     </Link>
                 </li>
-                {currentUser ? (
-                    <>
-                        <li>
-                            <Link to={`/auth/${userId}/details`} onClick={closeMenu}>
-                                {/* {<i class="fa-regular fa-user" /> || currentUser?.email} */}
-                                {currentUser?.displayName || currentUser?.email}
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/" onClick={logoutHandler}>
-                                Logout
-                                {/* <i class="fa-solid fa-arrow-right-from-bracket"></i> */}
-                            </Link>
-                        </li>
-                    </>
-                ) : (
-                    <>
-                        <li>
-                            <Link to="/auth/sign-in" onClick={closeMenu}>
-                                Sign In
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/auth/sign-up" onClick={closeMenu}>
-                                Try It Free
-                            </Link>
-                        </li>
-                    </>
-                )}
             </ul>
+            <div className={styles["auth-icons"]}>
+                <ul className={styles.navLinks}>
+                    {currentUser ? (
+                        <>
+                            <li>
+                                <Link to={`/auth/${userId}/details`} onClick={closeMenu}>
+                                    <i class="fa-regular fa-user" />
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/" onClick={logoutHandler}>
+                                    <i class="fa-solid fa-arrow-right-from-bracket" />
+                                </Link>
+                            </li>
+                        </>
+                    ) : (
+                        <>
+                            <li>
+                                <Link to="/auth/sign-in" onClick={closeMenu}>
+                                    Sign In
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/auth/sign-up" onClick={closeMenu}>
+                                    Try It Free
+                                </Link>
+                            </li>
+                        </>
+                    )}
+                </ul>
+            </div>
             {/* </header> */}
         </div>
     );

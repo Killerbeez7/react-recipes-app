@@ -42,7 +42,10 @@
 }
 
 .auth-icons {
-    display: none;
+    list-style: none;
+    display: flex;
+    gap: 35px;
+    flex-shrink: 0;
 }
 
 .menuButton {
@@ -71,8 +74,8 @@
 
 .navLinks a:hover {
     border-bottom: 1px solid #8a8a8a;
-    /* color: #8f8f8f; */
-    color: rgb(245, 213, 73);
+    color: #8f8f8f;
+    /* color: rgb(245, 213, 73); */
 }
 
 /* Dropdown Menu */
@@ -111,8 +114,8 @@
 }
 
 .dropdownMenu li a:hover {
-    /* background-color: #838282; */
-    color: rgb(245, 213, 73);
+    color: #8f8f8f;
+
 }
 
 @media (max-width: 1210px) {
@@ -138,7 +141,7 @@
         border-bottom: 1px solid #8a8a8a;
     }
 
-    .navLinks {
+    .hideLinks {
         display: none;
         flex-direction: column;
         background-color: #f8f8f8;
