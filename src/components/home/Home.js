@@ -6,15 +6,9 @@ export const Home = () => {
         <>
             <main className={styles["main-wrapper"]}>
                 <div className={styles["content-wrapper"]}>
-                    <div
-                        className={cx(
-                            styles["trending-recipes"],
-                            styles.sections
-                        )}
-                    >
-                        <p className={styles["home-titles"]}>
-                            Trending recipes:
-                        </p>
+                    <h1 className={styles["slogan"]}>Hungry? Let’s find a recipe for you...</h1>
+                    <div className={cx(styles["trending-recipes"], styles.sections)}>
+                        <p className={styles["home-titles"]}>Trending recipes:</p>
                         <br></br>
                         <hr></hr>
 
@@ -23,8 +17,8 @@ export const Home = () => {
                         </h1>
                         <h3>
                             <i>
-                                Първите 3 коментара печелят iPhone 16 pro Max
-                                super GALAXY gold edition
+                                Първите 3 коментара печелят iPhone 16 pro Max super GALAXY gold
+                                edition
                             </i>
                         </h3>
 
@@ -39,30 +33,16 @@ export const Home = () => {
                         </ul>
                     </div>
                     <div className={styles["horizontal-row"]}>
-                        <div
-                            className={cx(
-                                styles["cooking-tips"],
-                                styles.sections
-                            )}
-                        >
-                            <p className={styles["home-titles"]}>
-                                Cooking tips:
-                            </p>
+                        <div className={cx(styles["cooking-tips"], styles.sections)}>
+                            <p className={styles["home-titles"]}>Cooking tips:</p>
                             <ul>
                                 <li>dadasfasfas</li>
                                 <li>gagagadfad</li>
                                 <li>gagagadfad</li>
                             </ul>
                         </div>
-                        <div
-                            className={cx(
-                                styles["easy-recipes"],
-                                styles.sections
-                            )}
-                        >
-                            <p className={styles["home-titles"]}>
-                                Easy Recipes
-                            </p>
+                        <div className={cx(styles["easy-recipes"], styles.sections)}>
+                            <p className={styles["home-titles"]}>Easy Recipes</p>
                             <ul>
                                 <li>fafasfdaad</li>
                                 <li>gagagadfad</li>
@@ -78,15 +58,8 @@ export const Home = () => {
                             <li>gagagadfad</li>
                         </ul>
                     </div>
-                    <div
-                        className={cx(
-                            styles["cleaning-organizing"],
-                            styles.sections
-                        )}
-                    >
-                        <p className={styles["home-titles"]}>
-                            Cleaning & Organizing
-                        </p>
+                    <div className={cx(styles["cleaning-organizing"], styles.sections)}>
+                        <p className={styles["home-titles"]}>Cleaning & Organizing</p>
                         <ul>
                             <li>fafsafadf</li>
                             <li>gagagadfad</li>
@@ -94,9 +67,7 @@ export const Home = () => {
                         </ul>
                     </div>
                 </div>
-                <div
-                    className={cx(styles["side-menu-wrapper"], styles.sections)}
-                >
+                <div className={cx(styles["side-menu-wrapper"], styles.sections)}>
                     <div>
                         <h2>Online since - 05.11.2024</h2>
                         <p>...</p>
@@ -124,7 +95,6 @@ export const Home = () => {
                         <h4>11.11.2024</h4>
                         <p>- like button: style update</p>
                         <p>- Recipe Edit, Details: update style</p>
-
                     </div>
                 </div>
             </main>

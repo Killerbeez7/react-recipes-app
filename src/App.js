@@ -1,34 +1,37 @@
-/* global google */
-
-// react imports
 import { Routes, Route, Navigate } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-// Context Providers
+// context
 import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
-// Components
-import { Navigation } from "./components/shared/navigation/Navigation";
+// common
 import { Home } from "./components/home/Home";
 import { About } from "./components/about/About";
-import { Gallery } from "./components/gallery/Gallery";
 import { Forum } from "./components/forum/Forum";
+import { Gallery } from "./components/gallery/Gallery";
 import { Footer } from "./components/shared/footer/Footer";
-import { NotFound } from "./components/not-found/NotFound";
-import { UserProfile } from "./components/user-profile/UserProfile";
-// auth components
-import { SignUp } from "./components/auth/sign-up/SignUp";
-import { SignIn } from "./components/auth/sign-in/SignIn";
+import { Navigation } from "./components/shared/navigation/Navigation";
+// auth
 import { Logout } from "./components/auth/logout/Logout";
+import { SignIn } from "./components/auth/sign-in/SignIn";
+import { SignUp } from "./components/auth/sign-up/SignUp";
 import { ProfileDetails } from "./components/auth/profile-details/ProfileDetails";
-// recipes components
-import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
+// util
+import { NotFound } from "./components/not-found/NotFound";
+import { PrivateRoute } from "./components/common/PrivateRoute";
+import { AdminPanel } from "./components/admin-panel/AdminPanel";
+import { ErrorBoundary } from "./components/common/ErrorBoundary";
+import { UserProfile } from "./components/user-profile/UserProfile";
+// recipes CRUD
 import { RecipeAdd } from "./components/recipes/recipe-add/RecipeAdd";
 import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
+import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
 import { RecipeDetails } from "./components/recipes/recipe-details/RecipeDetails";
-import { PrivateRoute } from "./components/common/PrivateRoute";
+// seasonal recipes
+import { FallRecipes } from "./components/seasonal-recipes/fall-recipes/FallRecipes";
+import { SpringRecipes } from "./components/seasonal-recipes/spring-recipes/SpringRecipes";
+import { SummerRecipes } from "./components/seasonal-recipes/summer-recipes/SummerRecipes";
+import { WinterRecipes } from "./components/seasonal-recipes/winter-recipes/WinterRecipes";
+// styles
 import "./App.css";
-// Error Boundary
-import { ErrorBoundary } from "./components/common/ErrorBoundary";
 
 function App() {
     return (
@@ -36,28 +39,42 @@ function App() {
             <AuthProvider>
                 <div className="body">
                     <Navigation />
-                    {/* Main content */}
+                    {/* main content */}
                     <RecipeProvider>
                         <Routes>
+                            {/* admin panel*/}
+                            <Route path="/admin-panel" element={<AdminPanel />} />
+
+                            {/* common */}
                             <Route path="/" element={<Home />} />
-                            <Route path="/gallery" element={<Gallery />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/forum" element={<Forum />} />
+                            <Route path="/gallery" element={<Gallery />} />
 
-                            <Route path="/auth/sign-up" element={<SignUp />} />
-                            <Route path="/auth/sign-in" element={<SignIn />} />
+                            {/* auth */}
                             <Route path="/auth/logout" element={<Logout />} />
+                            <Route path="/auth/sign-in" element={<SignIn />} />
+                            <Route path="/auth/sign-up" element={<SignUp />} />
                             <Route path="/auth/:userId/details" element={<ProfileDetails />} />
 
+                            {/* recipes */}
                             <Route path="/recipes/all" element={<RecipeList />} />
                             <Route path="/recipes/:category" element={<RecipeList />} />
                             <Route path="/recipes/details/:recipeId" element={<RecipeDetails />} />
 
+                            {/* seasonal */}
+                            <Route path="/recipes/seasonal/fall" element={<FallRecipes />} />
+                            <Route path="/recipes/seasonal/spring" element={<SpringRecipes />} />
+                            <Route path="/recipes/seasonal/summer" element={<SummerRecipes />} />
+                            <Route path="/recipes/seasonal/winter" element={<WinterRecipes />} />
+
+                            {/* CRUD */}
                             <Route element={<PrivateRoute />}>
                                 <Route path="/recipes/add" element={<RecipeAdd />} />
                                 <Route path="/recipes/edit/:recipeId" element={<RecipeEdit />} />
                             </Route>
                             <Route path="/recipes/details/:recipeId" element={<RecipeDetails />} />
+
                             <Route path="/user/:userId" element={<UserProfile />} />
 
                             {/* redirect old paths back to home */}
@@ -65,7 +82,7 @@ function App() {
                             <Route path="/*" element={<NotFound />} />
                         </Routes>
                     </RecipeProvider>
-                    {/* End of main content */}
+                    {/* end of main content */}
 
                     <Footer />
                 </div>

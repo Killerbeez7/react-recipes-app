@@ -71,8 +71,8 @@
 
 .navLinks a:hover {
     border-bottom: 1px solid #8a8a8a;
-    color: #8f8f8f;
-    /* color: #ff9800;    may be not very good to ask people */
+    /* color: #8f8f8f; */
+    color: rgb(245, 213, 73);
 }
 
 /* Dropdown Menu */
@@ -112,22 +112,7 @@
 
 .dropdownMenu li a:hover {
     /* background-color: #838282; */
-    color: #8f8f8f;
-}
-
-/* Mobile Styling                   -- show menu here*/
-@media (min-width: 768px) {
-    /* #navLinks {
-        display: flex;
-        flex-flow: row nowrap;
-        flex-basis: auto;
-        justify-content: space-evenly;
-        align-items: center;
-        text-align: center;
-        font-size: 15px;
-        line-height: 21px;
-        letter-spacing: 1px;
-    } */
+    color: rgb(245, 213, 73);
 }
 
 @media (max-width: 1210px) {
@@ -237,6 +222,24 @@
         color: #8a8a8a;
         gap: 20px;
     }
+}
+
+/* Mobile Styling                   -- show menu here*/
+@media (max-width: 768px) {
+    .view-nav{
+        padding-left: 10px;
+    }
+    /* #navLinks {
+        display: flex;
+        flex-flow: row nowrap;
+        flex-basis: auto;
+        justify-content: space-evenly;
+        align-items: center;
+        text-align: center;
+        font-size: 15px;
+        line-height: 21px;
+        letter-spacing: 1px;
+    } */
 }
 
 .mobile {

@@ -100,7 +100,7 @@ export const Navigation = () => {
                         )}
                     </button>
                     <Link to="/" className={styles.logo} onClick={closeMenu}>
-                        <span style={{ color: "yellow" }}>Eat</span>
+                        <span style={{ color: "#ffd700" }}>Eat</span>
                         <span style={{ color: "gray" }}> & </span>
                         <span style={{ color: "red" }}>Amare</span>
                     </Link>
