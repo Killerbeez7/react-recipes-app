@@ -78,7 +78,7 @@ export const SignIn = () => {
                 </button>
                 <h1>Welcome back</h1>
                 <p>Please enter your details.</p>
-                <form onSubmit={onSubmit}>
+                <form className={styles["form"]} onSubmit={onSubmit}>
                     <div className={styles.containers}>
                         <input
                             type="email"

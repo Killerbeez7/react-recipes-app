@@ -44,6 +44,11 @@
     color: #333;
 }
 
+/* Form */
+.form{
+    width: 45%;
+}
+
 /* Input fields */
 .containers > input {
     margin: 1rem 0;
@@ -104,7 +109,6 @@
     color: #497cb1;
 }
 
-
 .goBackButton {
     display: inline-block;
     margin-bottom: 20px;
@@ -155,5 +159,9 @@
 
     .extra-options a {
         font-size: 0.9rem;
+    }
+    
+    .form {
+        width: 80%;
     }
 }
