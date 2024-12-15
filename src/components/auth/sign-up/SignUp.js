@@ -93,7 +93,7 @@ export const SignUp = () => {
             {/* Right Section */}
             <div className={styles["right-section"]}>
                 {/* Go Back Button */}
-                <button onClick={() => navigate(-1)} className={styles.goBackButton}>
+                <button onClick={() => navigate(-2)} className={styles.goBackButton}>
                     ← Go Back
                 </button>
                 <h1 className={styles["title-style"]}>Sign Up</h1>
