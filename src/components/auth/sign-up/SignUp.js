@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import {
-    createUserWithEmailAndPassword,
-    updateProfile,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
 import { ref, set } from "firebase/database";
 import { database } from "../../../firebase/firebaseConfig";
@@ -45,11 +42,7 @@ export const SignUp = () => {
         }
 
         try {
-            const userCredential = await createUserWithEmailAndPassword(
-                auth,
-                email,
-                password
-            );
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
 
             await updateProfile(user, {
@@ -66,9 +59,7 @@ export const SignUp = () => {
             });
         } catch (err) {
             if (err.code === "auth/email-already-in-use") {
-                setErrorMessage(
-                    "This email is already in use. Please try another."
-                );
+                setErrorMessage("This email is already in use. Please try another.");
                 clearForm();
             } else if (err.code === "auth/weak-password") {
                 setErrorMessage("Password should be at least 6 characters.");
@@ -78,6 +69,14 @@ export const SignUp = () => {
                 setErrorMessage("Failed to create account. Please try again.");
                 clearForm();
             }
+        }
+    };
+
+    const handleBackButtonClick = () => {
+        if (window.history.length > 2) {
+            navigate(-2); 
+        } else {
+            navigate("/");
         }
     };
 
@@ -93,7 +92,7 @@ export const SignUp = () => {
             {/* Right Section */}
             <div className={styles["right-section"]}>
                 {/* Go Back Button */}
-                <button onClick={() => navigate(-2)} className={styles.goBackButton}>
+                <button onClick={handleBackButtonClick} className={styles.goBackButton}>
                     ← Go Back
                 </button>
                 <h1 className={styles["title-style"]}>Sign Up</h1>
@@ -130,9 +129,7 @@ export const SignUp = () => {
                             onChange={handleInputChange(setConfirmPassword)}
                         />
                     </div>
-                    {errorMessage && (
-                        <p style={{ color: "red" }}>{errorMessage}</p>
-                    )}
+                    {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
                     <div className={styles.terms}>
                         <input
                             type="checkbox"
@@ -140,15 +137,9 @@ export const SignUp = () => {
                             checked={agreed}
                             onChange={(e) => setAgreed(e.target.checked)}
                         />
-                        <label htmlFor="terms">
-                            I agree to the Terms and Conditions
-                        </label>
+                        <label htmlFor="terms">I agree to the Terms and Conditions</label>
                     </div>
-                    <button
-                        className={styles["auth-btn"]}
-                        type="submit"
-                        disabled={!agreed}
-                    >
+                    <button className={styles["auth-btn"]} type="submit" disabled={!agreed}>
                         Sign Up
                     </button>
                 </form>
