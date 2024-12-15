@@ -22,7 +22,7 @@ const categories = [
     { path: "/recipes/instant-pot", label: "Instant Pot" },
     { path: "/recipes/baking", label: "Baking" },
     { path: "/recipes/vegetarian", label: "Vegetarian" },
-    { path: "/recipes/all", label: "All Recipes" },
+    // { path: "/recipes/all", label: "All Recipes" },
 ];
 
 const seasons = [
@@ -157,6 +157,10 @@ export const Navigation = () => {
                                     </Link>
                                 </li>
                             ))}
+                            <li className={styles["all-recipes-button"]}>
+                                <Link to="/recipes/all" >See more</Link>
+                                {/* <i className="fa-solid fa-list"></i> All Recipes */}
+                            </li>
                         </ul>
                     )}
                 </li>

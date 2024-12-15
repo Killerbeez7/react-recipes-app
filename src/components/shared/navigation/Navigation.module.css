@@ -122,6 +122,16 @@
     color: #8f8f8f;
 }
 
+.recipesDropdown .all-recipes-button a {
+    font-size: 1.2rem; 
+    font-weight: bold;
+    margin-top: 15px;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+
 @media (max-width: 1210px) {
     .view-nav {
         position: sticky;
@@ -236,22 +246,11 @@
     }
 }
 
-/* Mobile Styling                   -- show menu here*/
+/* Mobile Styling */
 @media (max-width: 768px) {
     .view-nav {
         padding-left: 10px;
     }
-    /* #navLinks {
-        display: flex;
-        flex-flow: row nowrap;
-        flex-basis: auto;
-        justify-content: space-evenly;
-        align-items: center;
-        text-align: center;
-        font-size: 15px;
-        line-height: 21px;
-        letter-spacing: 1px;
-    } */
 }
 
 .mobile {
