@@ -34,8 +34,7 @@ import { WinterRecipes } from "./components/seasonal-recipes/winter-recipes/Wint
 import "./App.css";
 
 function App() {
-    const currentLocation = useLocation(); // Avoid shadowing by renaming
-    // Define routes where navigation and footer should not appear
+    const currentLocation = useLocation();
     const hideNavigationAndFooter = ["/auth/sign-in", "/auth/sign-up"];
 
     const isHidden = hideNavigationAndFooter.includes(currentLocation.pathname);
@@ -44,10 +43,10 @@ function App() {
         <ErrorBoundary>
             <AuthProvider>
                 <div className="body">
-                    {/* Conditionally render Navigation */}
-                    {!isHidden && <Navigation />}
-                    {/* main content */}
                     <RecipeProvider>
+                        {/* Conditionally render Navigation */}
+                        {!isHidden && <Navigation />}
+                        {/* main content */}
                         <Routes>
                             {/* admin panel*/}
                             <Route path="/admin-panel" element={<AdminPanel />} />

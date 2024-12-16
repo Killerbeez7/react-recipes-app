@@ -29,9 +29,6 @@ export const Search = () => {
 
     return (
         <form className={styles["search-form"]}>
-            <h2>
-                <span>Search Recipes</span>
-            </h2>
             <div className={styles["search-input-container"]}>
                 <input
                     type="text"
@@ -53,7 +50,6 @@ export const Search = () => {
             </div>
 
             <div className={styles["filter"]}>
-                <span>Search by:</span>
                 <select
                     name="criteria"
                     className={styles.criteria}

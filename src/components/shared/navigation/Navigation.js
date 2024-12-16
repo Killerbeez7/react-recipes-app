@@ -1,8 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
-import { doSignOut } from "../../../firebase/auth";
 import { useMediaQuery } from "react-responsive";
+import { doSignOut } from "../../../firebase/auth";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
+
+import { Search } from "../../search/Search"; // new
 
 import styles from "./Navigation.module.css";
 
@@ -120,6 +122,9 @@ export const Navigation = () => {
                         <span style={{ color: "red" }}>Amare</span>
                     </Link>
                 </div>
+                <div>
+                    <Search /> {/* Include the Search component */}
+                </div>
             </div>
             <ul className={`${styles.navLinks} ${styles.hideLinks} ${menuOpen ? styles.open : ""}`}>
                 {/* -------------------------------------------------------------------------- Recipes --------------------------------------------------------------------- */}
@@ -146,7 +151,7 @@ export const Navigation = () => {
                         )}
                     </Link>
                     {recipesOpen && (
-                        <ul
+                        <ul 
                             className={`${styles.recipesDropdown} ${
                                 recipesOpen ? styles.open : ""
                             }`}

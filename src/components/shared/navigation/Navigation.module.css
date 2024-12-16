@@ -31,14 +31,20 @@
 .brand {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     width: 100%;
+    gap: 50px;
 }
 
 .logo {
     font-size: 1.5rem;
     text-decoration: none;
     color: #dddddd;
+    white-space: nowrap; /* Prevent text wrapping */
+    display: inline-block; /* Ensure it behaves as a single block */
+    text-overflow: ellipsis; /* Add ellipsis if the container gets too small */
+    white-space: nowrap;
+    max-width: 100%; /* Allow scaling with the parent container */
 }
 
 .auth-icons {
@@ -55,6 +61,10 @@
     cursor: pointer;
     display: none;
     color: #dddddd;
+}
+
+.hideLinks {
+    padding: 0;
 }
 
 .navLinks {
@@ -123,14 +133,13 @@
 }
 
 .recipesDropdown .all-recipes-button a {
-    font-size: 1.2rem; 
+    font-size: 1.2rem;
     font-weight: bold;
     margin-top: 15px;
     display: inline-block;
     text-align: center;
     transition: background-color 0.3s ease;
 }
-
 
 @media (max-width: 1210px) {
     .view-nav {
