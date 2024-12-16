@@ -159,7 +159,7 @@ export const Navigation = () => {
                                 </li>
                             ))}
                             <li className={styles["all-recipes-button"]}>
-                                <Link to="/recipes/all">See more</Link>
+                                <Link to="/recipes/all" onClick={closeMenu}>See more</Link>
                                 {/* <i className="fa-solid fa-list"></i> All Recipes */}
                             </li>
                         </ul>
