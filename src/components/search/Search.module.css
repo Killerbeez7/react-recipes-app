@@ -145,16 +145,17 @@
     height: 30px;
 }
 
-
 .btn:hover {
     opacity: 1;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .search-input-container {
+        display: none;
+    }
     .search-form {
         flex-direction: column;
-        height: auto;
     }
 
     .search-form h2 {
@@ -173,6 +174,7 @@
 
     .criteria {
         width: 100%;
+        display: none;
     }
 }
 
@@ -194,4 +196,11 @@
 .search-input:focus {
     outline: none;
     border-color: #888;
+}
+
+@media (max-width: 768px) {
+    .navbar .search-form {
+        max-width: 100%; /* Full width on mobile */
+        margin: 10px 0;
+    }
 }

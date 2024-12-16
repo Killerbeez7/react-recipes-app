@@ -33,18 +33,20 @@
     align-items: center;
     justify-content: flex-start;
     width: 100%;
-    gap: 50px;
+    gap: 30px;
+    /* height: 100%; Ensures full height alignment */
 }
 
 .logo {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
+    text-align: center;
+    align-items: center;
     text-decoration: none;
-    color: #dddddd;
-    white-space: nowrap; /* Prevent text wrapping */
-    display: inline-block; /* Ensure it behaves as a single block */
-    text-overflow: ellipsis; /* Add ellipsis if the container gets too small */
+    white-space: nowrap; 
+    display: inline-block; 
+    text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 100%; /* Allow scaling with the parent container */
+    max-width: 100%; 
 }
 
 .auth-icons {
@@ -260,6 +262,10 @@
     .view-nav {
         padding-left: 10px;
     }
+    .brand{
+        /* align-items: center; */
+    }
+
 }
 
 .mobile {
