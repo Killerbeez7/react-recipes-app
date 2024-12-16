@@ -3,12 +3,10 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { ref, update } from "firebase/database";
-import { database } from "../../../firebase/firebaseConfig";
 import { addRecipeToFavorites } from "../../../services/recipeService";
 
 import styles from "./RecipeDetails.module.css";
-// import clx from "classnames";
+
 
 export const RecipeDetails = () => {
     const [loading, setLoading] = useState(true);
@@ -51,9 +49,9 @@ export const RecipeDetails = () => {
     };
 
     const resetCommentFields = () => {
-        setNewComment(""); // Clear the new comment input field
-        setEditCommentId(null); // Reset the editing state
-        setEditCommentText(""); // Clear the edit comment input field
+        setNewComment("");
+        setEditCommentId(null);
+        setEditCommentText("");
     };
 
     useEffect(() => {
@@ -83,7 +81,7 @@ export const RecipeDetails = () => {
         }
     };
 
-    // --------------------------------------------------------- coments
+    // --------------------------------------------------------- coments ------------------------------------------------------
 
     const handleAddComment = async (e) => {
         e.preventDefault();
@@ -118,9 +116,6 @@ export const RecipeDetails = () => {
         }
         resetCommentFields();
     };
-
-    // const userHasLiked = currentRecipe.likes?.[currentUser?.uid];
-    // const likeCount = currentRecipe.likeCount || 0;
 
     return (
         <div className={styles["recipe-details-wrapper"]}>

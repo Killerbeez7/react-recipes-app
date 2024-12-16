@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { RecipeItem } from "../recipe-item/RecipeItem";
 import styles from "./RecipeList.module.css";
-import { Search } from "../../search/Search";
 import { useAuth } from "../../../contexts/AuthContext";
 
 export const RecipeList = () => {

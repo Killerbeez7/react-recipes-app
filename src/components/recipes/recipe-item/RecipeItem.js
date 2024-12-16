@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import styles from "./RecipeItem.module.css";
-import cx from "classnames";
+
 
 export const RecipeItem = ({ recipe }) => {
     return (
