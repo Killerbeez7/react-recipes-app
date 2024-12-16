@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../../firebase/firebaseConfig";
@@ -17,6 +17,7 @@ export const SignUp = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [agreed, setAgreed] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const clearForm = () => {
         setEmail("");
@@ -72,12 +73,18 @@ export const SignUp = () => {
         }
     };
 
-    const handleBackButtonClick = () => {
-        if (window.history.length > 2) {
-            navigate(-2); 
-        } else {
-            navigate("/");
-        }
+    const isExternalReferrer =
+        !document.referrer || !document.referrer.includes(window.location.origin);
+
+    const isFromSignIn = location.state?.from === "/auth/sign-in";
+
+    const from = isExternalReferrer
+        ? "/"
+        : isFromSignIn
+        ? location.state?.previous || "/"
+        : location.state?.from || "/";
+    const handleGoBack = () => {
+        navigate(from);
     };
 
     return (
@@ -92,7 +99,7 @@ export const SignUp = () => {
             {/* Right Section */}
             <div className={styles["right-section"]}>
                 {/* Go Back Button */}
-                <button onClick={handleBackButtonClick} className={styles.goBackButton}>
+                <button onClick={handleGoBack} className={styles.goBackButton}>
                     ← Go Back
                 </button>
                 <h1 className={styles["title-style"]}>Sign Up</h1>

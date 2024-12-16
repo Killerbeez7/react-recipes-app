@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../contexts/AuthContext";
 import { doSignOut } from "../../../firebase/auth";
@@ -36,6 +36,7 @@ export const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [recipesOpen, setRecipesOpen] = useState(false);
     const [seasonalOpen, setSeasonalOpen] = useState(false);
+    const location = useLocation();
 
     const isDesktop = useMediaQuery({ query: "(min-width: 1210px)" });
     // const isTablet = useMediaQuery({ query: "(max-width: 1023px)" });
@@ -158,7 +159,7 @@ export const Navigation = () => {
                                 </li>
                             ))}
                             <li className={styles["all-recipes-button"]}>
-                                <Link to="/recipes/all" >See more</Link>
+                                <Link to="/recipes/all">See more</Link>
                                 {/* <i className="fa-solid fa-list"></i> All Recipes */}
                             </li>
                         </ul>
@@ -233,7 +234,11 @@ export const Navigation = () => {
                     ) : (
                         <>
                             <li>
-                                <Link to="/auth/sign-in" onClick={closeMenu}>
+                                <Link
+                                    to="/auth/sign-in"
+                                    onClick={closeMenu}
+                                    state={{ from: location.pathname }}
+                                >
                                     Sign In
                                 </Link>
                             </li>

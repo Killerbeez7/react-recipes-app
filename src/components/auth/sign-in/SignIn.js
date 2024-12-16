@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import {
     doSignInWithEmailAndPassword,
@@ -18,6 +18,7 @@ export const SignIn = () => {
     const [errorMessage, setErrorMessage] = useState("");
     const [userData, setUserData] = useState(null);
     const navigate = useNavigate();
+    const location = useLocation();
 
     if (userLoggedIn) {
         return <Navigate to={"/"} replace={true} />;
@@ -62,7 +63,11 @@ export const SignIn = () => {
         }
     };
 
-    const canGoBack = window.history.length > 1;
+    const from = location.state?.from || "/";
+
+    const handleGoBack = () => {
+        navigate(from);
+    };
 
     return (
         <div className={styles.main}>
@@ -73,7 +78,7 @@ export const SignIn = () => {
             {/* Right Section */}
             <div className={styles["right-section"]}>
                 {/* Go Back Button */}
-                <button onClick={() => navigate(-1)} className={styles.goBackButton}>
+                <button onClick={handleGoBack} className={styles.goBackButton}>
                     ← Go Back
                 </button>
                 <h1>Welcome back</h1>
@@ -109,7 +114,11 @@ export const SignIn = () => {
                             <input type="checkbox" /> Remember me
                         </label> */}
                         <p>
-                            No account?<a href="/auth/sign-up"> Sign up</a>
+                            No account?
+                            <Link to="/auth/sign-up" state={{ from }}>
+                                {" "}
+                                Sign up
+                            </Link>
                         </p>
                     </div>
                     <div className={styles["extra-options"]}></div>
