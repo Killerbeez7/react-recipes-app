@@ -4,7 +4,7 @@ export const WinterRecipes = () => {
     return (
         <>
         <div className={styles["section"]}>
-            <h1 className={styles["class1"]}>No winter season recipes, yet!</h1>
+            <h1 className={styles["class1"]}>Share your winter recipe with us!</h1>
         </div>
           
         </>

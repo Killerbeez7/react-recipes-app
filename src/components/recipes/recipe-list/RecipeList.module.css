@@ -1,47 +1,90 @@
-.recipe-list-wrapper {
+.recipeGrid {
     display: grid;
-    padding: 3%;
-    margin: 0;
-}
-
-.add-btn {
-    display: inline-block;
-    box-sizing: border-box;
-
-    color: #888787;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-
-    font-size: 1.15rem;
-    padding: 0.5em 3em;
-    margin: 50px 0 0 50px;
-
-    border: 0.1em solid #888787;
-    border-radius: 20px;
-
-    transition: all 0.15s;
-}
-
-.add-btn:hover {
-    color: #6d6d6d;
-    border-color: #6d6d6d;
-    background-color: rgb(230, 230, 230, 0.7);
-}
-
-.recipe-details-wrapper {
-    position: absolute;
-}
-
-.no-recipes-message {
-    height: 50vh;
-    display: flex;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
     justify-content: center;
+    padding: 20px;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.addRecipeCard {
+    width: 250px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    margin: 0;
-    font-size: 2rem;
-    color: #555;
-    background-color: #f9f9f9;
-    border: 1px solid;
-    border-color: #fa848486;
+    justify-content: center;
+    background: #f9f9f9;
+    color: rgb(94, 94, 94);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+    transition: transform 0.2s ease-in-out;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    position: relative;
+}
+
+.addRecipeCard:hover {
+    transform: scale(1.05);
+    background: #f3f3f3;
+}
+
+.addIcon {
+    font-size: 40px;
+    margin-bottom: 5px;
+}
+
+.addButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ff5733;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, background 0.2s;
+}
+
+.addButton:hover {
+    background: #e64a2e;
+    transform: scale(1.1);
+}
+
+@media (max-width: 1400px) {
+    .recipeGrid {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 1024px) {
+    .recipeGrid {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        max-width: 100%;
+
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .recipeGrid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 100%;
+    }
 }
