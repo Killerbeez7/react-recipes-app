@@ -230,11 +230,11 @@ export const Navigation = () => {
                                     <i class="fa-regular fa-user" />
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to="/" onClick={logoutHandler}>
                                     <i class="fa-solid fa-arrow-right-from-bracket" />
                                 </Link>
-                            </li>
+                            </li> */}
                         </>
                     ) : (
                         <>
