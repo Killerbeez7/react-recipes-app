@@ -43,7 +43,8 @@ export const RecipeEdit = () => {
         if (
             !recipeData.title ||
             !recipeData.description ||
-            !recipeData.timeToCook
+            !recipeData.timeToCook ||
+            !recipeData.servings
         ) {
             alert("Please fill in all required fields");
             return;
@@ -99,6 +100,15 @@ export const RecipeEdit = () => {
                         name="description"
                         placeholder="Description"
                         defaultValue={currentRecipe.description}
+                    />
+                </div>
+                <div className={styles["edit-form-group"]}>
+                    <input
+                        type="text"
+                        id="servings"
+                        name="servings"
+                        placeholder={`${currentRecipe.servings} servings`}
+                        // defaultValue={currentRecipe.servings}
                     />
                 </div>
                 <div className={styles["edit-form-group"]}>

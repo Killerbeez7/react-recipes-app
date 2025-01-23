@@ -42,11 +42,11 @@
     text-align: center;
     align-items: center;
     text-decoration: none;
-    white-space: nowrap; 
-    display: inline-block; 
+    white-space: nowrap;
+    display: inline-block;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 100%; 
+    max-width: 100%;
 }
 
 .auth-icons {
@@ -262,10 +262,9 @@
     .view-nav {
         padding-left: 10px;
     }
-    .brand{
+    .brand {
         /* align-items: center; */
     }
-
 }
 
 .mobile {

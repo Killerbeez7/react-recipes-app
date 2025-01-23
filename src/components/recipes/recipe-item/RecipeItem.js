@@ -17,7 +17,7 @@ export const RecipeItem = ({ recipe }) => {
                         <span>
                             <i class="fa-solid fa-clock" /> {recipe.timeToCook} min
                         </span>
-                        <span>🍽 {recipe.servings} servings</span>
+                        <span><i class="fa-solid fa-burger"></i> {recipe.servings} servings</span>
                     </div>
                 </div>
             </Link>

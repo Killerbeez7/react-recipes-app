@@ -16,6 +16,7 @@ export const RecipeAdd = () => {
         imageUrl: "",
         likes: 0,
         timeToCook: "",
+        servings: "",
     });
 
     const [categories, setCategories] = useState([]);
@@ -69,6 +70,11 @@ export const RecipeAdd = () => {
         }
 
         if (isNaN(values.timeToCook) || Number(values.timeToCook) <= 0) {
+            alert("Time to cook must be a positive number");
+            return;
+        }
+
+        if (isNaN(values.servings) || Number(values.timeToCook) <= 0) {
             alert("Time to cook must be a positive number");
             return;
         }
@@ -141,6 +147,16 @@ export const RecipeAdd = () => {
                         name="timeToCook"
                         placeholder="Preparation time"
                         value={values.timeToCook}
+                        onChange={changeHandler}
+                    />
+                </div>
+                <div className={styles["form-group"]}>
+                    <input
+                        type="text"
+                        id="servings"
+                        name="servings"
+                        placeholder="Number of servings"
+                        value={values.servings}
                         onChange={changeHandler}
                     />
                 </div>
