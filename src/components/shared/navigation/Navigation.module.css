@@ -265,6 +265,19 @@
     .brand {
         /* align-items: center; */
     }
+
+    .auth-icons {
+        align-items: center; 
+        justify-content: center;
+        font-size: 1.6rem;
+    }
+    .authIcons a {
+        display: flex;
+        align-items: center; 
+        justify-content: center;
+        height: 100%;
+        padding: 5px;
+    }
 }
 
 .mobile {
