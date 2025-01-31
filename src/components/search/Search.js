@@ -57,7 +57,7 @@ export const Search = () => {
                     value={criteria}
                 >
                     <option value="title">Title</option>
-                    <option value="timeToCook">Max Time</option>
+                    <option value="timeToCook">Time</option>
                 </select>
             </div>
         </form>

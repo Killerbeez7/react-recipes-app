@@ -5,7 +5,7 @@
 
     height: 69px;
     z-index: 9999;
-    padding: 0 20px;
+    padding: 0 50px;
     background-color: #333;
     border-bottom: 0.5px solid #ddd;
 
@@ -75,7 +75,7 @@
 .navLinks {
     list-style: none;
     display: flex;
-    gap: 35px;
+    gap: 25px;
     flex-shrink: 0;
 }
 
@@ -131,7 +131,8 @@
 
 .recipesDropdown li a:hover,
 .seasonalDropdown li a:hover {
-    color: #8f8f8f;
+    /* color: #8f8f8f; */
+    color: #ffd700;
 }
 
 .recipesDropdown .all-recipes-button a {
@@ -241,6 +242,10 @@
 }
 
 @media (max-width: 768px) {
+    .view-nav {
+        padding: 0 20px;
+    }
+
     .brand {
         width: auto;
     }

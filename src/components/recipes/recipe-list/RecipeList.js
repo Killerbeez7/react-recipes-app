@@ -4,6 +4,7 @@ import { RecipeContext } from "../../../contexts/RecipeContext";
 import { RecipeItem } from "../recipe-item/RecipeItem";
 import styles from "./RecipeList.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
+import { Search } from "../../search/Search"; // new
 
 export const RecipeList = () => {
     const { currentUser } = useAuth();

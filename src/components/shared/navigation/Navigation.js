@@ -116,10 +116,6 @@ export const Navigation = () => {
                         <span style={{ color: "red" }}>Amare</span>
                     </Link>
                 </div>
-                {/* Search component */}
-                {/* <div className={styles.searchWrapper}>
-                    <Search />
-                </div> */}
             </div>
 
             {/* Main Nav Links */}
@@ -227,7 +223,58 @@ export const Navigation = () => {
                     )}
                 </li>
 
+                {/* News Dropdown */}
+                {/* <li
+                    className={`${styles.dropdown} ${
+                        seasonalOpen ? styles.seasonalOpen : ""
+                    }`}
+                    {...(isDesktop && {
+                        onMouseEnter: () => setSeasonalOpen(true),
+                        onMouseLeave: () => setSeasonalOpen(false),
+                    })}
+                >
+                    <Link
+                        to="#"
+                        className={styles.dropdownToggle}
+                        onClick={(e) =>
+                            isDesktop
+                                ? e.preventDefault()
+                                : toggleSeasonalDropdown()
+                        }
+                    >
+                        Seasonal{" "}
+                        {menuOpen && (
+                            <i
+                                className={`fa-solid ${
+                                    seasonalOpen
+                                        ? "fa-chevron-up"
+                                        : "fa-chevron-down"
+                                }`}
+                            />
+                        )}
+                    </Link>
+                    {seasonalOpen && (
+                        <ul
+                            className={`${styles.seasonalDropdown} ${
+                                seasonalOpen ? styles.open : ""
+                            }`}
+                        >
+                            {seasons.map(({ path, label }) => (
+                                <li key={path}>
+                                    <Link to={path} onClick={closeMenu}>
+                                        {label}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </li> */}
                 {/* Other links */}
+                <li>
+                    <Link to="/gallery" onClick={closeMenu}>
+                        News
+                    </Link>
+                </li>
                 <li>
                     <Link to="/gallery" onClick={closeMenu}>
                         Gallery

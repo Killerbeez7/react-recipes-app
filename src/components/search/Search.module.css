@@ -7,7 +7,7 @@
     color: white;
     padding: 10px 0;
     margin-bottom: 3rem;
-    gap: 30px;
+    gap: 15px;
 }
 
 .search-form h2 {
@@ -27,7 +27,7 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    width: 280px;
+    width: 215px;
 }
 
 .search-form input,
@@ -98,7 +98,7 @@
     border-radius: 5px;
     background-color: #f9f9f9;
     /* transition: border-color 0.3s ease, box-shadow 0.3s ease; */
-    width: 110px;
+    width: 80px;
     /* border-color: #5cb85c; */
 }
 
