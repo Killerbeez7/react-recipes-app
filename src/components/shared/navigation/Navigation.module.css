@@ -1,18 +1,21 @@
 .view-nav {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 5px 50px;
-    background-color: #333;
-    /* background-color: #5c5c5c; */
-    height: 70px;
+    justify-content: space-between;
 
-    border-bottom: 1px solid #ddd;
+    height: 69px;
+    z-index: 9999;
+    padding: 0 20px;
+    background-color: #333;
+    border-bottom: 0.5px solid #ddd;
 
     user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
     -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+
+    /* top: 0; */
+    /* position: sticky; */
 }
 
 .view-nav a,
@@ -31,21 +34,18 @@
 .brand {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    gap: 30px;
-    /* height: 100%; Ensures full height alignment */
+    gap: 20px;
+    width: 130px;
 }
 
 .logo {
-    font-size: 1.7rem;
+    /* Reduced from 1.7rem down to 1.4rem */
+    font-size: 1.4rem;
     text-align: center;
-    align-items: center;
     text-decoration: none;
     white-space: nowrap;
     display: inline-block;
     text-overflow: ellipsis;
-    white-space: nowrap;
     max-width: 100%;
 }
 
@@ -54,6 +54,8 @@
     display: flex;
     gap: 35px;
     flex-shrink: 0;
+    width: 130px;
+    justify-content: end;
 }
 
 .menuButton {
@@ -63,6 +65,7 @@
     cursor: pointer;
     display: none;
     color: #dddddd;
+    padding: 0;
 }
 
 .hideLinks {
@@ -79,7 +82,6 @@
 .navLinks a {
     font-size: 1.2rem;
     text-decoration: none;
-
     color: #dddddd;
     transition: color 0.3s ease, font-weight 0.2s ease;
 }
@@ -87,7 +89,6 @@
 .navLinks a:hover {
     border-bottom: 1px solid #8a8a8a;
     color: #8f8f8f;
-    /* color: rgb(245, 213, 73); */
 }
 
 /* Recipes Dropdown Menu */
@@ -124,9 +125,8 @@
 .recipesDropdown li a,
 .seasonalDropdown li a {
     color: #dddddd;
-    font-size: 1rem;
-    text-decoration: none;
     font-size: 0.9rem;
+    text-decoration: none;
 }
 
 .recipesDropdown li a:hover,
@@ -143,23 +143,24 @@
     transition: background-color 0.3s ease;
 }
 
+/* ------------ Media Queries ------------ */
+
 @media (max-width: 1210px) {
     .view-nav {
         position: sticky;
         top: 0;
         z-index: 999999;
         transform: translateZ(0);
-        padding: 20px;
     }
-    /* .brand{
-        justify-content: flex-start;
-        gap: 20px;
-    } */
 
     .menuButton {
         display: block;
         height: 40px;
         width: 40px;
+    }
+
+    .searchWrapper {
+        display: none;
     }
 
     .dropdown {
@@ -171,15 +172,15 @@
         flex-direction: column;
         background-color: #f8f8f8;
         position: fixed;
-
-        top: 56.19px;
+        top: 70px;
         left: 0;
         width: 100%;
-        height: calc(100vh - 56.19px);
+        height: calc(100vh - 70px);
         z-index: 999999;
-        transform: translateZ(0);
         margin: 0;
-        padding: 20px 20px;
+        padding: 20px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
     }
 
     .navLinks a:hover {
@@ -187,35 +188,27 @@
     }
 
     .navLinks.open {
-        z-index: 1013;
         display: flex;
-        margin-top: 55.19px;
         flex-flow: column nowrap;
-        position: absolute;
-        top: 0;
-        left: 0;
-        height: calc(100vh - 55.19px);
-        overflow-y: auto;
-        overscroll-behavior: contain;
-        width: 100vw;
-        max-width: 676px;
-        padding-bottom: 100px;
         background-color: #333;
-        font-family: var(--fonts-heading);
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 70px);
+        margin: 0;
+        padding: 20px;
         font-size: 20px;
         line-height: 29px;
         letter-spacing: 0.01em;
-
         -webkit-overflow-scrolling: touch;
     }
 
-    /* Dropdown menu styles */
     .recipesDropdown,
     .seasonalDropdown {
         display: none;
         flex-direction: column;
         background-color: transparent;
-
         position: static;
     }
 
@@ -231,8 +224,7 @@
 
     .recipesDropdown li a,
     .seasonalDropdown li a {
-        color: 8a8a8a;
-        text-decoration: none;
+        color: #8a8a8a;
     }
 
     .recipesDropdown li a:hover,
@@ -243,40 +235,23 @@
     .nav-icons {
         display: flex;
         flex-direction: row;
-        gap: 20px;
+        gap: 10px;
         align-items: center;
-    }
-
-    .auth-icons {
-        display: flex;
-        flex-direction: row;
-        list-style: none;
-        justify-content: flex-start;
-        color: #8a8a8a;
-        gap: 20px;
     }
 }
 
-/* Mobile Styling */
 @media (max-width: 768px) {
-    .view-nav {
-        padding-left: 10px;
-    }
     .brand {
-        /* align-items: center; */
+        width: auto;
     }
 
     .auth-icons {
-        align-items: center; 
-        justify-content: center;
-        font-size: 1.6rem;
+        width: auto;
+        align-self: center;
     }
-    .authIcons a {
-        display: flex;
-        align-items: center; 
-        justify-content: center;
-        height: 100%;
-        padding: 5px;
+
+    .auth-icons .navLinks {
+        gap: 20px;
     }
 }
 
@@ -285,4 +260,5 @@
     position: fixed;
     height: 100vh;
     height: 100svh;
+    width: 100%;
 }

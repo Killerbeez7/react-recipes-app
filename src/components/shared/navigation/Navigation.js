@@ -24,7 +24,6 @@ const categories = [
     { path: "/recipes/instant-pot", label: "Instant Pot" },
     { path: "/recipes/baking", label: "Baking" },
     { path: "/recipes/vegetarian", label: "Vegetarian" },
-    // { path: "/recipes/all", label: "All Recipes" },
 ];
 
 const seasons = [
@@ -38,82 +37,77 @@ export const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [recipesOpen, setRecipesOpen] = useState(false);
     const [seasonalOpen, setSeasonalOpen] = useState(false);
+
     const location = useLocation();
+    const { currentUser } = useAuth();
+    const userId = currentUser?.uid;
 
     const isDesktop = useMediaQuery({ query: "(min-width: 1210px)" });
-    // const isTablet = useMediaQuery({ query: "(max-width: 1023px)" });
     const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
+    // Close submenus when main menu closes
     useEffect(() => {
         if (!menuOpen) {
             setRecipesOpen(false);
+            setSeasonalOpen(false);
         }
     }, [menuOpen]);
 
+    // Handle locking the body scroll on mobile
     useEffect(() => {
         const body = document.body;
 
         const handleResize = () => {
-            if (menuOpen && isMobile) {
-                body.classList.add(styles.mobile);
+            if (menuOpen && !isDesktop) {
+                body.classList.add(styles.mobile); // lock scroll
             } else if (menuOpen && isDesktop) {
-                body.classList.remove(styles.mobile);
+                body.classList.remove(styles.mobile); // ensure no locking on desktop
                 closeMenu();
             }
         };
 
         handleResize();
-
         window.addEventListener("resize", handleResize);
-
         return () => {
             body.classList.remove(styles.mobile);
             window.removeEventListener("resize", handleResize);
         };
     }, [menuOpen, isMobile, isDesktop]);
 
+    // Auto-close menu if toggled while on desktop
     useEffect(() => {
         if (isDesktop) {
             closeMenu();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [menuOpen]);
 
-    const toggleMenu = () => {
-        setMenuOpen((prev) => !prev);
-    };
+    // Toggles
+    const toggleMenu = () => setMenuOpen((prev) => !prev);
+    const toggleRecipesDropdown = () => setRecipesOpen((prev) => !prev);
+    const toggleSeasonalDropdown = () => setSeasonalOpen((prev) => !prev);
 
-    // recipes
-    const toggleRecipesDropdown = () => {
-        setRecipesOpen((prev) => !prev);
-    };
-    // seasonal
-    const toggleSeasonalDropdown = () => {
-        setSeasonalOpen((prev) => !prev);
-    };
-
+    // Close all menus
     const closeMenu = () => {
         setMenuOpen(false);
         setRecipesOpen(false);
         setSeasonalOpen(false);
     };
 
-    const { currentUser } = useAuth();
-    const userId = currentUser?.uid;
-
+    // Sign out
     const logoutHandler = () => {
         doSignOut();
     };
 
     return (
         <div id="header-wrap" className={styles["view-nav"]}>
-            {/* <header> */}
             <div className={styles.brand}>
                 <div className={styles["nav-icons"]}>
                     <button className={styles.menuButton} onClick={toggleMenu}>
                         {menuOpen ? (
-                            <i className="fa-solid fa-xmark"></i>
+                            <i class="fa-solid fa-x" />
                         ) : (
-                            <i className="fa-solid fa-bars"></i>
+                            <i className="fa-solid fa-bars" />
                         )}
                     </button>
                     <Link to="/" className={styles.logo} onClick={closeMenu}>
@@ -122,14 +116,23 @@ export const Navigation = () => {
                         <span style={{ color: "red" }}>Amare</span>
                     </Link>
                 </div>
-                <div>
-                    <Search /> {/* Include the Search component */}
-                </div>
+                {/* Search component */}
+                {/* <div className={styles.searchWrapper}>
+                    <Search />
+                </div> */}
             </div>
-            <ul className={`${styles.navLinks} ${styles.hideLinks} ${menuOpen ? styles.open : ""}`}>
-                {/* -------------------------------------------------------------------------- Recipes --------------------------------------------------------------------- */}
+
+            {/* Main Nav Links */}
+            <ul
+                className={`${styles.navLinks} ${styles.hideLinks} ${
+                    menuOpen ? styles.open : ""
+                }`}
+            >
+                {/* Recipes Dropdown */}
                 <li
-                    className={`${styles.dropdown} ${recipesOpen ? styles.recipesOpen : ""}`}
+                    className={`${styles.dropdown} ${
+                        recipesOpen ? styles.recipesOpen : ""
+                    }`}
                     {...(isDesktop && {
                         onMouseEnter: () => setRecipesOpen(true),
                         onMouseLeave: () => setRecipesOpen(false),
@@ -138,20 +141,25 @@ export const Navigation = () => {
                     <Link
                         to="#"
                         className={styles.dropdownToggle}
-                        onClick={(e) => (isDesktop ? e.preventDefault() : toggleRecipesDropdown())}
+                        onClick={(e) =>
+                            isDesktop
+                                ? e.preventDefault()
+                                : toggleRecipesDropdown()
+                        }
                     >
-                        {" "}
                         Recipes{" "}
                         {menuOpen && (
                             <i
                                 className={`fa-solid ${
-                                    recipesOpen ? "fa-chevron-up" : "fa-chevron-down"
+                                    recipesOpen
+                                        ? "fa-chevron-up"
+                                        : "fa-chevron-down"
                                 }`}
-                            ></i>
+                            />
                         )}
                     </Link>
                     {recipesOpen && (
-                        <ul 
+                        <ul
                             className={`${styles.recipesDropdown} ${
                                 recipesOpen ? styles.open : ""
                             }`}
@@ -164,15 +172,19 @@ export const Navigation = () => {
                                 </li>
                             ))}
                             <li className={styles["all-recipes-button"]}>
-                                <Link to="/recipes/all" onClick={closeMenu}>See more</Link>
-                                {/* <i className="fa-solid fa-list"></i> All Recipes */}
+                                <Link to="/recipes/all" onClick={closeMenu}>
+                                    See more
+                                </Link>
                             </li>
                         </ul>
                     )}
                 </li>
-                {/* -------------------------------------------------------------------------- Seasonal --------------------------------------------------------------------- */}
+
+                {/* Seasonal Dropdown */}
                 <li
-                    className={`${styles.dropdown} ${seasonalOpen ? styles.seasonalOpen : ""}`}
+                    className={`${styles.dropdown} ${
+                        seasonalOpen ? styles.seasonalOpen : ""
+                    }`}
                     {...(isDesktop && {
                         onMouseEnter: () => setSeasonalOpen(true),
                         onMouseLeave: () => setSeasonalOpen(false),
@@ -181,16 +193,21 @@ export const Navigation = () => {
                     <Link
                         to="#"
                         className={styles.dropdownToggle}
-                        onClick={(e) => (isDesktop ? e.preventDefault() : toggleSeasonalDropdown())}
+                        onClick={(e) =>
+                            isDesktop
+                                ? e.preventDefault()
+                                : toggleSeasonalDropdown()
+                        }
                     >
-                        {" "}
                         Seasonal{" "}
                         {menuOpen && (
                             <i
                                 className={`fa-solid ${
-                                    seasonalOpen ? "fa-chevron-up" : "fa-chevron-down"
+                                    seasonalOpen
+                                        ? "fa-chevron-up"
+                                        : "fa-chevron-down"
                                 }`}
-                            ></i>
+                            />
                         )}
                     </Link>
                     {seasonalOpen && (
@@ -209,7 +226,8 @@ export const Navigation = () => {
                         </ul>
                     )}
                 </li>
-                {/* ------------------------------------------------------------------------------------------------------------------------------------------------------- */}
+
+                {/* Other links */}
                 <li>
                     <Link to="/gallery" onClick={closeMenu}>
                         Gallery
@@ -221,20 +239,34 @@ export const Navigation = () => {
                     </Link>
                 </li>
             </ul>
+
+            {/* Auth Icons */}
             <div className={styles["auth-icons"]}>
                 <ul className={styles.navLinks}>
+                    <li>
+                        <Link onClick={closeMenu}>
+                            <i class="fa-solid fa-magnifying-glass" />
+                        </Link>
+                    </li>
+
                     {currentUser ? (
                         <>
                             <li>
-                                <Link to={`/auth/${userId}/details`} onClick={closeMenu}>
-                                    <i class="fa-regular fa-user" />
+                                <Link
+                                    to={`/auth/${userId}/details`}
+                                    onClick={closeMenu}
+                                >
+                                    <i className="fa-regular fa-user" />
                                 </Link>
                             </li>
-                            {/* <li>
-                                <Link to="/" onClick={logoutHandler}>
-                                    <i class="fa-solid fa-arrow-right-from-bracket" />
-                                </Link>
-                            </li> */}
+                            {/*
+                If you want a logout icon, uncomment:
+                <li>
+                  <Link to="/" onClick={logoutHandler}>
+                    <i className="fa-solid fa-arrow-right-from-bracket" />
+                  </Link>
+                </li>
+              */}
                         </>
                     ) : (
                         <>
@@ -251,7 +283,6 @@ export const Navigation = () => {
                     )}
                 </ul>
             </div>
-            {/* </header> */}
         </div>
     );
 };
