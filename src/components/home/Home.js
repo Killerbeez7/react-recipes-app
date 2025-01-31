@@ -1,103 +1,49 @@
+import { useState } from "react";
 import styles from "./Home.module.css";
 import cx from "classnames";
 
 export const Home = () => {
+    const [darkMode, setDarkMode] = useState(false);
+
     return (
-        <>
-            <main className={styles["main-wrapper"]}>
-                <div className={styles["content-wrapper"]}>
-                    <h1 className={styles["slogan"]}>Hungry? Let’s find a recipe for you...</h1>
-                    <div className={cx(styles["trending-recipes"], styles.sections)}>
-                        <p className={styles["home-titles"]}>Trending recipes:</p>
-                        <br></br>
-                        <hr></hr>
+        <div className={cx(styles.wrapper, { [styles.dark]: darkMode })}>
+            <header className={styles.hero}>
+                <h1 className={styles.slogan}>Find Your Next Meal</h1>
+                <button onClick={() => setDarkMode(!darkMode)} className={styles.darkModeToggle}>
+                    {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
+                </button>
+            </header>
 
-                        <h1>
-                            <strong>От админа!</strong>
-                        </h1>
-                        <h3>
-                            <i>
-                                Първите 3 коментара печелят iPhone 16 pro Max super GALAXY gold
-                                edition
-                            </i>
-                        </h3>
+            <main className={styles.mainWrapper}>
+                <div className={styles.contentWrapper}>
+                    <section className={styles.trendingRecipes}>
+                        <h2 className={styles.homeTitles}>Trending</h2>
+                        <div className={styles.recipeGrid}>
+                            {["Recipe 1", "Recipe 2", "Recipe 3"].map((recipe, index) => (
+                                <div key={index} className={styles.recipeCard}>
+                                    <p>{recipe}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
 
-                        <hr></hr>
-                        <br></br>
+                    <section className={styles.sections}>
+                        <h2 className={styles.homeTitles}>Cooking Tips</h2>
                         <ul>
-                            <p className={styles["p-style"]}></p>
-                            <p></p>
-                            <li></li>
-                            <li></li>
-                            <li></li>
+                            <li>Use fresh ingredients</li>
+                            <li>Preheat your oven</li>
+                            <li>Balance flavors</li>
                         </ul>
-                    </div>
-                    <div className={styles["horizontal-row"]}>
-                        <div className={cx(styles["cooking-tips"], styles.sections)}>
-                            <p className={styles["home-titles"]}>Cooking tips:</p>
-                            <ul>
-                                <li>dadasfasfas</li>
-                                <li>gagagadfad</li>
-                                <li>gagagadfad</li>
-                            </ul>
-                        </div>
-                        <div className={cx(styles["easy-recipes"], styles.sections)}>
-                            <p className={styles["home-titles"]}>Easy Recipes</p>
-                            <ul>
-                                <li>fafasfdaad</li>
-                                <li>gagagadfad</li>
-                                <li>gagagadfad</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className={cx(styles["food-news"], styles.sections)}>
-                        <p className={styles["home-titles"]}>Food News</p>
-                        <ul>
-                            <li>dasfadff</li>
-                            <li>gagagadfad</li>
-                            <li>gagagadfad</li>
-                        </ul>
-                    </div>
-                    <div className={cx(styles["cleaning-organizing"], styles.sections)}>
-                        <p className={styles["home-titles"]}>Cleaning & Organizing</p>
-                        <ul>
-                            <li>fafsafadf</li>
-                            <li>gagagadfad</li>
-                            <li>gagagadfad</li>
-                        </ul>
-                    </div>
+                    </section>
                 </div>
-                <div className={cx(styles["side-menu-wrapper"], styles.sections)}>
-                    <div>
-                        <h2>Online since - 05.11.2024</h2>
-                        <p>...</p>
-                        <p>...</p>
-                    </div>
-                    <div>
-                        <h2>Updates</h2>
-                        <br></br>
-                        <h4>06.11.2024</h4>
-                        <p>- Navigation bar: responsiveness</p>
-                        <p>- Search bar: filters </p>
-                        <br></br>
-                        <h4>07.11.2024</h4>
-                        <p>- Navigation bar: style</p>
-                        <p>- Search bar: style</p>
-                        <p>- profile details, home: form, style</p>
-                        <h4>08.11.2024</h4>
-                        <p>- added comments</p>
-                        <p>- add user profile photo</p>
-                        <h4>09.11.2024</h4>
-                        <p>- comments: functionality and style</p>
-                        <h4>10.11.2024</h4>
-                        <p>- Navigation bar: style improvements</p>
-                        <p>- comments, add recipe, edit recipe: style update</p>
-                        <h4>11.11.2024</h4>
-                        <p>- like button: style update</p>
-                        <p>- Recipe Edit, Details: update style</p>
-                    </div>
-                </div>
+
+                <aside className={styles.sideMenuWrapper}>
+                    <h2>Updates</h2>
+                    <p>New features and improvements</p>
+                </aside>
             </main>
-        </>
+
+            <footer className={styles.footer}>© 2025 FoodHub</footer>
+        </div>
     );
 };
