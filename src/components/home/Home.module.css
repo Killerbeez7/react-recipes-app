@@ -1,3 +1,4 @@
+/* Ensure everything stacks properly */
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -6,11 +7,13 @@
     transition: background 0.3s;
 }
 
+/* Dark Mode */
 .dark {
     background: #222;
     color: white;
 }
 
+/* Hero Section */
 .hero {
     text-align: center;
     padding: 40px;
@@ -18,11 +21,14 @@
     color: white;
 }
 
+/* Headline */
 .slogan {
     font-size: 2rem;
     font-weight: bold;
+    word-wrap: break-word; /* Prevents overflow */
 }
 
+/* Dark Mode Toggle Button */
 .darkModeToggle {
     background: white;
     color: black;
@@ -34,20 +40,25 @@
     margin-top: 15px;
 }
 
+/* Main Content Layout */
 .mainWrapper {
     display: flex;
-    flex-grow: 1;
-    justify-content: space-between;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
     padding: 20px;
 }
 
+/* Content Section */
 .contentWrapper {
-    width: 70%;
+    width: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
+/* Trending Recipes */
 .trendingRecipes {
     background: #f0f0f0;
     padding: 15px;
@@ -56,18 +67,21 @@
 
 .recipeGrid {
     display: flex;
+    flex-wrap: wrap; /* Ensures responsiveness */
     gap: 10px;
 }
 
 .recipeCard {
-    flex: 1;
+    flex: 1 1 calc(33.333% - 10px);
     padding: 20px;
     background: white;
     text-align: center;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    min-width: 150px;
 }
 
+/* Other Sections */
 .sections {
     background: #f5f5f5;
     padding: 15px;
@@ -75,16 +89,43 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Sidebar */
 .sideMenuWrapper {
-    width: 25%;
+    width: 100%;
+    max-width: 400px;
     background: #eee;
     padding: 15px;
     border-radius: 10px;
+    text-align: center;
 }
 
+/* Footer */
 .footer {
     text-align: center;
     padding: 15px;
     background: #333;
     color: white;
+    margin-top: auto;
+}
+
+/* 🔹 Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .mainWrapper {
+        flex-direction: column; /* Stack everything */
+        align-items: center;
+        gap: 15px;
+    }
+
+    .recipeGrid {
+        flex-direction: column; /* Stack recipe cards */
+        align-items: center;
+    }
+
+    .recipeCard {
+        width: 90%;
+    }
+
+    .sideMenuWrapper {
+        width: 100%;
+    }
 }

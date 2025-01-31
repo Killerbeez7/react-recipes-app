@@ -158,3 +158,37 @@
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .mainContainer {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .profileContainer {
+        width: 70%;
+        padding: 1.5rem;
+        margin: 30px 0;
+    }
+    .sideBoxesContainer {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+    }
+    .buttonRow {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 5px;
+    }
+    .sideBox {
+        width: 45%;
+        min-height: 100px;
+    }
+    .sideBox>ul{
+        padding: 20px;
+    }
+}
+

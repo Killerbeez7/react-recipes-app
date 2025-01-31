@@ -106,21 +106,20 @@ export const ProfileDetails = () => {
     return (
         <div className={styles.mainContainer}>
             <div className={styles.sideBox}>
-                <div className={styles.sideBox}>
-                    <h3>Recent Activity</h3>
-                    <ul>
-                        <li>
-                            You liked <strong>Spaghetti Carbonara</strong>
-                        </li>
-                        <li>
-                            You commented on <strong>Vegan Brownies</strong>
-                        </li>
-                        <li>
-                            Uploaded <strong>Best Tacos Recipe</strong>
-                        </li>
-                    </ul>
-                </div>
+                <h3>Recent Activity</h3>
+                <ul>
+                    <li>
+                        You liked <strong>Spaghetti Carbonara</strong>
+                    </li>
+                    <li>
+                        You commented on <strong>Vegan Brownies</strong>
+                    </li>
+                    <li>
+                        Uploaded <strong>Best Tacos Recipe</strong>
+                    </li>
+                </ul>
             </div>
+
             <div className={styles.sideBox}>
                 <h3>Quick Actions</h3>
                 <button className={styles.quickActionBtn}>
@@ -201,15 +200,15 @@ export const ProfileDetails = () => {
                         </button>
                         <button
                             type="button"
-                            className={styles.changePasswordBtn}
-                        >
-                            Change Password
-                        </button>
-                        <button
-                            type="button"
                             className={styles.deleteAccountBtn}
                         >
                             Delete
+                        </button>
+                        <button
+                            type="button"
+                            className={styles.changePasswordBtn}
+                        >
+                            Change Password
                         </button>
                     </div>
                 </form>
