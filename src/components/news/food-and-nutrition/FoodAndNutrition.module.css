@@ -1,0 +1,84 @@
+/* Full-screen section with a clean boxed layout */
+.nutritionSection {
+    width: 100%;
+    min-height: 85vh;
+    padding: 50px 20px;
+    background: #f4f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Title Styling */
+.nutritionTitle {
+    font-size: 28px;
+    color: #2b6777;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Individual article cards */
+.nutritionItem {
+    background: #ffffff;
+    border: 3px solid #2b6777; /* Distinct blue border */
+    border-radius: 12px;
+    padding: 20px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.nutritionItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+/* Headings inside each card */
+.nutritionHeading {
+    font-size: 20px;
+    color: #2b6777;
+    margin-bottom: 8px;
+}
+
+/* Text inside each card */
+.nutritionText {
+    font-size: 16px;
+    color: #333;
+    line-height: 1.5;
+}
+
+/* Read More link */
+.nutritionLink {
+    display: inline-block;
+    margin-top: 10px;
+    color: #2b6777;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.nutritionLink:hover {
+    color: #163f4d;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .nutritionItem {
+        width: 90%;
+        padding: 15px;
+    }
+
+    .nutritionTitle {
+        font-size: 24px;
+    }
+
+    .nutritionHeading {
+        font-size: 18px;
+    }
+}

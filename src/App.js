@@ -30,6 +30,11 @@ import { FallRecipes } from "./components/seasonal-recipes/fall-recipes/FallReci
 import { SpringRecipes } from "./components/seasonal-recipes/spring-recipes/SpringRecipes";
 import { SummerRecipes } from "./components/seasonal-recipes/summer-recipes/SummerRecipes";
 import { WinterRecipes } from "./components/seasonal-recipes/winter-recipes/WinterRecipes";
+// news
+import { FoodAndNutrition } from "./components/news/food-and-nutrition/FoodAndNutrition";
+import { FoodCultureAndTravel } from "./components/news/food-culture-and-travel/FoodCultureAndTravel";
+import { CookingTipsAndTricks } from "./components/news/cooking-tips-and-tricks/CookingTipsAndTricks";
+import { InterviewsAndSpotlight } from "./components/news/interviews-and-spotlight/InterviewsAndSpotlight";
 // styles
 import "./App.css";
 
@@ -73,6 +78,12 @@ function App() {
                             <Route path="/recipes/seasonal/spring" element={<SpringRecipes />} />
                             <Route path="/recipes/seasonal/summer" element={<SummerRecipes />} />
                             <Route path="/recipes/seasonal/winter" element={<WinterRecipes />} />
+
+                            {/* news */}
+                            <Route path="/news/food-and-nutrition" element={<FoodAndNutrition />} />
+                            <Route path="/news/food-culture-and-travel" element={<FoodCultureAndTravel />} />
+                            <Route path="/news/cooking-tips-and-tricks" element={<CookingTipsAndTricks />} />
+                            <Route path="/news/interviews-and-spotlights" element={<InterviewsAndSpotlight />} />
 
                             {/* CRUD */}
                             <Route element={<PrivateRoute />}>

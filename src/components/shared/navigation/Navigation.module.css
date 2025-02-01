@@ -83,12 +83,16 @@
     font-size: 1.2rem;
     text-decoration: none;
     color: #dddddd;
-    transition: color 0.3s ease, font-weight 0.2s ease;
+    /* transition: color 0.3s ease, font-weight 0.2s ease; */
+    transition: filter 300ms;
+    
 }
 
 .navLinks a:hover {
-    border-bottom: 1px solid #8a8a8a;
-    color: #8f8f8f;
+    /* border-bottom: 1px solid #8a8a8a; */
+    /* color: #8f8f8f; */
+    /* color: #ffd700; */
+    filter: brightness(1.2);
 }
 
 /* Recipes Dropdown Menu */
@@ -97,7 +101,8 @@
 }
 
 .recipesDropdown,
-.seasonalDropdown {
+.seasonalDropdown,
+.newsDropdown {
     display: none;
     list-style: none;
     position: absolute;
@@ -113,26 +118,31 @@
 }
 
 .dropdown:hover .recipesDropdown,
-.dropdown:hover .seasonalDropdown {
+.dropdown:hover .seasonalDropdown,
+.dropdown.hover .newsDropdown {
     display: block;
 }
 
 .recipesOpen .recipesDropdown,
-.seasonalOpen .seasonalDropdown {
+.seasonalOpen .seasonalDropdown,
+.newsOpen .newsDropdown {
     display: flex;
 }
 
 .recipesDropdown li a,
-.seasonalDropdown li a {
+.seasonalDropdown li a,
+.newsDropdown li a{
     color: #dddddd;
     font-size: 0.9rem;
     text-decoration: none;
 }
 
 .recipesDropdown li a:hover,
-.seasonalDropdown li a:hover {
+.seasonalDropdown li a:hover,
+.newsDropdown li a:hover {
     /* color: #8f8f8f; */
-    color: #ffd700;
+    /* color: #ffd700; */
+    filter: brightness(1.2);
 }
 
 .recipesDropdown .all-recipes-button a {
@@ -206,7 +216,8 @@
     }
 
     .recipesDropdown,
-    .seasonalDropdown {
+    .seasonalDropdown,
+    .newsDropdown {
         display: none;
         flex-direction: column;
         background-color: transparent;
@@ -214,22 +225,26 @@
     }
 
     .recipesOpen .recipesDropdown,
-    .seasonalOpen .seasonalDropdown {
+    .seasonalOpen .seasonalDropdown,
+    .newsOpen .newsDropdown {
         display: flex;
     }
 
     .recipesDropdown li,
-    .seasonalDropdown li {
+    .seasonalDropdown li,
+    .newsDropdown li {
         padding: 10px 0;
     }
 
     .recipesDropdown li a,
-    .seasonalDropdown li a {
+    .seasonalDropdown li a,
+    .newsDropdown li a {
         color: #8a8a8a;
     }
 
     .recipesDropdown li a:hover,
-    .seasonalDropdown li a:hover {
+    .seasonalDropdown li a:hover,
+    .newsDropdown li a:hover {
         color: #8f8f8f;
     }
 

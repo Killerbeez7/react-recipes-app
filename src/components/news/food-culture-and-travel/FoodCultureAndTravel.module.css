@@ -1,0 +1,96 @@
+/* Full-screen section with boxed travel theme */
+.travelSection {
+    width: 100%;
+    min-height: 85vh;
+    padding: 50px 20px;
+    background: #f7f1e3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Title Styling */
+.travelTitle {
+    font-size: 28px;
+    color: #b76e79;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Travel list container */
+.travelList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 80%;
+}
+
+/* Individual travel cards */
+.travelItem {
+    background: #ffffff;
+    border: 3px solid #b76e79; /* Warm pinkish border */
+    border-radius: 14px;
+    padding: 22px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.travelItem:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+
+/* Headings inside each travel item */
+.travelHeading {
+    font-size: 20px;
+    color: #b76e79;
+    margin-bottom: 8px;
+}
+
+/* Text inside each travel item */
+.travelText {
+    font-size: 16px;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* Read More link */
+.travelLink {
+    display: inline-block;
+    margin-top: 12px;
+    color: #b76e79;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.travelLink:hover {
+    color: #8a4b56;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .travelList {
+        width: 90%;
+    }
+
+    .travelItem {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .travelTitle {
+        font-size: 24px;
+    }
+
+    .travelHeading {
+        font-size: 18px;
+    }
+}

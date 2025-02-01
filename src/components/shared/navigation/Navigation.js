@@ -33,10 +33,18 @@ const seasons = [
     { path: "/recipes/seasonal/winter", label: "Winter" },
 ];
 
+const news = [
+    { path: "/news/food-and-nutrition", label: "Food & Nutrition News" },
+    { path: "/news/food-culture-and-travel", label: "Food Culture & Travel" },
+    { path: "/news/cooking-tips-and-tricks", label: "Cooking Tips & Tricks" },
+    { path: "/news/interviews-and-spotlights", label: "Interviews & Spotlights" },
+];
+
 export const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [recipesOpen, setRecipesOpen] = useState(false);
     const [seasonalOpen, setSeasonalOpen] = useState(false);
+    const [newsOpen, setNewsOpen] = useState(false);
 
     const location = useLocation();
     const { currentUser } = useAuth();
@@ -50,6 +58,7 @@ export const Navigation = () => {
         if (!menuOpen) {
             setRecipesOpen(false);
             setSeasonalOpen(false);
+            setNewsOpen(false);
         }
     }, [menuOpen]);
 
@@ -86,12 +95,14 @@ export const Navigation = () => {
     const toggleMenu = () => setMenuOpen((prev) => !prev);
     const toggleRecipesDropdown = () => setRecipesOpen((prev) => !prev);
     const toggleSeasonalDropdown = () => setSeasonalOpen((prev) => !prev);
+    const toggleNewsDropdown = () => setNewsOpen((prev) => !prev);
 
     // Close all menus
     const closeMenu = () => {
         setMenuOpen(false);
         setRecipesOpen(false);
         setSeasonalOpen(false);
+        setNewsOpen(false);
     };
 
     // Sign out
@@ -224,13 +235,13 @@ export const Navigation = () => {
                 </li>
 
                 {/* News Dropdown */}
-                {/* <li
+                <li
                     className={`${styles.dropdown} ${
-                        seasonalOpen ? styles.seasonalOpen : ""
+                        newsOpen ? styles.newsOpen : ""
                     }`}
                     {...(isDesktop && {
-                        onMouseEnter: () => setSeasonalOpen(true),
-                        onMouseLeave: () => setSeasonalOpen(false),
+                        onMouseEnter: () => setNewsOpen(true),
+                        onMouseLeave: () => setNewsOpen(false),
                     })}
                 >
                     <Link
@@ -239,27 +250,27 @@ export const Navigation = () => {
                         onClick={(e) =>
                             isDesktop
                                 ? e.preventDefault()
-                                : toggleSeasonalDropdown()
+                                : toggleNewsDropdown()
                         }
                     >
-                        Seasonal{" "}
+                        News{" "}
                         {menuOpen && (
                             <i
                                 className={`fa-solid ${
-                                    seasonalOpen
+                                    newsOpen
                                         ? "fa-chevron-up"
                                         : "fa-chevron-down"
                                 }`}
                             />
                         )}
                     </Link>
-                    {seasonalOpen && (
+                    {newsOpen && (
                         <ul
-                            className={`${styles.seasonalDropdown} ${
-                                seasonalOpen ? styles.open : ""
+                            className={`${styles.newsDropdown} ${
+                                newsOpen ? styles.open : ""
                             }`}
                         >
-                            {seasons.map(({ path, label }) => (
+                            {news.map(({ path, label }) => (
                                 <li key={path}>
                                     <Link to={path} onClick={closeMenu}>
                                         {label}
@@ -268,13 +279,8 @@ export const Navigation = () => {
                             ))}
                         </ul>
                     )}
-                </li> */}
-                {/* Other links */}
-                <li>
-                    <Link to="/gallery" onClick={closeMenu}>
-                        News
-                    </Link>
                 </li>
+                {/* Other links */}
                 <li>
                     <Link to="/gallery" onClick={closeMenu}>
                         Gallery

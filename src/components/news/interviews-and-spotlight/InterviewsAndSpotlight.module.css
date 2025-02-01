@@ -1,0 +1,96 @@
+/* Full-screen section with a dark spotlight theme */
+.spotlightSection {
+    width: 100%;
+    min-height: 85vh;
+    padding: 50px 20px;
+    background: #1b1b1b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Title Styling */
+.spotlightTitle {
+    font-size: 28px;
+    color: #ffcc66;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 25px;
+}
+
+/* Spotlight container for interviews */
+.spotlightContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 85%;
+}
+
+/* Individual spotlight cards */
+.spotlightItem {
+    background: linear-gradient(135deg, #2a2a2a, #3a3a3a);
+    border-radius: 15px;
+    padding: 22px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(255, 204, 102, 0.3);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    border: 2px solid #ffcc66;
+}
+
+/* Hover effect */
+.spotlightItem:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(255, 204, 102, 0.4);
+}
+
+/* Headings inside each interview card */
+.spotlightHeading {
+    font-size: 20px;
+    color: #ffcc66;
+    margin-bottom: 10px;
+}
+
+/* Text inside each interview card */
+.spotlightText {
+    font-size: 16px;
+    color: #e0e0e0;
+    line-height: 1.5;
+}
+
+/* Read More link */
+.spotlightLink {
+    display: inline-block;
+    margin-top: 12px;
+    color: #ffcc66;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.spotlightLink:hover {
+    color: #ffdb89;
+    text-decoration: underline;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .spotlightContainer {
+        width: 95%;
+    }
+
+    .spotlightItem {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .spotlightTitle {
+        font-size: 24px;
+    }
+
+    .spotlightHeading {
+        font-size: 18px;
+    }
+}
