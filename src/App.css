@@ -12,13 +12,25 @@
     --card-bg: #ffffff;
     --card-shadow: rgba(0, 0, 0, 0.1);
     --card-border-radius: 6px;
-    /* Add additional color presets as needed */
+
     --bg-dark-green-color: #2b2e1e;
     --tx-very-light-gray-color: #dddddd;
     --tx-light-gray-hover-shadow: #8f8f8f;
     --tx-dark-gray-hover-shadow: #333;
+
+    --header-bg-color: #f5b041;
+    --footer-bg-color: #e59866;
+    --hover-color: #f7dc6f;
+    --text-color: #4e342e;
 }
 
+  
+  
+  
+  
+  
+  
+  
 html {
     overflow-y: scroll; /* Always show the vertical scroll bar */
 }

@@ -17,8 +17,7 @@
 .hero {
     text-align: center;
     padding: 40px;
-    background: linear-gradient(to right, #f5c55e, #f57948);
-    color: white;
+    color: rgb(80, 80, 80);
 }
 
 /* Headline */
@@ -30,7 +29,7 @@
 
 /* Dark Mode Toggle Button */
 .darkModeToggle {
-    background: white;
+    background: rgb(230, 229, 229);
     color: black;
     padding: 8px 15px;
     border: none;

@@ -2,24 +2,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     height: 69px;
     z-index: 9999;
     padding: 0 50px;
-    /* background-color: #333; OLD COLOR 1*/
-    /* background-color: #f5f5f5;1 */
-    background-color: var(--bg-dark-green-color);
-    /* background-color: #e9e7e7; */
-
+    background-color: var(--header-bg-color);
     border-bottom: 0.5px solid #ddd;
-
     user-select: none;
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
-
-    /* top: 0; */
-    /* position: sticky; */
 }
 
 .view-nav a,
@@ -42,15 +33,17 @@
     width: 130px;
 }
 
+
 .logo {
-    /* Reduced from 1.7rem down to 1.4rem */
-    font-size: 1.4rem;
+    font-size: 1.8rem;
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
     display: inline-block;
     text-overflow: ellipsis;
     max-width: 100%;
+    -webkit-text-stroke: 0.5px #333;
+
 }
 
 .auth-icons {
@@ -68,8 +61,7 @@
     font-size: 1.8rem;
     cursor: pointer;
     display: none;
-    /* color: #dddddd; */
-    color: var(--tx-very-light-gray-color);
+    color: var(--text-color);
     padding: 0;
 }
 
@@ -87,15 +79,12 @@
 .navLinks a {
     font-size: 1.2rem;
     text-decoration: none;
-    color: var(--tx-very-light-gray-color);
-
-    /* transition: color 0.3s ease, font-weight 0.2s ease; */
+    color: var(--text-color);
     transition: filter 300ms;
 }
 
 .navLinks a:hover {
-    /* border-bottom: 1px solid #8a8a8a; */
-    color: var(--tx-light-gray-hover-shadow);
+    color: var(--hover-color);
     filter: brightness(1.2);
 }
 
@@ -110,9 +99,7 @@
     display: none;
     list-style: none;
     position: absolute;
-    /* background-color: #333; */
-    background-color: var(--bg-dark-green-color);
-    /* background-color: #f5f5f5; */
+    background-color: var(--header-bg-color);
     top: 100%;
     margin: 0;
     left: -30px;
@@ -138,17 +125,14 @@
 .recipesDropdown li a,
 .seasonalDropdown li a,
 .newsDropdown li a {
-    /* color: #dddddd; OLD COLOR*/
-    color: var(--tx-very-light-gray-color);
+    color: var(--text-color);
     font-size: 0.9rem;
     text-decoration: none;
 }
 
 .recipesDropdown li a:hover,
-.seasonalDropdown li a:hover,
-.newsDropdown li a:hover {
-    /* color: #8f8f8f; */
-    /* color: #ffd700; */
+seasonsDropdown li a:hover,
+newsDropdown li a:hover {
     filter: brightness(1.2);
 }
 
@@ -162,7 +146,6 @@
 }
 
 /* ------------ Media Queries ------------ */
-
 @media (max-width: 1210px) {
     .view-nav {
         position: sticky;
@@ -189,7 +172,6 @@
         display: none;
         flex-direction: column;
         background-color: #f8f8f8;
-        /* background-color: var(--bg-dark-green-color); */
         position: fixed;
         top: 70px;
         left: 0;
@@ -209,10 +191,9 @@
     .navLinks.open {
         display: flex;
         flex-flow: column nowrap;
-        /* background-color: #f5f5f5; */
-        background-color: var(--bg-dark-green-color);
+        background-color: var(--header-bg-color);
         position: absolute;
-        top: 69px;
+        top: 70px;
         left: 0;
         width: 100%;
         height: calc(100vh - 70px);
@@ -248,7 +229,7 @@
     .recipesDropdown li a,
     .seasonalDropdown li a,
     .newsDropdown li a {
-        color: var(--tx-very-light-gray-color);
+        color: var(--text-color);
     }
 
     .recipesDropdown li a:hover,
