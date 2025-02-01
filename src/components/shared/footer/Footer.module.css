@@ -1,8 +1,11 @@
 .footer-wrapper {
     display: flex;
     justify-content: space-between;
-    background-color: #333;
-    color: #fff;
+    /* background-color: #333; OLD COLOR*/
+    background-color: #3e1d28;
+    background-color: #2b2e1e;
+    /* color: #fff; OLD COLOR*/
+    color: #ddd;
     padding: 2rem;
     flex-wrap: wrap;
 }

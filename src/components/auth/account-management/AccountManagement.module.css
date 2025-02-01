@@ -1,0 +1,149 @@
+/* Outer Wrapper: Scoped only to this component */
+.accountPage {
+  background-color: #f4f4f4;
+  min-height: 100vh;
+  padding: 30px 10px;
+}
+
+/* Grid container: center the content and allow for responsive layout */
+.accountGrid {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto; /* centers the grid container horizontally */
+  min-height: 80vh;
+}
+
+/* SIDEBAR STYLES */
+.sidebar {
+  background-color: #2f3e46;
+  color: #fff;
+  border-radius: 6px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+.navList {
+  list-style: none;
+  padding: 0;
+}
+
+.navList li {
+  margin-bottom: 10px;
+}
+
+.navList a {
+  text-decoration: none;
+  color: #c5c5c5;
+  transition: color 0.2s ease;
+  font-size: 1rem;
+}
+
+.navList a:hover,
+.activeLink {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* MAIN CONTENT AREA */
+.mainContent {
+  padding: 10px;
+}
+
+/* Each section as a card */
+.sectionCard {
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+/* Section Titles */
+.sectionCard h3 {
+  margin-bottom: 15px;
+  font-size: 1.2rem;
+  color: #444;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 5px;
+}
+
+/* Lists inside sections */
+.paymentList,
+.orderList {
+  list-style: none;
+  margin: 10px 0;
+  padding-left: 0;
+}
+
+.paymentList li,
+.orderList li {
+  border-bottom: 1px solid #eee;
+  padding: 5px 0;
+}
+
+/* Button Styles */
+.btnPrimary {
+  background-color: #0081a7;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  margin-top: 5px;
+  margin-right: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.btnPrimary:hover {
+  background-color: #00657f;
+}
+
+/* Danger Button */
+.dangerBtn {
+  background-color: #c0392b;
+}
+
+.dangerBtn:hover {
+  background-color: #a13124;
+}
+
+/* Edit Profile Link styled as a button */
+.editProfileLink {
+  display: inline-block;
+  background-color: #0081a7;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 0.9rem;
+  margin-top: 10px;
+  transition: background-color 0.2s ease;
+}
+
+.editProfileLink:hover {
+  background-color: #00657f;
+}
+
+/* Additional spacing for groups within sections */
+.profileDetails,
+.securityGroup {
+  margin-top: 10px;
+}
+
+/* Responsive: stack the grid on narrow screens */
+@media (max-width: 768px) {
+  .accountGrid {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    margin-bottom: 20px;
+  }
+}

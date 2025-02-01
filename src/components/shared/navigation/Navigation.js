@@ -37,7 +37,10 @@ const news = [
     { path: "/news/food-and-nutrition", label: "Food & Nutrition News" },
     { path: "/news/food-culture-and-travel", label: "Food Culture & Travel" },
     { path: "/news/cooking-tips-and-tricks", label: "Cooking Tips & Tricks" },
-    { path: "/news/interviews-and-spotlights", label: "Interviews & Spotlights" },
+    {
+        path: "/news/interviews-and-spotlights",
+        label: "Interviews & Spotlights",
+    },
 ];
 
 export const Navigation = () => {
@@ -306,7 +309,7 @@ export const Navigation = () => {
                         <>
                             <li>
                                 <Link
-                                    to={`/auth/${userId}/details`}
+                                    to={`/auth/${userId}/account-management`}
                                     onClick={closeMenu}
                                 >
                                     <i className="fa-regular fa-user" />

@@ -1,5 +1,24 @@
 @import url("https://use.fontawesome.com/releases/v6.1.1/css/all.css");
 
+:root {
+    --primary-color: #0081a7;
+    --primary-hover: #00657f;
+    --danger-color: #c0392b;
+    --danger-hover: #a13124;
+    --sidebar-bg: #2f3e46;
+    --sidebar-text: #fff;
+    --sidebar-link: #c5c5c5;
+    --sidebar-link-hover: #ffffff;
+    --card-bg: #ffffff;
+    --card-shadow: rgba(0, 0, 0, 0.1);
+    --card-border-radius: 6px;
+    /* Add additional color presets as needed */
+    --bg-dark-green-color: #2b2e1e;
+    --tx-very-light-gray-color: #dddddd;
+    --tx-light-gray-hover-shadow: #8f8f8f;
+    --tx-dark-gray-hover-shadow: #333;
+}
+
 html {
     overflow-y: scroll; /* Always show the vertical scroll bar */
 }
@@ -23,10 +42,10 @@ html {
 
 /*BUTTON STYLE*/
 
-    a.add-btn:active {
-        color: #bbbbbb;
-        border-color: #bbbbbb;
-    }
+a.add-btn:active {
+    color: #bbbbbb;
+    border-color: #bbbbbb;
+}
 
 @media all and (max-width: 30em) {
     a.add-btn {
@@ -34,9 +53,6 @@ html {
         margin: 0.4em auto;
     }
 }
-
-
-
 
 /* .btn {
     background: #2a87a5;

@@ -14,6 +14,7 @@ import { Logout } from "./components/auth/logout/Logout";
 import { SignIn } from "./components/auth/sign-in/SignIn";
 import { SignUp } from "./components/auth/sign-up/SignUp";
 import { ProfileDetails } from "./components/auth/profile-details/ProfileDetails";
+import { AccountManagement } from "./components/auth/account-management/AccountManagement";
 // util
 import { NotFound } from "./components/not-found/NotFound";
 import { PrivateRoute } from "./components/common/PrivateRoute";
@@ -66,8 +67,8 @@ function App() {
                             <Route path="/auth/logout" element={<Logout />} />
                             <Route path="/auth/sign-in" element={<SignIn />} />
                             <Route path="/auth/sign-up" element={<SignUp />} />
-                            <Route path="/auth/:userId/details" element={<ProfileDetails />} />
-
+                            <Route path="/auth/:userId/profile-details" element={<ProfileDetails />} />
+                            <Route path="/auth/:userId/account-management" element={<AccountManagement />} />
                             {/* recipes */}
                             <Route path="/recipes/all" element={<RecipeList />} />
                             <Route path="/recipes/:category" element={<RecipeList />} />

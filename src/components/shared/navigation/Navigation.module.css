@@ -6,7 +6,11 @@
     height: 69px;
     z-index: 9999;
     padding: 0 50px;
-    background-color: #333;
+    /* background-color: #333; OLD COLOR 1*/
+    /* background-color: #f5f5f5;1 */
+    background-color: var(--bg-dark-green-color);
+    /* background-color: #e9e7e7; */
+
     border-bottom: 0.5px solid #ddd;
 
     user-select: none;
@@ -64,7 +68,8 @@
     font-size: 1.8rem;
     cursor: pointer;
     display: none;
-    color: #dddddd;
+    /* color: #dddddd; */
+    color: var(--tx-very-light-gray-color);
     padding: 0;
 }
 
@@ -82,16 +87,15 @@
 .navLinks a {
     font-size: 1.2rem;
     text-decoration: none;
-    color: #dddddd;
+    color: var(--tx-very-light-gray-color);
+
     /* transition: color 0.3s ease, font-weight 0.2s ease; */
     transition: filter 300ms;
-    
 }
 
 .navLinks a:hover {
     /* border-bottom: 1px solid #8a8a8a; */
-    /* color: #8f8f8f; */
-    /* color: #ffd700; */
+    color: var(--tx-light-gray-hover-shadow);
     filter: brightness(1.2);
 }
 
@@ -106,7 +110,9 @@
     display: none;
     list-style: none;
     position: absolute;
-    background-color: #333;
+    /* background-color: #333; */
+    background-color: var(--bg-dark-green-color);
+    /* background-color: #f5f5f5; */
     top: 100%;
     margin: 0;
     left: -30px;
@@ -131,8 +137,9 @@
 
 .recipesDropdown li a,
 .seasonalDropdown li a,
-.newsDropdown li a{
-    color: #dddddd;
+.newsDropdown li a {
+    /* color: #dddddd; OLD COLOR*/
+    color: var(--tx-very-light-gray-color);
     font-size: 0.9rem;
     text-decoration: none;
 }
@@ -182,6 +189,7 @@
         display: none;
         flex-direction: column;
         background-color: #f8f8f8;
+        /* background-color: var(--bg-dark-green-color); */
         position: fixed;
         top: 70px;
         left: 0;
@@ -201,9 +209,10 @@
     .navLinks.open {
         display: flex;
         flex-flow: column nowrap;
-        background-color: #333;
+        /* background-color: #f5f5f5; */
+        background-color: var(--bg-dark-green-color);
         position: absolute;
-        top: 70px;
+        top: 69px;
         left: 0;
         width: 100%;
         height: calc(100vh - 70px);
@@ -239,13 +248,14 @@
     .recipesDropdown li a,
     .seasonalDropdown li a,
     .newsDropdown li a {
-        color: #8a8a8a;
+        color: var(--tx-very-light-gray-color);
     }
 
     .recipesDropdown li a:hover,
     .seasonalDropdown li a:hover,
     .newsDropdown li a:hover {
         color: #8f8f8f;
+        filter: brightness(1.2);
     }
 
     .nav-icons {
