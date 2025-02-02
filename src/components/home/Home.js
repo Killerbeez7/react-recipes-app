@@ -2,14 +2,12 @@ import { useState } from "react";
 import styles from "./Home.module.css";
 import cx from "classnames";
 
-export const Home = () => {
-    const [darkMode, setDarkMode] = useState(false);
-
+export const Home = ({ toggleTheme, darkMode }) => {
     return (
         <div className={cx(styles.wrapper, { [styles.dark]: darkMode })}>
             <header className={styles.hero}>
                 <h1 className={styles.slogan}>Find Your Next Meal</h1>
-                <button onClick={() => setDarkMode(!darkMode)} className={styles.darkModeToggle}>
+                <button onClick={toggleTheme} className={styles.themeToggle}>
                     {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
                 </button>
             </header>
@@ -19,11 +17,16 @@ export const Home = () => {
                     <section className={styles.trendingRecipes}>
                         <h2 className={styles.homeTitles}>Trending</h2>
                         <div className={styles.recipeGrid}>
-                            {["Recipe 1", "Recipe 2", "Recipe 3"].map((recipe, index) => (
-                                <div key={index} className={styles.recipeCard}>
-                                    <p>{recipe}</p>
-                                </div>
-                            ))}
+                            {["Recipe 1", "Recipe 2", "Recipe 3"].map(
+                                (recipe, index) => (
+                                    <div
+                                        key={index}
+                                        className={styles.recipeCard}
+                                    >
+                                        <p>{recipe}</p>
+                                    </div>
+                                )
+                            )}
                         </div>
                     </section>
 
