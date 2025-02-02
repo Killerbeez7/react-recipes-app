@@ -3,7 +3,6 @@
     width: 100%;
     min-height: 85vh; /* Takes up 85% of viewport height */
     padding: 50px 20px;
-    background: #fff5e6; /* Light warm background */
     display: flex;
     flex-direction: column;
     align-items: center;

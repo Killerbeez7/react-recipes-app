@@ -1,6 +1,5 @@
 /* Outer Wrapper: Scoped only to this component */
 .accountPage {
-  background-color: #f4f4f4;
   min-height: 100vh;
   padding: 30px 10px;
 }
