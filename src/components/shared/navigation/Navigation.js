@@ -125,9 +125,11 @@ export const Navigation = () => {
                         )}
                     </button>
                     <Link to="/" className={styles.logo} onClick={closeMenu}>
-                        <span style={{ color: "#ffd700" }}>Eat</span>
-                        <span style={{ color: "gray" }}> & </span>
-                        <span style={{ color: "red" }}>Amare</span>
+                        <span className={styles["logo-eat"]}>I </span>
+                        <span className={styles["logo-and"]}>
+                            <i class="fa-solid fa-heart" />
+                        </span>
+                        <span className={styles["logo-amare"]}> Food</span>
                     </Link>
                 </div>
             </div>

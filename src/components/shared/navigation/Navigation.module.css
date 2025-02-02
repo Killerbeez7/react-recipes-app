@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+
 .view-nav {
     display: flex;
     align-items: center;
@@ -28,9 +30,11 @@
 
 .brand {
     display: flex;
-    align-items: center;
     gap: 20px;
     width: 130px;
+
+    height: 100%;
+    align-items: center;
 }
 
 .logo {
@@ -42,6 +46,31 @@
     text-overflow: ellipsis;
     max-width: 100%;
     -webkit-text-stroke: 0.5px #333;
+
+    font-family: "Playfair Display", serif;
+    font-weight: 700;
+    height: 100%;
+
+    line-height: 1;
+}
+
+.logo-eat {
+    /* color: #ffcc00; */
+    color: var(--primary-text-color);
+    /* text-shadow: 2px 2px 4px rgba(255, 204, 0, 0.5); */
+}
+
+.logo-and {
+    /* color: #555; */
+    color: #bb1919;
+    font-weight: 400;
+    font-size: 1.6rem;
+}
+
+.logo-amare {
+    /* color: #d40000; */
+    color: var(--primary-text-color);
+    /* text-shadow: 2px 2px 4px rgba(212, 0, 0, 0.5); */
 }
 
 .auth-icons {
@@ -51,6 +80,7 @@
     flex-shrink: 0;
     width: 130px;
     justify-content: end;
+    align-items: center;
 }
 
 .menuButton {

@@ -45,8 +45,6 @@ export const Home = ({ toggleTheme, darkMode }) => {
                     <p>New features and improvements</p>
                 </aside>
             </main>
-
-            <footer className={styles.footer}>© 2025 FoodHub</footer>
         </div>
     );
 };

@@ -1,20 +1,21 @@
 @import url("https://use.fontawesome.com/releases/v6.1.1/css/all.css");
 
+
 :root {
     /* light version */
     --primary-bg-color: #fff;
-    --header-bg-color: #f8f8f8;
+    --header-bg-color: #f9f9f9;
     --footer-bg-color: #8d8d8c;
     --primary-text-color: #0f0f0f;
     --hover-text-color: #ffa500;
 }
 
 .dark-theme {
-    --primary-bg-color: #555555;
-    --header-bg-color: #946a10;
-    --footer-bg-color: #535333;
+    --primary-bg-color: #bcac9b;
+    --header-bg-color: #2a3d45;
+    --footer-bg-color: #7a6c5d;
     --primary-text-color: #ffffff;
-    --hover-text-color: #00ff00;
+    --hover-text-color: #ffae00;
 }
 
 html {
@@ -27,7 +28,7 @@ html {
     position: relative;
     flex-direction: column;
     justify-content: space-between;
-    font-family: Helvetica, sans-serif;
+    font-family: "Roboto", "Arial", sans-serif;
     min-height: 100vh;
 }
 
