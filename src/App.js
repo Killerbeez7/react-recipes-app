@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 // context
 import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
@@ -40,6 +41,26 @@ import { InterviewsAndSpotlight } from "./components/news/interviews-and-spotlig
 import "./App.css";
 
 function App() {
+    // dark mode start
+    const [darkMode, setDarkMode] = useState(() => {
+        const savedTheme = localStorage.getItem("darkMode");
+        return savedTheme ? JSON.parse(savedTheme) : false;
+    });
+
+    useEffect(() => {
+        if (darkMode) {
+            document.body.classList.add("dark-theme");
+        } else {
+            document.body.classList.remove("dark-theme");
+        }
+        localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    }, [darkMode]);
+
+    const toggleTheme = () => {
+        setDarkMode((prevMode) => !prevMode);
+    };
+    //dark mode end
+
     const currentLocation = useLocation();
     const hideNavigationAndFooter = ["/auth/sign-in", "/auth/sign-up"];
 
@@ -55,10 +76,21 @@ function App() {
                         {/* main content */}
                         <Routes>
                             {/* admin panel*/}
-                            <Route path="/admin-panel" element={<AdminPanel />} />
+                            <Route
+                                path="/admin-panel"
+                                element={<AdminPanel />}
+                            />
 
                             {/* common */}
-                            <Route path="/" element={<Home />} />
+                            <Route
+                                path="/"
+                                element={
+                                    <Home
+                                        toggleTheme={toggleTheme}
+                                        darkMode={darkMode}
+                                    />
+                                }
+                            />
                             <Route path="/about" element={<About />} />
                             <Route path="/forum" element={<Forum />} />
                             <Route path="/gallery" element={<Gallery />} />
@@ -67,36 +99,90 @@ function App() {
                             <Route path="/auth/logout" element={<Logout />} />
                             <Route path="/auth/sign-in" element={<SignIn />} />
                             <Route path="/auth/sign-up" element={<SignUp />} />
-                            <Route path="/auth/:userId/profile-details" element={<ProfileDetails />} />
-                            <Route path="/auth/:userId/account-management" element={<AccountManagement />} />
+                            <Route
+                                path="/auth/:userId/profile-details"
+                                element={<ProfileDetails />}
+                            />
+                            <Route
+                                path="/auth/:userId/account-management"
+                                element={<AccountManagement />}
+                            />
                             {/* recipes */}
-                            <Route path="/recipes/all" element={<RecipeList />} />
-                            <Route path="/recipes/:category" element={<RecipeList />} />
-                            <Route path="/recipes/details/:recipeId" element={<RecipeDetails />} />
+                            <Route
+                                path="/recipes/all"
+                                element={<RecipeList />}
+                            />
+                            <Route
+                                path="/recipes/:category"
+                                element={<RecipeList />}
+                            />
+                            <Route
+                                path="/recipes/details/:recipeId"
+                                element={<RecipeDetails />}
+                            />
 
                             {/* seasonal */}
-                            <Route path="/recipes/seasonal/fall" element={<FallRecipes />} />
-                            <Route path="/recipes/seasonal/spring" element={<SpringRecipes />} />
-                            <Route path="/recipes/seasonal/summer" element={<SummerRecipes />} />
-                            <Route path="/recipes/seasonal/winter" element={<WinterRecipes />} />
+                            <Route
+                                path="/recipes/seasonal/fall"
+                                element={<FallRecipes />}
+                            />
+                            <Route
+                                path="/recipes/seasonal/spring"
+                                element={<SpringRecipes />}
+                            />
+                            <Route
+                                path="/recipes/seasonal/summer"
+                                element={<SummerRecipes />}
+                            />
+                            <Route
+                                path="/recipes/seasonal/winter"
+                                element={<WinterRecipes />}
+                            />
 
                             {/* news */}
-                            <Route path="/news/food-and-nutrition" element={<FoodAndNutrition />} />
-                            <Route path="/news/food-culture-and-travel" element={<FoodCultureAndTravel />} />
-                            <Route path="/news/cooking-tips-and-tricks" element={<CookingTipsAndTricks />} />
-                            <Route path="/news/interviews-and-spotlights" element={<InterviewsAndSpotlight />} />
+                            <Route
+                                path="/news/food-and-nutrition"
+                                element={<FoodAndNutrition />}
+                            />
+                            <Route
+                                path="/news/food-culture-and-travel"
+                                element={<FoodCultureAndTravel />}
+                            />
+                            <Route
+                                path="/news/cooking-tips-and-tricks"
+                                element={<CookingTipsAndTricks />}
+                            />
+                            <Route
+                                path="/news/interviews-and-spotlights"
+                                element={<InterviewsAndSpotlight />}
+                            />
 
                             {/* CRUD */}
                             <Route element={<PrivateRoute />}>
-                                <Route path="/recipes/add" element={<RecipeAdd />} />
-                                <Route path="/recipes/edit/:recipeId" element={<RecipeEdit />} />
+                                <Route
+                                    path="/recipes/add"
+                                    element={<RecipeAdd />}
+                                />
+                                <Route
+                                    path="/recipes/edit/:recipeId"
+                                    element={<RecipeEdit />}
+                                />
                             </Route>
-                            <Route path="/recipes/details/:recipeId" element={<RecipeDetails />} />
+                            <Route
+                                path="/recipes/details/:recipeId"
+                                element={<RecipeDetails />}
+                            />
 
-                            <Route path="/user/:userId" element={<UserProfile />} />
+                            <Route
+                                path="/user/:userId"
+                                element={<UserProfile />}
+                            />
 
                             {/* redirect old paths back to home */}
-                            <Route path="/old-path" element={<Navigate to="/" replace />} />
+                            <Route
+                                path="/old-path"
+                                element={<Navigate to="/" replace />}
+                            />
                             <Route path="/*" element={<NotFound />} />
                         </Routes>
                     </RecipeProvider>

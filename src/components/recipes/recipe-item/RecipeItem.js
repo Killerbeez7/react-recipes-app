@@ -6,7 +6,7 @@ export const RecipeItem = ({ recipe }) => {
         <div className={styles.recipeItem}>
             <Link to={`/recipes/details/${recipe.id}`} className={styles.recipeLink}>
                 <div className={styles.recipeImageContainer}>
-                    <div className={styles.difficultyBadge}>{recipe.difficulty || "Easy"}</div>
+                    {/* <div className={styles.difficultyBadge}>{recipe.difficulty || "Easy"}</div> */}
                     <img src={recipe.imageUrl} alt={recipe.title} className={styles.recipeImage} />
                 </div>
 
