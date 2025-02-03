@@ -4,7 +4,8 @@
 :root {
     /* light version */
     --primary-bg-color: #fff;
-    --header-bg-color: #f9f9f9;
+    /* --header-bg-color: #f9f9f9; */
+    --header-bg-color: #eee;
     --footer-bg-color: #8d8d8c;
     --primary-text-color: #0f0f0f;
     --hover-text-color: #ffa500;

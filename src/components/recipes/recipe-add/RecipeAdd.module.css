@@ -1,123 +1,148 @@
-/* Form Container */
+/* Container */
 .form-container {
     margin: 5% auto;
-    padding: 2% 4%;
-    border-radius: 12px;
+    padding: 2rem;
+    width: 50%;
+    max-width: 600px;
+    background: #fff;
     border: 1px solid #ddd;
-    background-color: #ffffff;
+    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 40%;
-    max-width: 500px;
-}
-
-/* Form Group and Inputs */
-.form-group > input {
+  }
+  
+  /* Title */
+  .add-recipe-title {
+    margin-bottom: 1.5rem;
+    font-size: 1.75rem;
+    color: #333;
+  }
+  
+  /* Form groups */
+  .form-group {
+    margin-bottom: 1rem;
+    text-align: left;
+  }
+  
+  .form-group > input,
+  .form-group > textarea,
+  .form-group > select {
     width: 100%;
     padding: 10px 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
+    margin-top: 0.25rem;
     border: 1px solid #ccc;
+    border-radius: 8px;
     font-size: 1rem;
-    background-color: #f9f9f9;
-    transition: border-color 0.2s ease;
-}
-
-.form-group > input:focus {
+    background: #f9f9f9;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+    box-sizing: border-box;
+  }
+  
+  .form-group > textarea {
+    height: 100px;
+    resize: vertical;
+  }
+  
+  .form-group > input:focus,
+  .form-group > textarea:focus,
+  .form-group > select:focus {
     border-color: #3498db;
+    background: #fff;
     outline: none;
-    background-color: #fff;
-}
-
-/* Buttons Section */
-.buttons-form {
+  }
+  
+  /* Category section styled as tags */
+  .category-section {
+    margin: 1rem 0;
+    text-align: left;
+  }
+  
+  .category-section h4 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+  }
+  
+  .tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+  }
+  
+  .tag {
+    padding: 0.35rem 0.75rem;
+    border: 1px solid #3498db;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 0.9rem;
+  }
+  
+  .tag:hover {
+    background-color: #e0f0fa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
+  
+  .tag.selected {
+    background-color: #3498db;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Buttons */
+  .buttons-form {
     display: flex;
     justify-content: space-between;
-    margin-top: 20px;
-}
-
-.btn {
-    display: inline-block;
-    font-size: 1rem;
+    margin-top: 1.25rem;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .btn {
+    flex: 1;
     padding: 10px 20px;
-    color: white;
-    background-color: #3498db;
+    font-size: 1rem;
     text-transform: uppercase;
     text-decoration: none;
     text-align: center;
+    color: #fff;
+    background-color: #3498db;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.btn:hover {
+  }
+  
+  .btn:hover {
     background-color: #2980b9;
     transform: scale(1.05);
-}
-
-/* Disabled Button */
-button:disabled {
-    background-color: #b0c4de;
-    cursor: not-allowed;
-}
-
-/* Cancel Button */
-a.btn {
+  }
+  
+  a.btn {
     background-color: #e74c3c;
-    color: white;
-}
-
-a.btn:hover {
+    color: #fff;
+  }
+  
+  a.btn:hover {
     background-color: #c0392b;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
     .form-container {
-        width: 90%;
-        padding: 4%;
-        margin-top: 50px;
-        margin-bottom: 50px;
+      width: 90%;
+      padding: 4%;
+      margin: 50px auto;
     }
-
     .buttons-form {
-        flex-direction: column;
-        gap: 10px;
+      flex-direction: column;
+      align-items: center;
     }
-
     .btn {
-        width: 60%;
-        margin: auto;
-        /* width: 100%; */
-        text-align: center;
+      width: 80%;
+      margin: 0 auto;
     }
-}
-
-/* Category Checkboxes */
-.category-section {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Two columns */
-    gap: 15px; /* Spacing between checkboxes */
-    padding: 0 10px; /* Padding around the section */
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    cursor: pointer;
-    color: #333;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.checkbox-label:hover {
-    color: #3498db; /* Highlight on hover */
-}
-
-.checkbox-label input {
-    margin-right: 10px;
-    transform: scale(1.2); /* Make checkboxes slightly larger */
-}
+  }
+  
