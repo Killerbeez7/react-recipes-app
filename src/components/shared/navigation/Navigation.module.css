@@ -1,296 +1,290 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
 
+/* Updated Navigation Bar Container */
 .view-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 69px;
-    z-index: 9999;
-    padding: 0 50px;
-    background-color: var(--header-bg-color);
-    border-bottom: 0.5px solid #ddd;
-    user-select: none;
-    -ms-user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 69px;
+  z-index: 9999;
+  padding: 0 50px;
+  background-color: var(--header-bg-color); /* Ensure your --header-bg-color is distinct */
+  border-bottom: 1px solid #ccc; /* Increased border thickness and darkened the color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added a subtle shadow */
+  user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
 }
 
 .view-nav a,
 .view-nav button {
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .view-nav a:focus,
 .view-nav button:focus {
-    outline: none;
+  outline: none;
 }
 
 .brand {
-    display: flex;
-    gap: 20px;
-    width: 130px;
-
-    height: 100%;
-    align-items: center;
+  display: flex;
+  gap: 20px;
+  width: 130px;
+  height: 100%;
+  align-items: center;
 }
 
 .logo {
-    font-size: 1.8rem;
-    text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
-    display: inline-block;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    -webkit-text-stroke: 0.5px #333;
-
-    font-family: "Playfair Display", serif;
-    font-weight: 700;
-    height: 100%;
-
-    line-height: 1;
+  font-size: 1.8rem;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-block;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  -webkit-text-stroke: 0.5px #333;
+  font-family: "Playfair Display", serif;
+  font-weight: 700;
+  height: 100%;
+  line-height: 1;
 }
 
 .logo-eat {
-    /* color: #ffcc00; */
-    color: var(--primary-text-color);
-    /* text-shadow: 2px 2px 4px rgba(255, 204, 0, 0.5); */
+  color: var(--primary-text-color);
 }
 
 .logo-and {
-    /* color: #555; */
-    color: #bb1919;
-    font-weight: 400;
-    font-size: 1.6rem;
+  color: #bb1919;
+  font-weight: 400;
+  font-size: 1.6rem;
 }
 
 .logo-amare {
-    /* color: #d40000; */
-    color: var(--primary-text-color);
-    /* text-shadow: 2px 2px 4px rgba(212, 0, 0, 0.5); */
+  color: var(--primary-text-color);
 }
 
 .auth-icons {
-    list-style: none;
-    display: flex;
-    gap: 35px;
-    flex-shrink: 0;
-    width: 130px;
-    justify-content: end;
-    align-items: center;
+  list-style: none;
+  display: flex;
+  gap: 35px;
+  flex-shrink: 0;
+  width: 130px;
+  justify-content: end;
+  align-items: center;
 }
 
 .menuButton {
-    background: none;
-    border: none;
-    font-size: 1.8rem;
-    cursor: pointer;
-    display: none;
-    color: var(--primary-text-color);
-    padding: 0;
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: none;
+  color: var(--primary-text-color);
+  padding: 0;
 }
 
 .hideLinks {
-    padding: 0;
+  padding: 0;
 }
 
 .navLinks {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-    flex-shrink: 0;
+  list-style: none;
+  display: flex;
+  gap: 25px;
+  flex-shrink: 0;
 }
 
 .navLinks a {
-    font-size: 1.2rem;
-    text-decoration: none;
-    color: var(--primary-text-color);
-    transition: filter 300ms;
+  font-size: 1.2rem;
+  text-decoration: none;
+  color: var(--primary-text-color);
+  transition: filter 300ms;
 }
 
 .navLinks a:hover {
-    color: var(--hover-text-color);
-    filter: brightness(1.2);
+  color: var(--hover-text-color);
+  filter: brightness(1.2);
 }
 
 /* Recipes Dropdown Menu */
 .dropdown {
-    position: relative;
+  position: relative;
 }
 
 .recipesDropdown,
 .seasonalDropdown,
 .newsDropdown {
-    display: none;
-    list-style: none;
-    position: absolute;
-    background-color: var(--header-bg-color);
-    top: 100%;
-    margin: 0;
-    left: -30px;
-    width: 200px;
-    z-index: 999999;
-    transform: translateZ(0);
-    padding: 20px 15px;
-    flex-direction: column;
+  display: none;
+  list-style: none;
+  position: absolute;
+  background-color: var(--header-bg-color);
+  top: 100%;
+  margin: 0;
+  left: -30px;
+  width: 200px;
+  z-index: 999999;
+  transform: translateZ(0);
+  padding: 20px 15px;
+  flex-direction: column;
 }
 
 .dropdown:hover .recipesDropdown,
 .dropdown:hover .seasonalDropdown,
 .dropdown.hover .newsDropdown {
-    display: block;
+  display: block;
 }
 
 .recipesOpen .recipesDropdown,
 .seasonalOpen .seasonalDropdown,
 .newsOpen .newsDropdown {
-    display: flex;
+  display: flex;
 }
 
 .recipesDropdown li a,
 .seasonalDropdown li a,
 .newsDropdown li a {
-    color: var(--primary-text-color);
-    font-size: 0.9rem;
-    text-decoration: none;
+  color: var(--primary-text-color);
+  font-size: 0.9rem;
+  text-decoration: none;
 }
 
 .recipesDropdown .all-recipes-button a {
-    font-size: 1.2rem;
-    font-weight: bold;
-    margin-top: 15px;
-    display: inline-block;
-    text-align: center;
-    transition: background-color 0.3s ease;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-top: 15px;
+  display: inline-block;
+  text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 /* ------------ Media Queries ------------ */
 @media (max-width: 1210px) {
-    .view-nav {
-        position: sticky;
-        top: 0;
-        z-index: 999999;
-        transform: translateZ(0);
-    }
+  .view-nav {
+    position: sticky;
+    top: 0;
+    z-index: 999999;
+    transform: translateZ(0);
+  }
 
-    .menuButton {
-        display: block;
-        height: 40px;
-        width: 40px;
-    }
+  .menuButton {
+    display: block;
+    height: 40px;
+    width: 40px;
+  }
 
-    .searchWrapper {
-        display: none;
-    }
+  .searchWrapper {
+    display: none;
+  }
 
-    .dropdown {
-        border-bottom: 1px solid #8a8a8a;
-    }
+  .dropdown {
+    border-bottom: 1px solid #8a8a8a;
+  }
 
-    .hideLinks {
-        display: none;
-        flex-direction: column;
-        background-color: var(--header-bg-color);
-        position: fixed;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 70px);
-        z-index: 999999;
-        margin: 0;
-        padding: 20px;
-        overflow-y: auto;
-        overscroll-behavior: contain;
-    }
+  .hideLinks {
+    display: none;
+    flex-direction: column;
+    background-color: var(--header-bg-color);
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    z-index: 999999;
+    margin: 0;
+    padding: 20px;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 
-    .navLinks a:hover {
-        color: var(--primary-text-color);
-    }
+  .navLinks a:hover {
+    color: var(--primary-text-color);
+  }
 
-    .navLinks.open {
-        display: flex;
-        flex-flow: column nowrap;
-        background-color: var(--header-bg-color);
-        position: absolute;
-        top: 70px;
-        left: 0;
-        width: 100%;
-        height: calc(100vh - 70px);
-        margin: 0;
-        padding: 20px;
-        font-size: 20px;
-        line-height: 29px;
-        letter-spacing: 0.01em;
-        -webkit-overflow-scrolling: touch;
-    }
+  .navLinks.open {
+    display: flex;
+    flex-flow: column nowrap;
+    background-color: var(--header-bg-color);
+    position: absolute;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 70px);
+    margin: 0;
+    padding: 20px;
+    font-size: 20px;
+    line-height: 29px;
+    letter-spacing: 0.01em;
+    -webkit-overflow-scrolling: touch;
+  }
 
-    .recipesDropdown,
-    .seasonalDropdown,
-    .newsDropdown {
-        display: none;
-        flex-direction: column;
-        background-color: transparent;
-        position: static;
-    }
+  .recipesDropdown,
+  .seasonalDropdown,
+  .newsDropdown {
+    display: none;
+    flex-direction: column;
+    background-color: transparent;
+    position: static;
+  }
 
-    .recipesOpen .recipesDropdown,
-    .seasonalOpen .seasonalDropdown,
-    .newsOpen .newsDropdown {
-        display: flex;
-    }
+  .recipesOpen .recipesDropdown,
+  .seasonalOpen .seasonalDropdown,
+  .newsOpen .newsDropdown {
+    display: flex;
+  }
 
-    .recipesDropdown li,
-    .seasonalDropdown li,
-    .newsDropdown li {
-        padding: 10px 0;
-    }
+  .recipesDropdown li,
+  .seasonalDropdown li,
+  .newsDropdown li {
+    padding: 10px 0;
+  }
 
-    .recipesDropdown li a,
-    .seasonalDropdown li a,
-    .newsDropdown li a {
-        color: var(--primary-text-color);
-    }
+  .recipesDropdown li a,
+  .seasonalDropdown li a,
+  .newsDropdown li a {
+    color: var(--primary-text-color);
+  }
 
-    .recipesDropdown li a:hover,
-    .seasonalDropdown li a:hover,
-    .newsDropdown li a:hover {
-        color: var(--primary-text-color);
-    }
+  .recipesDropdown li a:hover,
+  .seasonalDropdown li a:hover,
+  .newsDropdown li a:hover {
+    color: var(--primary-text-color);
+  }
 
-    .nav-icons {
-        display: flex;
-        flex-direction: row;
-        gap: 10px;
-        align-items: center;
-    }
+  .nav-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+  }
 }
 
 @media (max-width: 768px) {
-    .view-nav {
-        padding: 0 20px;
-    }
+  .view-nav {
+    padding: 0 20px;
+  }
 
-    .brand {
-        width: auto;
-    }
+  .brand {
+    width: auto;
+  }
 
-    .auth-icons {
-        width: auto;
-        align-self: center;
-    }
+  .auth-icons {
+    width: auto;
+    align-self: center;
+  }
 
-    .auth-icons .navLinks {
-        gap: 20px;
-    }
+  .auth-icons .navLinks {
+    gap: 20px;
+  }
 }
 
 .mobile {
-    overflow: hidden;
-    position: fixed;
-    height: 100vh;
-    height: 100svh;
-    width: 100%;
+  overflow: hidden;
+  position: fixed;
+  height: 100vh;
+  height: 100svh;
+  width: 100%;
 }

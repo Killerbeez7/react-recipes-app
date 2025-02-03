@@ -7,42 +7,43 @@
     width: 100%;
     margin: 70px auto;
     box-sizing: border-box;
-}
-
-.addRecipeCard {
+  }
+  
+  /* Updated Add Recipe Card using CSS Variables */
+  .addRecipeCard {
     width: 220px;
     height: 260px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #f9f9f9;
-    color: rgb(94, 94, 94);
+    background: var(--card-bg, #ffffff); /* Uses global card background */
+    color: var(--primary-text-color, rgb(94, 94, 94)); /* Uses primary text color */
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
-    transition: transform 0.2s ease-in-out;
-    border: 2px dashed #ccc;
+    transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+    border: 2px dashed var(--card-border, #ccc); /* New variable for card border if defined */
     border-radius: 10px;
     position: relative;
-}
-
-.addRecipeCard:hover {
+  }
+  
+  .addRecipeCard:hover {
     transform: scale(1.05);
-    background: #f3f3f3;
-}
-
-.addIcon {
+    filter: brightness(1.2);
+  }
+  
+  .addIcon {
     font-size: 40px;
     margin-bottom: 5px;
-}
-
-.addButton {
+  }
+  
+  .addButton {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: #ff5733;
+    background: var(--badge-bg, #ff5733);
     color: white;
     border: none;
     border-radius: 50%;
@@ -56,33 +57,35 @@
     text-decoration: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s, background 0.2s;
-}
-
-.addButton:hover {
+  }
+  
+  .addButton:hover {
     background: #e64a2e;
     transform: scale(1.1);
-}
-
-@media (max-width: 1420px) {
+  }
+  
+  /* Media Queries remain unchanged */
+  @media (max-width: 1420px) {
     .recipeGrid {
-        max-width: 970px;
+      max-width: 970px;
     }
-}
-
-@media (max-width: 1220px) {
+  }
+  
+  @media (max-width: 1220px) {
     .recipeGrid {
-        max-width: 740px;
+      max-width: 740px;
     }
-}
-
-@media (max-width: 1000px) {
+  }
+  
+  @media (max-width: 1000px) {
     .recipeGrid {
-        max-width: 510px;
+      max-width: 510px;
     }
-}
-
-@media (max-width: 768px) {
+  }
+  
+  @media (max-width: 768px) {
     .recipeGrid {
-        max-width: 230px;
+      max-width: 230px;
     }
-}
+  }
+  
