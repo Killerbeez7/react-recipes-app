@@ -215,7 +215,7 @@ export const RecipeAdd = () => {
           />
         </div>
         {/* Categories as Tag-Style Selection */}
-        <div className={styles["category-section"]}>
+        <div className={styles["form-group"]}>
           <h4>Select Categories:</h4>
           <div className={styles["tags-container"]}>
             {availableCategories.map((category) => (
@@ -234,6 +234,7 @@ export const RecipeAdd = () => {
             type="text"
             name="categories"
             placeholder="Selected Categories"
+            className={styles["form-input"]}
             readOnly
             value={categories.join(", ")}
           />
