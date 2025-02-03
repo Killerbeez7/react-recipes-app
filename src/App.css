@@ -1,22 +1,35 @@
 @import url("https://use.fontawesome.com/releases/v6.1.1/css/all.css");
 
-
 :root {
-    /* light version */
+    /* Light theme */
     --primary-bg-color: #fff;
-    /* --header-bg-color: #f9f9f9; */
-    --header-bg-color: #eee;
+    --header-bg-color: #f5f5f5; /* using updated light header color if desired */
     --footer-bg-color: #8d8d8c;
     --primary-text-color: #0f0f0f;
     --hover-text-color: #ffa500;
+    /* New card-specific variables for light mode */
+    --card-bg: #ffffff;
+    --card-shadow: rgba(0, 0, 0, 0.1);
+    --card-text-color: #0f0f0f;
+    --card-desc-color: #666;
+    --card-meta-color: #555;
+    --badge-bg: #ff5733;
 }
 
 .dark-theme {
-    --primary-bg-color: #bcac9b;
+    /* Dark theme */
+    --primary-bg-color: #1a252e;
     --header-bg-color: #2a3d45;
-    --footer-bg-color: #7a6c5d;
+    --footer-bg-color: #2a3d45;
     --primary-text-color: #ffffff;
-    --hover-text-color: #ffae00;
+    --hover-text-color: #f39c12;
+    /* New card-specific variables for dark mode */
+    --card-bg: #2a3d45; /* Use the header color or adjust as needed */
+    --card-shadow: rgba(0, 0, 0, 0.5);
+    --card-text-color: #f9f3e3; /* warm, off-white */
+    --card-desc-color: #cccccc;
+    --card-meta-color: #aaaaaa;
+    --badge-bg: #ffae00; /* a warm accent for badges */
 }
 
 html {
