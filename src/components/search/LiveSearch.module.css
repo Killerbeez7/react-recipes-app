@@ -1,0 +1,85 @@
+/* 🔹 Search Styling */
+.searchContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.searchIcon {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--primary-text-color);
+    transition: transform 0.3s ease;
+    z-index: 9999;
+}
+
+.searchContainer.active .searchIcon {
+    transform: rotate(90deg);
+}
+
+.searchBox {
+    position: absolute;
+    top: -13;
+    left: -205px;
+    background: white;
+    width: 250px;
+    /* padding: 10px; */
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--box-shadow-color);
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.searchDropdown {
+    position: absolute;
+    top: 50px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    display: block;
+    z-index: 999999;
+    background-color: var(--header-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--box-shadow-color);
+    width: 100%;
+}
+
+.searchDropdown :hover {
+color: var(--hover-text-color);
+}
+
+.searchItem {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.searchItem:hover {
+    background-color: #f5f5f5;
+}
+
+
+@media (max-width: 768px) {
+    .searchInput {
+        /* width: 50%; */
+    }
+
+    .searchBox {
+        /* width: 100%; */
+    }
+}

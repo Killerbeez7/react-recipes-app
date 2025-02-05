@@ -4,7 +4,9 @@ import { doSignOut } from "../../../firebase/auth";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
-import { Search } from "../../search/Search"; // new
+// LIVE SEARCH NEW ----------------------------------------
+import { LiveSearch } from "../../search/LiveSearch";
+// LIVE SEARCH NEW ----------------------------------------
 
 import styles from "./Navigation.module.css";
 
@@ -297,16 +299,11 @@ export const Navigation = () => {
                     </Link>
                 </li>
             </ul>
-
-            {/* Auth Icons */}
             <div className={styles["auth-icons"]}>
                 <ul className={styles.navLinks}>
-                    <li>
-                        <Link onClick={closeMenu}>
-                            <i class="fa-solid fa-magnifying-glass" />
-                        </Link>
+                    <li className={styles.searchContainer}>
+                        <LiveSearch />
                     </li>
-
                     {currentUser ? (
                         <>
                             <li>
@@ -314,17 +311,9 @@ export const Navigation = () => {
                                     to={`/auth/${userId}/account-management`}
                                     onClick={closeMenu}
                                 >
-                                    <i className="fa-regular fa-user" />
+                                    <i className="fa-solid fa-user" />
                                 </Link>
                             </li>
-                            {/*
-                If you want a logout icon, uncomment:
-                <li>
-                  <Link to="/" onClick={logoutHandler}>
-                    <i className="fa-solid fa-arrow-right-from-bracket" />
-                  </Link>
-                </li>
-              */}
                         </>
                     ) : (
                         <>
@@ -337,6 +326,12 @@ export const Navigation = () => {
                                     Sign In
                                 </Link>
                             </li>
+                            {/* If you want a logout icon, uncomment: */}
+                            {/* <li>
+                                <Link to="/" onClick={logoutHandler}>
+                                    <i className="fa-solid fa-arrow-right-from-bracket" />
+                                </Link>
+                            </li> */}
                         </>
                     )}
                 </ul>
