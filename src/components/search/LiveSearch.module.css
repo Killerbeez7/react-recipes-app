@@ -1,4 +1,3 @@
-/* 🔹 Search Styling */
 .searchContainer {
     position: relative;
     display: flex;
@@ -15,19 +14,38 @@
     z-index: 9999;
 }
 
+.searchIcon {
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    cursor: pointer;
+    color: var(--primary-text-color);
+    transition: color 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+}
+
+.searchIcon:hover {
+    color: var(--hover-text-color);
+    filter: brightness(1.2);
+}
+
+.searchIconContrast {
+    color: var(--search-icon-contrast);
+}
+
+.searchContainer.active .searchIcon {
+    color: var(--search-icon-contrast);
+}
+
 .searchContainer.active .searchIcon {
     transform: rotate(90deg);
 }
 
 .searchBox {
     position: absolute;
-    top: -13;
     left: -205px;
-    background: white;
     width: 250px;
-    /* padding: 10px; */
     border-radius: 5px;
-    border: 1px solid var(--border-color);
     box-shadow: 0 2px 4px var(--box-shadow-color);
     display: flex;
     flex-direction: column;
@@ -60,26 +78,30 @@
 }
 
 .searchDropdown :hover {
-color: var(--hover-text-color);
+    color: var(--hover-text-color);
 }
 
 .searchItem {
     padding: 10px;
+    color: var(--primary-text-color);
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
-.searchItem:hover {
-    background-color: #f5f5f5;
+@media (max-width: 768px) {
+    .searchBox {
+        width: 255px;
+    }
 }
 
-
-@media (max-width: 768px) {
-    .searchInput {
-        /* width: 50%; */
+@media (hover: hover) {
+    .searchIcon:hover {
+        color: var(--hover-text-color);
     }
+}
 
-    .searchBox {
-        /* width: 100%; */
+@media (hover: none) {
+    .searchContainer:not(.active) .searchIcon {
+        color: var(--primary-text-color);
     }
 }

@@ -3,11 +3,11 @@
 :root {
     /* Light theme */
     --primary-bg-color: #fff;
-    --header-bg-color: #f5f5f5; /* using updated light header color if desired */
+    --header-bg-color: #f5f5f5;
     --footer-bg-color: #8d8d8c;
     --primary-text-color: #0f0f0f;
     --hover-text-color: #ffa500;
-    /* New card-specific variables for light mode */
+
     --card-bg: #ffffff;
     --card-shadow: rgba(0, 0, 0, 0.1);
     --card-text-color: #0f0f0f;
@@ -26,16 +26,17 @@
     --footer-bg-color: #2a3d45;
     --primary-text-color: #ffffff;
     --hover-text-color: #f39c12;
-    /* New card-specific variables for dark mode */
-    --card-bg: #2a3d45; /* Use the header color or adjust as needed */
+
+    --card-bg: #2a3d45;
     --card-shadow: rgba(0, 0, 0, 0.5);
-    --card-text-color: #f9f3e3; /* warm, off-white */
+    --card-text-color: #f9f3e3;
     --card-desc-color: #cccccc;
     --card-meta-color: #aaaaaa;
-    --badge-bg: #ffae00; /* a warm accent for badges */
+    --badge-bg: #ffae00;
 
     --border-color: rgba(0, 0, 0, 0.5);
     --box-shadow-color: rgba(0, 0, 0, 0.5);
+    --search-icon-contrast: #1a252e;
 }
 
 html {

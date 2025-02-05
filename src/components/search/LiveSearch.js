@@ -43,7 +43,9 @@ export const LiveSearch = () => {
             }`}
         >
             <button
-                className={styles.searchIcon}
+                className={`${styles.searchIcon} ${
+                    showSearch ? styles.searchIconContrast : ""
+                }`}
                 onClick={() => setShowSearch((prev) => !prev)}
             >
                 <i className="fa-solid fa-magnifying-glass" />
