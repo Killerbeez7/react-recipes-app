@@ -10,6 +10,10 @@
     justify-content: space-between;
     transition: transform 0.2s ease-in-out;
     position: relative;
+
+    background-color: var(--header-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 4px var(--box-shadow-color);
 }
 
 .recipeItem:hover {

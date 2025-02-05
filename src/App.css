@@ -14,6 +14,9 @@
     --card-desc-color: #666;
     --card-meta-color: #555;
     --badge-bg: #ff5733;
+
+    --border-color: #dddddd;
+    --box-shadow-color: rgba(0, 0, 0, 0.1);
 }
 
 .dark-theme {
@@ -30,6 +33,9 @@
     --card-desc-color: #cccccc;
     --card-meta-color: #aaaaaa;
     --badge-bg: #ffae00; /* a warm accent for badges */
+
+    --border-color: rgba(0, 0, 0, 0.5);
+    --box-shadow-color: rgba(0, 0, 0, 0.5);
 }
 
 html {
