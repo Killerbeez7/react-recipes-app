@@ -18,7 +18,7 @@
 
 .recipeItem:hover {
     transform: scale(1.05);
-    filter: brightness(1.2);
+    filter: brightness(1.05);
 }
 
 .recipeLink {
@@ -66,6 +66,7 @@
 }
 
 .difficultyBadge {
+    display: none;
     position: absolute;
     top: 10px;
     left: 10px;
@@ -76,6 +77,22 @@
     padding: 5px 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.easy {
+    background-color: #29a55a; /* green */
+    color: #fff;
+    /* opacity: 0.9; */
+}
+
+.medium {
+    background-color: #bd8e2a; /* orange */
+    color: #fff;
+}
+
+.hard {
+    background-color: #ca4334; /* red */
+    color: #fff;
 }
 
 .recipeTitle,
