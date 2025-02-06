@@ -17,6 +17,8 @@
 
     --border-color: #dddddd;
     --box-shadow-color: rgba(0, 0, 0, 0.1);
+
+    --scrollbar-color: #bdbdbc;
 }
 
 .dark-theme {
@@ -55,4 +57,37 @@ html {
 
 .body {
     background-color: var(--primary-bg-color);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px; /* Slim scrollbar */
+}
+
+/* Scrollbar Track */
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1); /* Subtle background */
+    border-radius: 10px;
+}
+
+/* Scrollbar Handle */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        180deg,
+        #ff7e5f,
+        #feb47b
+    ); /* Gradient scrollbar */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+/* Scrollbar Handle on Hover */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #ff7e5f, #ff3d7f); /* Darker on hover */
+}
+
+/* Firefox Scrollbar */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-color) rgba(255, 255, 255, 0.1);
 }
