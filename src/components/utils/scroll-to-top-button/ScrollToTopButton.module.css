@@ -1,0 +1,30 @@
+.scrollToTop {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: var(--badge-bg); /* Uses badge background color */
+    color: var(--primary-text-color); /* Adapts to light/dark mode */
+    border: none;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s;
+    box-shadow: 0 4px 6px var(--box-shadow-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scrollToTop.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.scrollToTop:hover {
+    background: var(--hover-text-color); /* Uses hover color */
+    transform: scale(1.1);
+}
