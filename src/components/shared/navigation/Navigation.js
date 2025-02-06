@@ -187,7 +187,7 @@ export const Navigation = () => {
                             ))}
                             <li className={styles["all-recipes-button"]}>
                                 <Link to="/recipes/all" onClick={closeMenu}>
-                                    See more
+                                    VIEW ALL
                                 </Link>
                             </li>
                         </ul>
