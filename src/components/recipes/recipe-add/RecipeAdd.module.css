@@ -4,7 +4,6 @@
   padding: 2rem;
   width: 50%;
   max-width: 600px;
-  /* Use theme variables for background, text, border, shadow */
   background-color: var(--primary-bg-color);
   color: var(--primary-text-color);
   border: 1px solid var(--border-color);
@@ -17,7 +16,6 @@
 .add-recipe-title {
   margin-bottom: 1.5rem;
   font-size: 1.75rem;
-  /* Use theme color for text */
   color: var(--primary-text-color);
 }
 
@@ -33,7 +31,6 @@
   width: 100%;
   padding: 10px 15px;
   margin-top: 0.25rem;
-  /* Use variables for border, background, and text */
   border: 1px solid var(--border-color, #ccc);
   border-radius: 8px;
   font-size: 1rem;
@@ -51,7 +48,6 @@
 .form-group > input:focus,
 .form-group > textarea:focus,
 .form-group > select:focus {
-  /* Could define a variable like --focus-border-color if you want */
   border-color: var(--hover-text-color, #3498db);
   background-color: var(--primary-bg-color, #fff);
   outline: none;
@@ -95,7 +91,7 @@
 }
 
 .tag:hover {
-  background-color: #e0f0fa; /* or define a custom var if desired */
+  background-color: #e0f0fa;
 }
 
 .tag.selected {
@@ -128,8 +124,7 @@
 }
 
 .btn:hover {
-  /* Darken or lighten your accent color, if desired */
-  background-color: #2980b9; 
+  filter: brightness(1.1);
   transform: scale(1.05);
 }
 
