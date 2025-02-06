@@ -1,7 +1,6 @@
 .pageWrapper {
     max-width: 1000px;
     margin: 50px auto;
-    /* Use theme variables */
     background-color: var(--primary-bg-color, #fff);
     color: var(--primary-text-color, #333);
     font-family: Arial, sans-serif;
@@ -9,35 +8,33 @@
     box-shadow: 0 2px 4px var(--box-shadow-color, rgba(0, 0, 0, 0.1));
     overflow: hidden;
     position: relative;
-  }
-  
-  /************************************
-   * Loading / Not Found states
-   ************************************/
-  .loading,
-  .notFound {
+}
+
+/* Loading / Not Found states */
+
+.loading,
+.notFound {
     text-align: center;
     margin: 2rem;
     font-size: 1.2rem;
-  }
-  
-  /************************************
-   * HERO SECTION
-   ************************************/
-  .hero {
+}
+
+/* HERO SECTION */
+
+.hero {
     position: relative;
     width: 100%;
     overflow: hidden;
-  }
-  
-  .heroImage {
+}
+
+.heroImage {
     display: block;
     width: 100%;
-    height: 350px; /* fixed banner height */
+    height: 350px;
     object-fit: cover;
-  }
-  
-  .heroOverlay {
+}
+
+.heroOverlay {
     position: absolute;
     bottom: 1rem;
     left: 1rem;
@@ -49,22 +46,20 @@
     flex-direction: column;
     gap: 0.5rem;
     max-width: 90%;
-  }
-  
-  .recipeTitle {
+}
+
+.recipeTitle {
     font-size: 2rem;
     margin: 0;
     font-weight: bold;
-  }
-  
-  /* Example: Save + Like in the hero corner */
-  .heroActions {
+}
+
+.heroActions {
     display: flex;
     gap: 0.5rem;
-  }
-  
-  /* The like/save “hero” buttons */
-  .heroBtn {
+}
+
+.heroBtn {
     background-color: rgba(255, 255, 255, 0.9);
     border: none;
     padding: 0.4rem 0.6rem;
@@ -72,33 +67,28 @@
     cursor: pointer;
     font-size: 1.3rem;
     transition: background-color 0.2s, transform 0.2s;
-  }
-  
-  .heroBtn:hover {
+}
+
+.heroBtn:hover {
     background-color: #fff;
     transform: scale(1.05);
-  }
-  
-  /* If saved or liked, color the icons differently */
-  .saved i {
-    /* star color if saved */
+}
+
+.saved i {
     color: var(--accent-color, #f1c40f);
-  }
-  
-  .liked i {
-    /* heart color if liked */
+}
+
+.liked i {
     color: var(--error-color, #e74c3c);
-  }
-  
-  /************************************
-   * CONTENT SECTION
-   ************************************/
-  .contentSection {
+}
+
+/* CONTENT SECTION */
+.contentSection {
     padding: 1.5rem;
-  }
-  
-  /* Stats row (rating, time, likes) */
-  .recipeStats {
+}
+
+/* Stats row (rating, time, likes) */
+.recipeStats {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
@@ -108,52 +98,52 @@
     background-color: var(--card-bg, #fafafa);
     padding: 1rem;
     border-radius: 4px;
-  }
-  
-  .ratingBox {
+}
+
+.ratingBox {
     display: flex;
     align-items: center;
     gap: 0.4rem;
-  }
-  
-  .ratingNumber {
+}
+
+.ratingNumber {
     font-size: 2rem;
     font-weight: 700;
     /* gold-ish color for rating text */
     color: var(--rating-color, #e27c39);
-  }
-  
-  .ratingStars i {
+}
+
+.ratingStars i {
     color: var(--accent-color, #f1c40f);
-  }
-  
-  .reviewCount {
+}
+
+.reviewCount {
     font-size: 0.9rem;
     color: var(--card-desc-color, #555);
-  }
-  
-  .statItem {
+}
+
+.statItem {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     color: var(--card-desc-color, #666);
     font-weight: 500;
-  }
-  
-  .statItem i {
+}
+
+.statItem i {
     color: var(--card-meta-color, #999);
-  }
-  
-  /* If user is author, show these on the right */
-  .recipeOwnerActions {
-    margin-left: auto; /* push to end */
+}
+
+/* If user is author, show these on the right */
+.recipeOwnerActions {
+    margin-left: auto;
     display: flex;
     gap: 0.5rem;
-  }
-  
-  /* Edit/Delete recipe buttons */
-  .editBtn,
-  .deleteBtn {
+}
+
+/* Edit/Delete recipe buttons */
+.editBtn,
+.deleteBtn {
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -163,201 +153,198 @@
     gap: 0.4rem;
     align-items: center;
     transition: background-color 0.3s ease;
-  }
-  
-  .editBtn {
+}
+
+.editBtn {
     background-color: var(--highlight-color, #3498db);
     color: #fff;
-  }
-  .editBtn:hover {
+}
+.editBtn:hover {
     background-color: var(--highlight-hover-color, #2980b9);
-  }
-  
-  .deleteBtn {
+}
+
+.deleteBtn {
     background-color: var(--error-color, #e74c3c);
     color: #fff;
-  }
-  .deleteBtn:hover {
+}
+.deleteBtn:hover {
     background-color: var(--error-hover-color, #c0392b);
-  }
-  
-  .sectionDivider {
+}
+
+.sectionDivider {
     margin: 1rem 0;
     border: none;
     border-top: 1px solid var(--border-light-color, #eee);
-  }
-  
-  /************************************
-   * Main Sections (desc, ingredients, steps)
-   ************************************/
-  .sectionBlock {
+}
+
+/* Main Sections (desc, ingredients, steps) */
+.sectionBlock {
     margin-bottom: 2rem;
-  }
-  
-  .sectionBlock h2 {
+}
+
+.sectionBlock h2 {
     font-size: 1.4rem;
     margin-bottom: 0.5rem;
-    /* a red accent color, if you like */
     color: var(--accent-color, #b40e26);
-  }
-  
-  .sectionBlock p {
+}
+
+.sectionBlock p {
     line-height: 1.6;
     color: var(--card-desc-color, #666);
-  }
-  
-  /* Ingredients list */
-  .ingredientsList {
+}
+
+/* Ingredients list */
+.ingredientsList {
     list-style: none;
     padding-left: 0;
     margin: 0;
-  }
-  .ingredientsList li {
+}
+.ingredientsList li {
     margin-bottom: 0.4rem;
     padding-left: 20px;
     position: relative;
     color: var(--primary-text-color, #333);
-  }
-  .ingredientsList li::before {
+}
+.ingredientsList li::before {
     content: "•";
     position: absolute;
     left: 0;
-    /* use same accent color as steps bullet, or a special color */
     color: var(--accent-color, #b40e26);
-  }
-  
-  /* Steps list */
-  .stepsList {
+}
+
+/* Steps list */
+.stepsList {
     counter-reset: step-counter;
+    list-style: none;
     margin: 0;
     padding-left: 0;
-  }
-  
-  .stepsList li {
+}
+
+.stepsList li {
     margin-bottom: 1rem;
     padding-left: 30px;
     position: relative;
     line-height: 1.6;
     color: var(--primary-text-color, #333);
-  }
-  .stepsList li::before {
+}
+.stepsList li::before {
     counter-increment: step-counter;
     content: counter(step-counter) ". ";
     position: absolute;
     left: 0;
     font-weight: bold;
     color: var(--accent-color, #b40e26);
-  }
-  
-  /* Tips list (optional) */
-  .tipsList {
+}
+
+/* Tips list */
+.tipsList {
     list-style: none;
     padding-left: 0;
     margin: 0;
-  }
-  .tipsList li {
+}
+.tipsList li {
     margin-bottom: 0.5rem;
     padding-left: 20px;
     position: relative;
     color: var(--primary-text-color, #333);
-  }
-  .tipsList li::before {
+}
+.tipsList li::before {
     content: "💡";
     position: absolute;
     left: 0;
-  }
-  
-  /************************************
+}
+
+/************************************
    * COMMENTS
    ************************************/
-  .noComments {
+.noComments {
     font-style: italic;
     color: var(--card-desc-color, #777);
-  }
-  
-  .commentList {
+}
+
+.commentList {
     list-style: none;
     padding-left: 0;
     margin: 0;
-  }
-  
-  .commentItem {
+}
+
+.commentItem {
     display: flex;
     gap: 1rem;
     margin-bottom: 1rem;
     background-color: var(--card-bg, #fafafa);
     border-radius: 6px;
     padding: 1rem;
-    box-shadow: 0 1px 3px var(--box-shadow-color, rgba(0,0,0,0.1));
-  }
-  
-  .commentAvatar {
+    box-shadow: 0 1px 3px var(--box-shadow-color, rgba(0, 0, 0, 0.1));
+}
+
+.commentAvatar {
     width: 50px;
     height: 50px;
     object-fit: cover;
     border-radius: 50%;
-  }
-  
-  .commentContent {
+}
+
+.commentContent {
     flex: 1;
-  }
-  
-  .commentTopRow {
+}
+
+.commentTopRow {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     margin-bottom: 0.3rem;
-  }
-  
-  .commentAuthor {
+}
+
+.commentAuthor {
     font-weight: 600;
     color: var(--link-color, #2c3e50);
     text-decoration: none;
-  }
-  .commentAuthor:hover {
+}
+.commentAuthor:hover {
     text-decoration: underline;
-  }
-  
-  .commentTime {
+}
+
+.commentTime {
     font-size: 0.85rem;
     color: var(--card-meta-color, #999);
-  }
-  
-  .commentText {
+}
+
+.commentText {
     margin: 0.5rem 0;
     line-height: 1.4;
     color: var(--primary-text-color, #444);
-  }
-  
-  /* Edit/Delete for each comment */
-  .commentActions {
+}
+
+/* Edit/Delete for each comment */
+.commentActions {
     display: flex;
     gap: 0.8rem;
     margin-top: 0.5rem;
-  }
-  .commentActions button {
+}
+.commentActions button {
     background: none;
     border: none;
     color: var(--highlight-color, #3498db);
     font-size: 1rem;
     cursor: pointer;
     transition: color 0.2s;
-  }
-  .commentActions button:hover {
+}
+.commentActions button:hover {
     color: var(--highlight-hover-color, #2980b9);
-  }
-  
-  /************************************
+}
+
+/************************************
    * Comment Form
    ************************************/
-  .commentForm {
+.commentForm {
     margin-top: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  }
-  
-  .commentInput {
+}
+
+.commentInput {
     width: 100%;
     min-height: 80px;
     border: 1px solid var(--border-color, #ccc);
@@ -367,9 +354,9 @@
     resize: vertical;
     color: var(--primary-text-color, #333);
     background-color: var(--card-bg, #fff);
-  }
-  
-  .commentSubmit {
+}
+
+.commentSubmit {
     align-self: flex-end;
     background-color: var(--success-color, #2ecc71);
     border: none;
@@ -379,31 +366,30 @@
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.2s ease;
-  }
-  .commentSubmit:hover {
+}
+.commentSubmit:hover {
     background-color: var(--success-hover-color, #27ae60);
-  }
-  
-  /************************************
+}
+
+/************************************
    * RESPONSIVE
    ************************************/
-  @media (max-width: 768px) {
+@media (max-width: 768px) {
     .heroOverlay {
-      bottom: 0.5rem;
-      left: 0.5rem;
+        bottom: 0.5rem;
+        left: 0.5rem;
     }
     .recipeStats {
-      flex-direction: column;
-      gap: 1rem;
+        flex-direction: column;
+        gap: 1rem;
     }
-  }
-  
-  @media (max-width: 480px) {
+}
+
+@media (max-width: 480px) {
     .recipeTitle {
-      font-size: 1.5rem;
+        font-size: 1.5rem;
     }
     .heroOverlay {
-      padding: 0.4rem 0.6rem;
+        padding: 0.4rem 0.6rem;
     }
-  }
-  
+}
