@@ -247,13 +247,16 @@ export const RecipeEdit = () => {
 
                 {/* Difficulty */}
                 <div className={styles["edit-form-group"]}>
-                    <input
-                        type="text"
+                    <select
                         id="difficulty"
                         name="difficulty"
-                        placeholder="Difficulty (e.g., Easy, Medium, Hard)"
-                        defaultValue={currentRecipe.difficulty || ""}
-                    />
+                        defaultValue={currentRecipe.difficulty}
+                    >
+                        <option value="">Select difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
                 </div>
 
                 {/* Servings */}
