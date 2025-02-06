@@ -44,7 +44,7 @@
 .searchBox {
     position: absolute;
     left: -205px;
-    width: 250px;
+    width: 247px;
     border-radius: 5px;
     box-shadow: 0 2px 4px var(--box-shadow-color);
     display: flex;

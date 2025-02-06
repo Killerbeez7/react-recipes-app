@@ -1,326 +1,409 @@
-/* Recipe Details */
-.recipe-details-wrapper {
-    max-width: 1200px;
-    min-width: 500px;
-    margin: 3% auto;
-    padding: 20px;
-    border-radius: 8px;
-    background-color: var(--header-bg-color);
-    border: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px var(--box-shadow-color);
-}
-
-.recipe-title {
+.pageWrapper {
+    max-width: 1000px;
+    margin: 50px auto;
+    /* Use theme variables */
+    background-color: var(--primary-bg-color, #fff);
+    color: var(--primary-text-color, #333);
+    font-family: Arial, sans-serif;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px var(--box-shadow-color, rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+    position: relative;
+  }
+  
+  /************************************
+   * Loading / Not Found states
+   ************************************/
+  .loading,
+  .notFound {
     text-align: center;
-    font-size: 2rem;
-    color: var(--primary-text-color);
-    margin-bottom: 20px;
-}
-
-.recipe-header {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-}
-
-.recipe-img {
-    width: 40%;
-    height: auto;
-    border-radius: 8px;
+    margin: 2rem;
+    font-size: 1.2rem;
+  }
+  
+  /************************************
+   * HERO SECTION
+   ************************************/
+  .hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .heroImage {
+    display: block;
+    width: 100%;
+    height: 350px; /* fixed banner height */
     object-fit: cover;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.details-box {
-    width: 60%;
-    font-size: 1rem;
+  }
+  
+  .heroOverlay {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 90%;
+  }
+  
+  .recipeTitle {
+    font-size: 2rem;
+    margin: 0;
+    font-weight: bold;
+  }
+  
+  /* Example: Save + Like in the hero corner */
+  .heroActions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  /* The like/save “hero” buttons */
+  .heroBtn {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 0.4rem 0.6rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.3rem;
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  
+  .heroBtn:hover {
+    background-color: #fff;
+    transform: scale(1.05);
+  }
+  
+  /* If saved or liked, color the icons differently */
+  .saved i {
+    /* star color if saved */
+    color: var(--accent-color, #f1c40f);
+  }
+  
+  .liked i {
+    /* heart color if liked */
+    color: var(--error-color, #e74c3c);
+  }
+  
+  /************************************
+   * CONTENT SECTION
+   ************************************/
+  .contentSection {
+    padding: 1.5rem;
+  }
+  
+  /* Stats row (rating, time, likes) */
+  .recipeStats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    /* Light card background */
+    background-color: var(--card-bg, #fafafa);
+    padding: 1rem;
+    border-radius: 4px;
+  }
+  
+  .ratingBox {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .ratingNumber {
+    font-size: 2rem;
+    font-weight: 700;
+    /* gold-ish color for rating text */
+    color: var(--rating-color, #e27c39);
+  }
+  
+  .ratingStars i {
+    color: var(--accent-color, #f1c40f);
+  }
+  
+  .reviewCount {
+    font-size: 0.9rem;
+    color: var(--card-desc-color, #555);
+  }
+  
+  .statItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--card-desc-color, #666);
+    font-weight: 500;
+  }
+  
+  .statItem i {
+    color: var(--card-meta-color, #999);
+  }
+  
+  /* If user is author, show these on the right */
+  .recipeOwnerActions {
+    margin-left: auto; /* push to end */
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  /* Edit/Delete recipe buttons */
+  .editBtn,
+  .deleteBtn {
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .editBtn {
+    background-color: var(--highlight-color, #3498db);
+    color: #fff;
+  }
+  .editBtn:hover {
+    background-color: var(--highlight-hover-color, #2980b9);
+  }
+  
+  .deleteBtn {
+    background-color: var(--error-color, #e74c3c);
+    color: #fff;
+  }
+  .deleteBtn:hover {
+    background-color: var(--error-hover-color, #c0392b);
+  }
+  
+  .sectionDivider {
+    margin: 1rem 0;
+    border: none;
+    border-top: 1px solid var(--border-light-color, #eee);
+  }
+  
+  /************************************
+   * Main Sections (desc, ingredients, steps)
+   ************************************/
+  .sectionBlock {
+    margin-bottom: 2rem;
+  }
+  
+  .sectionBlock h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+    /* a red accent color, if you like */
+    color: var(--accent-color, #b40e26);
+  }
+  
+  .sectionBlock p {
     line-height: 1.6;
-    color: var(--primary-text-color);
-}
-
-.details-box p {
-    margin-bottom: 10px;
-}
-
-/* Recipe Actions */
-.form-control {
+    color: var(--card-desc-color, #666);
+  }
+  
+  /* Ingredients list */
+  .ingredientsList {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .ingredientsList li {
+    margin-bottom: 0.4rem;
+    padding-left: 20px;
+    position: relative;
+    color: var(--primary-text-color, #333);
+  }
+  .ingredientsList li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    /* use same accent color as steps bullet, or a special color */
+    color: var(--accent-color, #b40e26);
+  }
+  
+  /* Steps list */
+  .stepsList {
+    counter-reset: step-counter;
+    margin: 0;
+    padding-left: 0;
+  }
+  
+  .stepsList li {
+    margin-bottom: 1rem;
+    padding-left: 30px;
+    position: relative;
+    line-height: 1.6;
+    color: var(--primary-text-color, #333);
+  }
+  .stepsList li::before {
+    counter-increment: step-counter;
+    content: counter(step-counter) ". ";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: var(--accent-color, #b40e26);
+  }
+  
+  /* Tips list (optional) */
+  .tipsList {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .tipsList li {
+    margin-bottom: 0.5rem;
+    padding-left: 20px;
+    position: relative;
+    color: var(--primary-text-color, #333);
+  }
+  .tipsList li::before {
+    content: "💡";
+    position: absolute;
+    left: 0;
+  }
+  
+  /************************************
+   * COMMENTS
+   ************************************/
+  .noComments {
+    font-style: italic;
+    color: var(--card-desc-color, #777);
+  }
+  
+  .commentList {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  
+  .commentItem {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--card-bg, #fafafa);
+    border-radius: 6px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px var(--box-shadow-color, rgba(0,0,0,0.1));
+  }
+  
+  .commentAvatar {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .commentContent {
+    flex: 1;
+  }
+  
+  .commentTopRow {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    margin-left: 2%;
-    margin-right: 2%;
-}
-
-.recipe-actions {
+    align-items: baseline;
+    margin-bottom: 0.3rem;
+  }
+  
+  .commentAuthor {
+    font-weight: 600;
+    color: var(--link-color, #2c3e50);
+    text-decoration: none;
+  }
+  .commentAuthor:hover {
+    text-decoration: underline;
+  }
+  
+  .commentTime {
+    font-size: 0.85rem;
+    color: var(--card-meta-color, #999);
+  }
+  
+  .commentText {
+    margin: 0.5rem 0;
+    line-height: 1.4;
+    color: var(--primary-text-color, #444);
+  }
+  
+  /* Edit/Delete for each comment */
+  .commentActions {
     display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-}
-
-.recipe-actions button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.edit-btn {
-    background-color: #3498db;
-    color: white;
-}
-
-.edit-btn:hover {
-    background-color: #2980b9;
-    transform: scale(1.05);
-}
-
-.delete-btn {
-    background-color: #e74c3c;
-    color: white;
-}
-
-.delete-btn:hover {
-    background-color: #c0392b;
-    transform: scale(1.05);
-}
-
-/* Like Section */
-
-.likes-section {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.likes-text {
-    font-size: 1rem;
-    font-weight: bold;
-    color: #555;
-}
-
-.like-btn {
-    font-size: 1.5rem;
-    color: #e74c3c;
+    gap: 0.8rem;
+    margin-top: 0.5rem;
+  }
+  .commentActions button {
     background: none;
     border: none;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.like-btn.liked {
-    animation: pulse 0.4s ease;
-}
-
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.2);
-    }
-    100% {
-        transform: scale(1);
-    }
-}
-
-/* probably wont use it */
-/* .like-btn:hover {
-    transform: scale(1.1);
-  } */
-
-/* Comments Section */
-.comments-section {
-    list-style-type: none;
-    margin: 0;
-    padding: 0 20px;
-}
-
-.comments-section-wrapper {
-    margin-top: 30px;
-    margin-bottom: 20px;
-}
-
-.comment-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    margin-bottom: 15px;
-    padding: 10px;
-    /* background-color: #727272; */
-    color: var(--primary-text-color);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: normal;
-}
-
-.profile-picture {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.comment-actions {
-    margin-top: 5px;
-    display: flex;
-    gap: 10px;
-}
-
-.comment-actions button {
-    background-color: transparent;
-    color: #3498db;
-    border: none;
-    cursor: pointer;
-}
-
-.comment-text-area {
-    width: 100%;
-    min-height: 100px;
-    margin-top: 10px;
-    padding: 10px;
-    border: 1px solid #949494;
-    color: var(--primary-text-color);
-    border-radius: 5px;
-    resize: none;
-}
-
-/* Save Recipe Button */
-.save-btn {
-    display: block;
-    margin-top: 10px;
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    color: var(--highlight-color, #3498db);
     font-size: 1rem;
     cursor: pointer;
-}
-
-.save-btn:hover {
-    background-color: #27ae60;
-}
-
-/* Responsive Design */
-@media (max-width: 1240px) {
-    .recipe-details-wrapper {
-        margin: 50px auto;
-        max-width: 90%;
-        min-width: unset;
-    }
-    .recipe-header {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .recipe-img {
-        width: 100%;
-    }
-
-    .details-box {
-        width: 100%;
-    }
-
-    .form-control {
-        flex-direction: row;
-        align-items: center;
-        gap: 40px;
-    }
-
-    .recipe-actions {
-        justify-content: center;
-    }
-
-    .recipe-actions button {
-        width: 50%;
-        /* text-align: center; */
-    }
-}
-
-.comments-section-wrapper {
-    color: var(--primary-text-color);
-}
-
-.comments-section-wrapper > h3 {
-    margin-bottom: 30px;
-}
-
-.comments-user-profile {
-    text-decoration: none;
-    font-weight: bold;
-    color: #2e2e2e;
-}
-
-.comment-actions button {
-    background-color: transparent;
-    color: #3498db;
+    transition: color 0.2s;
+  }
+  .commentActions button:hover {
+    color: var(--highlight-hover-color, #2980b9);
+  }
+  
+  /************************************
+   * Comment Form
+   ************************************/
+  .commentForm {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .commentInput {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid var(--border-color, #ccc);
+    border-radius: 4px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    resize: vertical;
+    color: var(--primary-text-color, #333);
+    background-color: var(--card-bg, #fff);
+  }
+  
+  .commentSubmit {
+    align-self: flex-end;
+    background-color: var(--success-color, #2ecc71);
     border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    color: #fff;
     cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.comment-actions button:hover {
-    color: #2980b9;
-}
-
-.comment-actions button:focus {
-    outline: none;
-    color: #1c6ea4;
-}
-
-.comment-box {
-    overflow: hidden;
-}
-
-/* eventualy add this for post comment button */
-
-/* .save-btn {
-    display: block;
-    margin: 20px auto;
-    background-color: #2ecc71;
-    color: white;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.save-btn:hover {
-    background-color: #27ae60;
-    transform: translateY(-2px);
-}
-
-.save-btn:focus {
-    outline: none;
-    background-color: #1e8449;
-} */
-
-/* @media (max-width: 480px) {
-    .recipe-header {
-        flex-direction: column;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+  }
+  .commentSubmit:hover {
+    background-color: var(--success-hover-color, #27ae60);
+  }
+  
+  /************************************
+   * RESPONSIVE
+   ************************************/
+  @media (max-width: 768px) {
+    .heroOverlay {
+      bottom: 0.5rem;
+      left: 0.5rem;
     }
-
-    .recipe-actions button {
-        width: 100%;
-        font-size: 0.9rem;
+    .recipeStats {
+      flex-direction: column;
+      gap: 1rem;
     }
-
-    .comment-text-area {
-        font-size: 0.9rem;
+  }
+  
+  @media (max-width: 480px) {
+    .recipeTitle {
+      font-size: 1.5rem;
     }
-
-    .comments-section {
-        padding: 0 10px;
+    .heroOverlay {
+      padding: 0.4rem 0.6rem;
     }
-} */
+  }
+  

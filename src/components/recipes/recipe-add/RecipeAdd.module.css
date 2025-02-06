@@ -1,154 +1,214 @@
 /* Container */
 .form-container {
-    margin: 5% auto;
-    padding: 2rem;
-    width: 50%;
-    max-width: 600px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    
+  margin: 5% auto;
+  padding: 2rem;
+  width: 50%;
+  max-width: 600px;
+  /* Use theme variables for background, text, border, shadow */
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 4px 8px var(--box-shadow-color);
+  text-align: center;
+}
+
+/* Title */
+.add-recipe-title {
+  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  /* Use theme color for text */
+  color: var(--primary-text-color);
+}
+
+/* Form groups */
+.form-group {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.form-group > input,
+.form-group > textarea,
+.form-group > select {
+  width: 100%;
+  padding: 10px 15px;
+  margin-top: 0.25rem;
+  /* Use variables for border, background, and text */
+  border: 1px solid var(--border-color, #ccc);
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: var(--card-bg, #f9f9f9);
+  color: var(--primary-text-color, #333);
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-group > textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.form-group > input:focus,
+.form-group > textarea:focus,
+.form-group > select:focus {
+  /* Could define a variable like --focus-border-color if you want */
+  border-color: var(--hover-text-color, #3498db);
+  background-color: var(--primary-bg-color, #fff);
+  outline: none;
+}
+
+/* Category section styled as tags */
+.category-section {
+  margin: 1rem 0;
+  text-align: left;
+}
+
+.category-section h4 {
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.tags-label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  justify-content: center;
+}
+
+.tag {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--hover-text-color, #3498db);
+  border-radius: 12px;
+  background-color: var(--card-bg, #f9f9f9);
+  color: var(--primary-text-color, #333);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.tag:hover {
+  background-color: #e0f0fa; /* or define a custom var if desired */
+}
+
+.tag.selected {
+  background-color: var(--hover-text-color, #3498db);
+  color: #fff;
+}
+
+/* Buttons */
+.buttons-form {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.25rem;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  flex: 1;
+  padding: 10px 20px;
+  font-size: 1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  color: #fff;
+  background-color: var(--hover-text-color, #3498db);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn:hover {
+  /* Darken or lighten your accent color, if desired */
+  background-color: #2980b9; 
+  transform: scale(1.05);
+}
+
+/* If you want a separate style for Cancel or links */
+a.btn {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+a.btn:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .form-container {
+    width: 90%;
+    padding: 4%;
+    margin: 50px auto;
   }
-  
-  /* Title */
-  .add-recipe-title {
-    margin-bottom: 1.5rem;
-    font-size: 1.75rem;
-    color: #333;
-  }
-  
-  /* Form groups */
-  .form-group {
-    margin-bottom: 1rem;
-    text-align: left;
-  }
-  
-  .form-group > input,
-  .form-group > textarea,
-  .form-group > select {
-    width: 100%;
-    padding: 10px 15px;
-    margin-top: 0.25rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
-    background: #f9f9f9;
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-    box-sizing: border-box;
-  }
-  
-  .form-group > textarea {
-    height: 100px;
-    resize: vertical;
-  }
-  
-  .form-group > input:focus,
-  .form-group > textarea:focus,
-  .form-group > select:focus {
-    border-color: #3498db;
-    background: #fff;
-    outline: none;
-  }
-  
-  /* Category section styled as tags */
-  .category-section {
-    margin: 1rem 0;
-    text-align: left;
-  }
-  
-  .category-section h4 {
-    margin-bottom: 0.5rem;
-    font-weight: bold;
-  }
-  
-  .tags-label {
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
-  
-  .tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    justify-content: center;
-  }
-  
-  .tag {
-    display: inline-block;
-    padding: 0.25rem 0.5rem;
-    border: 1px solid #3498db;
-    border-radius: 12px;
-    background-color: #f9f9f9;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-    font-size: 0.9rem;
-  }
-  
-  .tag:hover {
-    background-color: #e0f0fa;
-  }
-  
-  .tag.selected {
-    background-color: #3498db;
-    color: #fff;
-  }
-  
-  /* Buttons */
   .buttons-form {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 1.25rem;
-    gap: 10px;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
   }
-  
   .btn {
-    flex: 1;
-    padding: 10px 20px;
-    font-size: 1rem;
-    text-transform: uppercase;
-    text-decoration: none;
-    text-align: center;
-    color: #fff;
-    background-color: #3498db;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.2s ease;
+    width: 80%;
+    margin: 0 auto;
   }
-  
-  .btn:hover {
-    background-color: #2980b9;
-    transform: scale(1.05);
-  }
-  
-  a.btn {
-    background-color: #e74c3c;
-    color: #fff;
-  }
-  
-  a.btn:hover {
-    background-color: #c0392b;
-  }
-  
-  /* Responsive adjustments */
-  @media (max-width: 768px) {
-    .form-container {
-      width: 90%;
-      padding: 4%;
-      margin: 50px auto;
-    }
-    .buttons-form {
-      flex-direction: column;
-      align-items: center;
-    }
-    .btn {
-      width: 80%;
-      margin: 0 auto;
-    }
-  }
-  
+}
+
+/* Custom File Upload Styles */
+.fileUploadWrapper {
+  position: relative;
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  background-color: var(--card-bg);
+  transition: border-color 0.3s ease;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.fileUploadWrapper:hover {
+  border-color: var(--hover-text-color);
+}
+
+/* Hide the native file input */
+.fileInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* The visible label text inside the dashed box */
+.fileUploadLabel {
+  display: inline-block;
+  font-size: 1rem;
+  color: var(--primary-text-color);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.fileUploadLabel i {  
+  margin-right: 8px;
+}
+
+.fileUploadWrapper:hover .fileUploadLabel {
+  color: var(--hover-text-color);
+}
+
+/* Display selected file name */
+.fileName {
+  display: block;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--primary-text-color);
+}
