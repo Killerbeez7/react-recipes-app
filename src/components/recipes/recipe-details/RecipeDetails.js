@@ -1,9 +1,10 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { addRecipeToFavorites } from "../../../services/recipeService";
+import { ScrollToTopButton } from "../../utils/scroll-to-top-button/ScrollToTopButton";
 
 import styles from "./RecipeDetails.module.css";
 
@@ -13,9 +14,11 @@ export const RecipeDetails = () => {
     const [editCommentId, setEditCommentId] = useState(null);
     const [editCommentText, setEditCommentText] = useState("");
 
-    // RATING TO FINISH
-    const [rating, setRating] = useState(4.6);
-    const [reviewsCount, setReviewsCount] = useState(72);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const [averageRating, setAverageRating] = useState(0);
+    const [userRating, setUserRating] = useState(null);
+    const [reviewsCount, setReviewsCount] = useState(0);
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const { recipeId } = useParams();
     const { currentUser } = useAuth();
@@ -26,7 +29,12 @@ export const RecipeDetails = () => {
         deleteComment,
         editComment,
         deleteRecipe,
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        rateRecipe,
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     } = useContext(RecipeContext);
+
+    const ratingSectionRef = useRef(null);
 
     const navigate = useNavigate();
     const currentRecipe = recipes.find((recipe) => recipe.id === recipeId);
@@ -36,10 +44,29 @@ export const RecipeDetails = () => {
     );
     const [isLiked, setIsLiked] = useState(false);
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const computeAverageRating = (ratingsObj) => {
+        if (!ratingsObj) return 0;
+        const allRatings = Object.values(ratingsObj);
+        if (allRatings.length === 0) return 0;
+        const sum = allRatings.reduce((acc, val) => acc + val, 0);
+        return sum / allRatings.length;
+    };
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     useEffect(() => {
         setLoading(!currentRecipe);
         if (currentRecipe && currentUser) {
             setIsLiked(!!currentRecipe.likes?.[currentUser.uid]);
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            const avg = computeAverageRating(currentRecipe.ratings);
+            setAverageRating(avg);
+            setUserRating(currentRecipe.ratings?.[currentUser.uid] || null);
+            const ratingCount = currentRecipe.ratings
+                ? Object.keys(currentRecipe.ratings).length
+                : 0;
+            setReviewsCount(ratingCount);
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         }
     }, [currentRecipe, currentUser]);
 
@@ -74,6 +101,30 @@ export const RecipeDetails = () => {
             deleteRecipe(recipeId).then(() => navigate("/recipes/all"));
         }
     };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const handleRateRecipe = async (value) => {
+        if (!currentUser) {
+            alert("You need to log in to rate.");
+            return;
+        }
+        await rateRecipe(recipeId, currentUser, value);
+    };
+
+    const scrollToRatingSection = (ratingSectionRef) => {
+        if (ratingSectionRef.current) {
+            const offset = 250;
+            const elementPosition =
+                ratingSectionRef.current.getBoundingClientRect().top +
+                window.scrollY;
+            window.scrollTo({
+                top: elementPosition - offset,
+                behavior: "smooth",
+            });
+        }
+    };
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     const resetCommentFields = () => {
         setNewComment("");
@@ -165,25 +216,27 @@ export const RecipeDetails = () => {
             <div className={styles.contentSection}>
                 {/* Stats Bar */}
                 <div className={styles.recipeStats}>
-                    {/* Rating example */}
+                    {/* Rating system */}
                     <div className={styles.ratingBox}>
                         <span className={styles.ratingNumber}>
-                            {rating.toFixed(1)}
+                            {averageRating.toFixed(1)}
                         </span>
-                        <div className={styles.ratingStars}>
-                            {/* For simplicity, just show 5 star icons with a half-star if needed */}
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star"></i>
-                            <i className="fa-solid fa-star-half-stroke"></i>
+                        <div
+                            className={styles.ratingStars}
+                            onClick={() =>
+                                scrollToRatingSection(ratingSectionRef)
+                            }
+                        >
+                            {renderStars(averageRating)}
                         </div>
+
                         <span className={styles.reviewCount}>
-                            {commentCount} reviews
+                            {reviewsCount} reviews
                         </span>
+                        
                     </div>
 
-                    {/* Time + Like Count */}
+                    {/* TimeToCook + Like Count */}
                     <div className={styles.statItem}>
                         <i className="fa-regular fa-clock"></i>
                         <span>{currentRecipe.timeToCook || "?"} min</span>
@@ -217,8 +270,11 @@ export const RecipeDetails = () => {
                 </div>
 
                 <hr className={styles.sectionDivider} />
+                {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
 
-                {/* About Section (description, author, etc.) */}
+                {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+
+                {/* About Section */}
                 <section className={styles.sectionBlock}>
                     <h2>About This Recipe</h2>
                     <p>
@@ -233,11 +289,6 @@ export const RecipeDetails = () => {
                 <section className={styles.sectionBlock}>
                     <h2>Ingredients</h2>
                     <ul className={styles.ingredientsList}>
-                        {/* 
-              If your currentRecipe.ingredients is just a string, 
-              you might split it or display it differently. 
-              Example:
-            */}
                         {currentRecipe.ingredients
                             ?.split(",")
                             .map((item, i) => (
@@ -249,7 +300,6 @@ export const RecipeDetails = () => {
                 {/* Steps or Directions */}
                 <section className={styles.sectionBlock}>
                     <h2>Directions</h2>
-                    {/* If steps is a single string, we can split by period, etc. */}
                     <ol className={styles.stepsList}>
                         {currentRecipe.steps
                             ?.split(".")
@@ -260,7 +310,7 @@ export const RecipeDetails = () => {
                     </ol>
                 </section>
 
-                {/* Optional tips or notes */}
+                {/* Optional tips */}
                 {currentRecipe.tips && currentRecipe.tips.length > 0 && (
                     <section className={styles.sectionBlock}>
                         <h2>Tips</h2>
@@ -272,11 +322,32 @@ export const RecipeDetails = () => {
                     </section>
                 )}
 
+                {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+                <hr></hr>
+                {currentUser && (
+                    <section
+                        ref={ratingSectionRef}
+                        className={styles.sectionBlock}
+                    >
+                        <h2>Rate This Recipe</h2>
+                        <div>
+                            {renderInteractiveStars(
+                                userRating,
+                                handleRateRecipe
+                            )}
+
+                            <p>
+                                Your rating: {userRating ? userRating : "N/A"}
+                            </p>
+                        </div>
+                    </section>
+                )}
+                <hr></hr>
+                {/* ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// */}
+
                 {/* COMMENTS SECTION */}
                 <section className={styles.sectionBlock}>
                     <h2>Comments</h2>
-
-                    {/* If no comments, display a placeholder */}
                     {Object.entries(currentRecipe.comments || {}).length ===
                         0 && (
                         <p className={styles.noComments}>
@@ -391,6 +462,53 @@ export const RecipeDetails = () => {
                     )}
                 </section>
             </div>
+            <ScrollToTopButton />
         </div>
     );
 };
+
+// Helper function
+
+function renderStars(userRating) {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+        const starType =
+            i <= userRating ? "fa-solid fa-star" : "fa-regular fa-star";
+        stars.push(
+            <i
+                key={i}
+                className={starType}
+                style={{ cursor: "pointer", color: "#f1c40f", marginRight: 4 }}
+            />
+        );
+    }
+    return <div>{stars}</div>;
+}
+
+function renderInteractiveStars(userRating, onRate) {
+    const stars = [];
+
+    for (let i = 1; i <= 5; i++) {
+        if (userRating >= i) {
+            stars.push(
+                <i
+                    key={i}
+                    className="fa-solid fa-star"
+                    style={{ cursor: "pointer", color: "#f1c40f" }}
+                    onClick={() => onRate(i)}
+                ></i>
+            );
+        } else {
+            stars.push(
+                <i
+                    key={i}
+                    className="fa-regular fa-star"
+                    style={{ cursor: "pointer" }}
+                    onClick={() => onRate(i)}
+                ></i>
+            );
+        }
+    }
+
+    return <div style={{ fontSize: "1.5rem" }}>{stars}</div>;
+}

@@ -33,6 +33,18 @@ const recipeReducer = (state, action) => {
                       }
                     : recipe
             );
+        case "RATE_RECIPE":
+            // We update the recipe in the state with the new ratings data.
+            return state.map((recipe) =>
+                recipe.id === action.recipeId
+                    ? {
+                          ...recipe,
+                          ratings: action.payload.ratings,
+                          ratingCount: action.payload.ratingCount,
+                          averageRating: action.payload.averageRating,
+                      }
+                    : recipe
+            );
         default:
             return state;
     }
@@ -81,7 +93,7 @@ export const RecipeProvider = ({ children }) => {
                         (recipe) => Number(recipe.timeToCook) <= maxTime
                     );
                 } else {
-                    filteredRecipes = allRecipes
+                    filteredRecipes = allRecipes;
                 }
             }
         }
@@ -174,6 +186,50 @@ export const RecipeProvider = ({ children }) => {
         }
     };
 
+    const rateRecipe = async (recipeId, user, ratingValue) => {
+        const recipe = recipes.find((r) => r.id === recipeId);
+        if (!recipe || !user) {
+            alert("You must be logged in to rate this recipe.");
+            return;
+        }
+
+        const updatedRatings = {
+            ...(recipe.ratings || {}),
+            [user.uid]: ratingValue,
+        };
+
+        const ratingCount = Object.keys(updatedRatings).length;
+        const sumOfRatings = Object.values(updatedRatings).reduce(
+            (acc, val) => acc + val,
+            0
+        );
+        const averageRating = parseFloat(
+            (sumOfRatings / ratingCount).toFixed(2)
+        );
+
+        try {
+            const recipeRef = ref(database, `recipes/${recipeId}`);
+            await update(recipeRef, {
+                ratings: updatedRatings,
+                ratingCount,
+                averageRating,
+            });
+
+            dispatch({
+                type: "RATE_RECIPE",
+                recipeId,
+                payload: {
+                    ratings: updatedRatings,
+                    ratingCount,
+                    averageRating,
+                },
+            });
+        } catch (error) {
+            console.error("Error rating recipe:", error);
+            alert("Failed to rate recipe. Please try again.");
+        }
+    };
+
     return (
         <RecipeContext.Provider
             value={{
@@ -187,6 +243,7 @@ export const RecipeProvider = ({ children }) => {
                 deleteComment,
                 toggleLike,
                 filterRecipes,
+                rateRecipe,
             }}
         >
             {children}
