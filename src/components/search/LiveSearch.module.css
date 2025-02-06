@@ -67,41 +67,71 @@
     list-style: none;
     margin: 0;
     padding: 0;
-    max-height: 200px;
+    max-height: 250px;
+    max-height: 375px;
     overflow-y: auto;
-    display: block;
     z-index: 999999;
     background-color: var(--header-bg-color);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: 0 2px 4px var(--box-shadow-color);
-    width: 100%;
-}
-
-.searchDropdown :hover {
-    color: var(--hover-text-color);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 6px var(--box-shadow-color);
+    width: 270px; /* Slightly wider */
+    border-radius: 8px;
 }
 
 .searchItem {
-    padding: 10px;
-    color: var(--primary-text-color);
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    gap: 12px;
     cursor: pointer;
     transition: background-color 0.3s;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.searchItem:last-child {
+    border-bottom: none;
+}
+
+.searchItem:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.searchImg {
+    width: 50px; /* Larger image */
+    height: 50px;
+    border-radius: 8px; /* Slightly rounded corners */
+    object-fit: cover;
+}
+
+.searchText {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.recipeTitle {
+    font-weight: bold;
+    color: var(--primary-text-color);
+}
+
+.recipeDesc {
+    font-size: 0.85rem;
+    color: #666;
 }
 
 @media (max-width: 768px) {
-    .searchBox {
-        width: 255px;
+    .searchDropdown {
+        width: 100%; /* Full width on mobile */
+        left: 0;
+        border-radius: 0;
     }
-}
 
-@media (hover: hover) {
-    .searchIcon:hover {
-        color: var(--hover-text-color);
+    .searchItem {
+        padding: 10px;
     }
-}
 
-@media (hover: none) {
-    .searchContainer:not(.active) .searchIcon {
-        color: var(--primary-text-color);
+    .searchImg {
+        width: 40px;
+        height: 40px;
     }
 }

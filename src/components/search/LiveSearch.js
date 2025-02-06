@@ -22,6 +22,8 @@ export const LiveSearch = () => {
             const results = recipes.filter((recipe) =>
                 recipe.title.toLowerCase().includes(query.toLowerCase())
             );
+            console.log(results);
+
             setFilteredResults(results);
             setShowDropdown(results.length > 0);
         }, 300);
@@ -36,6 +38,11 @@ export const LiveSearch = () => {
         setShowSearch(false);
     };
 
+    const handleSearchOpen = () => {
+        setShowSearch((prev) => !prev);
+        setQuery("");
+    };
+
     return (
         <div
             className={`${styles.searchContainer} ${
@@ -46,7 +53,7 @@ export const LiveSearch = () => {
                 className={`${styles.searchIcon} ${
                     showSearch ? styles.searchIconContrast : ""
                 }`}
-                onClick={() => setShowSearch((prev) => !prev)}
+                onClick={handleSearchOpen}
             >
                 <i className="fa-solid fa-magnifying-glass" />
             </button>
@@ -69,7 +76,19 @@ export const LiveSearch = () => {
                                     onClick={() => handleSelect(recipe.id)}
                                     className={styles.searchItem}
                                 >
-                                    {recipe.title}
+                                    <img
+                                        src={recipe.imageUrl}
+                                        alt={recipe.title}
+                                        className={styles.searchImg}
+                                    />
+                                    <div className={styles.searchText}>
+                                        <span className={styles.recipeTitle}>
+                                            {recipe.title}
+                                        </span>
+                                        <span className={styles.recipeDesc}>
+                                            {recipe.description}
+                                        </span>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
