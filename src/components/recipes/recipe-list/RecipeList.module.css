@@ -9,7 +9,6 @@
     box-sizing: border-box;
 }
 
-/* Updated Add Recipe Card using CSS Variables */
 .addRecipeCard {
     width: 220px;
     height: 260px;
@@ -17,16 +16,13 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: var(--card-bg, #ffffff); /* Uses global card background */
-    color: var(
-        --primary-text-color,
-        rgb(94, 94, 94)
-    ); /* Uses primary text color */
+    background: var(--card-bg, #ffffff);
+    color: var(--primary-text-color, rgb(94, 94, 94));
     text-decoration: none;
     font-size: 18px;
     font-weight: bold;
     transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
-    border: 2px dashed var(--card-border, #ccc); /* New variable for card border if defined */
+    border: 2px dashed var(--card-border, #ccc);
     border-radius: 10px;
     position: relative;
 
@@ -65,12 +61,6 @@
     transition: transform 0.2s, background 0.2s;
 }
 
-.addButton:hover {
-    background: #e64a2e;
-    transform: scale(1.1);
-}
-
-/* Media Queries remain unchanged */
 @media (max-width: 1420px) {
     .recipeGrid {
         max-width: 970px;
@@ -92,5 +82,6 @@
 @media (max-width: 768px) {
     .recipeGrid {
         max-width: 230px;
+        -webkit-overflow-scrolling: touch;
     }
 }
