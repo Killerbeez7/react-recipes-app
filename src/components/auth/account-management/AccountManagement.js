@@ -2,10 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./AccountManagement.module.css";
+import { doSignOut } from "../../../firebase/auth";
 
 export const AccountManagement = () => {
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
+
+    const logoutHandler = () => {
+        doSignOut();
+    };
 
     return (
         <div className={styles.accountPage}>
@@ -38,6 +43,15 @@ export const AccountManagement = () => {
                             </li>
                             <li>
                                 <a href="#preferences">Preferences</a>
+                            </li>
+                            <br></br>
+                            <li>
+                                <Link to="/" onClick={logoutHandler}>
+                                    <h3>
+                                        <i className="fa-solid fa-arrow-right-from-bracket" />{" "}
+                                        Sign out
+                                    </h3>
+                                </Link>
                             </li>
                         </ul>
                     </nav>

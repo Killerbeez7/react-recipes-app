@@ -73,9 +73,9 @@ export const Navigation = () => {
 
         const handleResize = () => {
             if (menuOpen && !isDesktop) {
-                body.classList.add(styles.mobile); // lock scroll
+                body.classList.add(styles.mobile);
             } else if (menuOpen && isDesktop) {
-                body.classList.remove(styles.mobile); // ensure no locking on desktop
+                body.classList.remove(styles.mobile);
                 closeMenu();
             }
         };
@@ -314,24 +314,24 @@ export const Navigation = () => {
                                     <i className="fa-solid fa-user" />
                                 </Link>
                             </li>
-                        </>
-                    ) : (
-                        <>
-                            <li>
-                                <Link
-                                    to="/auth/sign-in"
-                                    onClick={closeMenu}
-                                    state={{ from: location.pathname }}
-                                >
-                                    Sign In
-                                </Link>
-                            </li>
                             {/* If you want a logout icon, uncomment: */}
                             {/* <li>
                                 <Link to="/" onClick={logoutHandler}>
                                     <i className="fa-solid fa-arrow-right-from-bracket" />
                                 </Link>
                             </li> */}
+                        </>
+                    ) : (
+                        <>
+                            <li className={styles["sign-in-box"]}>
+                                <Link
+                                    to="/auth/sign-in"
+                                    onClick={closeMenu}
+                                    state={{ from: location.pathname }}
+                                >
+                                    <h3>Sign In</h3>
+                                </Link>
+                            </li>
                         </>
                     )}
                 </ul>
