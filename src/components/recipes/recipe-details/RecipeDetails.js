@@ -4,7 +4,7 @@ import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { addRecipeToFavorites } from "../../../services/recipeService";
-import { ScrollToTopButton } from "../../utils/scroll-to-top-button/ScrollToTopButton";
+
 
 import styles from "./RecipeDetails.module.css";
 
@@ -462,7 +462,6 @@ export const RecipeDetails = () => {
                     )}
                 </section>
             </div>
-            <ScrollToTopButton />
         </div>
     );
 };
