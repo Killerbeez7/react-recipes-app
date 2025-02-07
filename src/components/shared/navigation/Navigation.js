@@ -5,7 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
 // LIVE SEARCH NEW ----------------------------------------
-import { LiveSearch } from "../../search/LiveSearch";
+import { LiveSearch } from "../../search/live-search/LiveSearch";
 // LIVE SEARCH NEW ----------------------------------------
 
 import styles from "./Navigation.module.css";
@@ -108,11 +108,6 @@ export const Navigation = () => {
         setRecipesOpen(false);
         setSeasonalOpen(false);
         setNewsOpen(false);
-    };
-
-    // Sign out
-    const logoutHandler = () => {
-        doSignOut();
     };
 
     return (
@@ -314,12 +309,6 @@ export const Navigation = () => {
                                     <i className="fa-solid fa-user" />
                                 </Link>
                             </li>
-                            {/* If you want a logout icon, uncomment: */}
-                            {/* <li>
-                                <Link to="/" onClick={logoutHandler}>
-                                    <i className="fa-solid fa-arrow-right-from-bracket" />
-                                </Link>
-                            </li> */}
                         </>
                     ) : (
                         <>
