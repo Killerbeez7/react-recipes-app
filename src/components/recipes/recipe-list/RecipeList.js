@@ -13,7 +13,9 @@ export const RecipeList = () => {
 
     useEffect(() => {
         setFilteredRecipes(
-            category ? recipes.filter((r) => r.categories?.includes(category)) : recipes
+            category
+                ? recipes.filter((r) => r.categories?.includes(category))
+                : recipes
         );
     }, [category, recipes]);
 
