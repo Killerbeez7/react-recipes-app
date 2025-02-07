@@ -152,3 +152,20 @@
     margin-bottom: 20px;
   }
 }
+
+/* Dark Mode Toggle Button */
+.themeToggle {
+  background-color: var(--primary-bg-color);
+  color: var(--primary-text-color);
+  border: 1px solid var(--hover-text-color);
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.themeToggle:hover {
+  background-color: var(--hover-text-color);
+  color: var(--primary-bg-color);
+}

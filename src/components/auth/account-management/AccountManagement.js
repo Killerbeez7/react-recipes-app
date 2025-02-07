@@ -4,7 +4,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./AccountManagement.module.css";
 import { doSignOut } from "../../../firebase/auth";
 
-export const AccountManagement = () => {
+export const AccountManagement = ({ toggleTheme, darkMode }) => {
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
 
@@ -52,6 +52,20 @@ export const AccountManagement = () => {
                                         Sign out
                                     </h3>
                                 </Link>
+                            </li>
+                            {/* Darkmode Button */}
+                            <br></br>
+                            <hr></hr>
+                            <br></br>
+                            <li>
+                                <button
+                                    onClick={toggleTheme}
+                                    className={styles.themeToggle}
+                                >
+                                    {darkMode
+                                        ? "☀️ Light Mode"
+                                        : "🌙 Dark Mode"}
+                                </button>
                             </li>
                         </ul>
                     </nav>

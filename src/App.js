@@ -20,8 +20,10 @@ import { AccountManagement } from "./components/auth/account-management/AccountM
 import { NotFound } from "./components/not-found/NotFound";
 import { PrivateRoute } from "./components/common/PrivateRoute";
 import { AdminPanel } from "./components/admin-panel/AdminPanel";
+import { DarkMode } from "./components/utils/DarkMode";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import { UserProfile } from "./components/user-profile/UserProfile";
+import { ScrollToTopButton } from "./components/utils/scroll-to-top-button/ScrollToTopButton";
 // recipes CRUD
 import { RecipeAdd } from "./components/recipes/recipe-add/RecipeAdd";
 import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
@@ -41,29 +43,11 @@ import { InterviewsAndSpotlight } from "./components/news/interviews-and-spotlig
 import "./App.css";
 
 function App() {
-    // dark mode start
-    const [darkMode, setDarkMode] = useState(() => {
-        const savedTheme = localStorage.getItem("darkMode");
-        return savedTheme ? JSON.parse(savedTheme) : false;
-    });
+    const { darkMode, toggleTheme } = DarkMode();
 
-    useEffect(() => {
-        if (darkMode) {
-            document.body.classList.add("dark-theme");
-        } else {
-            document.body.classList.remove("dark-theme");
-        }
-        localStorage.setItem("darkMode", JSON.stringify(darkMode));
-    }, [darkMode]);
-
-    const toggleTheme = () => {
-        setDarkMode((prevMode) => !prevMode);
-    };
-    //dark mode end
-
+    // hide Navigation and Footer on sign in/out
     const currentLocation = useLocation();
     const hideNavigationAndFooter = ["/auth/sign-in", "/auth/sign-up"];
-
     const isHidden = hideNavigationAndFooter.includes(currentLocation.pathname);
 
     return (
@@ -71,7 +55,7 @@ function App() {
             <AuthProvider>
                 <div className="body">
                     <RecipeProvider>
-                        {/* Conditionally render Navigation */}
+                        {/* conditionally render Navigation */}
                         {!isHidden && <Navigation />}
                         {/* main content */}
                         <Routes>
@@ -82,15 +66,7 @@ function App() {
                             />
 
                             {/* common */}
-                            <Route
-                                path="/"
-                                element={
-                                    <Home
-                                        toggleTheme={toggleTheme}
-                                        darkMode={darkMode}
-                                    />
-                                }
-                            />
+                            <Route path="/" element={<Home />} />
                             <Route path="/about" element={<About />} />
                             <Route path="/forum" element={<Forum />} />
                             <Route path="/gallery" element={<Gallery />} />
@@ -105,7 +81,12 @@ function App() {
                             />
                             <Route
                                 path="/auth/:userId/account-management"
-                                element={<AccountManagement />}
+                                element={
+                                    <AccountManagement
+                                        toggleTheme={toggleTheme}
+                                        darkMode={darkMode}
+                                    />
+                                }
                             />
                             {/* recipes */}
                             <Route
@@ -186,8 +167,9 @@ function App() {
                             <Route path="/*" element={<NotFound />} />
                         </Routes>
                     </RecipeProvider>
+                    <ScrollToTopButton />
                     {/* end of main content */}
-
+                    <ScrollToTopButton />
                     {/* Conditionally render Footer */}
                     {!isHidden && <Footer />}
                 </div>

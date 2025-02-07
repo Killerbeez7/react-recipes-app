@@ -2,14 +2,11 @@ import { useState } from "react";
 import styles from "./Home.module.css";
 import cx from "classnames";
 
-export const Home = ({ toggleTheme, darkMode }) => {
+export const Home = () => {
     return (
-        <div className={cx(styles.wrapper, { [styles.dark]: darkMode })}>
+        <div className={cx(styles.wrapper)}>
             <header className={styles.hero}>
                 <h1 className={styles.slogan}>Find Your Next Meal</h1>
-                <button onClick={toggleTheme} className={styles.themeToggle}>
-                    {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-                </button>
             </header>
 
             <main className={styles.mainWrapper}>

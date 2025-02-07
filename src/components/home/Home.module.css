@@ -29,18 +29,6 @@
     word-wrap: break-word; /* Prevents overflow */
 }
 
-/* Dark Mode Toggle Button */
-.darkModeToggle {
-    background: var(--header-bg-color);
-    color: var(--primary-text-color);
-    padding: 8px 15px;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-    border-radius: 5px;
-    margin-top: 15px;
-}
-
 /* Main Content Layout */
 .mainWrapper {
     display: flex;
@@ -137,21 +125,3 @@
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Dark Mode can override these values via your variables */
-
-/* Dark Mode Toggle Button */
-.themeToggle {
-    background-color: var(--primary-bg-color);
-    color: var(--primary-text-color);
-    border: 1px solid var(--hover-text-color);
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s, color 0.3s;
-}
-
-.themeToggle:hover {
-    background-color: var(--hover-text-color);
-    color: var(--primary-bg-color);
-}
