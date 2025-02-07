@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { RecipeContext } from "../../contexts/RecipeContext";
+import { RecipeContext } from "../../../contexts/RecipeContext";
 import styles from "./LiveSearch.module.css";
 
 export const LiveSearch = () => {
