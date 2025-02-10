@@ -12,6 +12,7 @@
     color: var(--primary-text-color);
     transition: transform 0.3s ease;
     z-index: 9999;
+    padding: 0;
 }
 
 .searchIcon {
@@ -43,7 +44,7 @@
 
 .searchBox {
     position: absolute;
-    left: -205px;
+    left: -215px;
     width: 247px;
     border-radius: 5px;
     box-shadow: 0 2px 4px var(--box-shadow-color);
@@ -131,7 +132,12 @@
     }
 
     .searchImg {
-        width: 40px;
-        height: 40px;
+        /* width: 40px;
+        height: 40px; */
+    }
+
+    .searchBox {
+        left: -220px;
+        width: 250px;
     }
 }
