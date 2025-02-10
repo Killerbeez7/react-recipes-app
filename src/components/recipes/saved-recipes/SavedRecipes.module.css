@@ -1,0 +1,13 @@
+.savedMain {
+    min-height: 80vh;
+}
+.savedTitle {
+    text-align: center;
+    margin-top: 100px;
+}
+
+.savedDesc {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 1.2rem;
+}
