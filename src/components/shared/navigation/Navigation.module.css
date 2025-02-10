@@ -35,10 +35,15 @@
     width: 130px;
     height: 100%;
     align-items: center;
+
+
+
 }
 
 .logo {
     font-size: 1.8rem;
+
+
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
@@ -50,6 +55,7 @@
     font-weight: 700;
     height: 100%;
     line-height: 1;
+
 }
 
 .logo-eat {
@@ -57,9 +63,11 @@
 }
 
 .logo-and {
+
     color: #bb1919;
     font-weight: 400;
     font-size: 1.6rem;
+
 }
 
 .logo-amare {
@@ -188,7 +196,14 @@
     .menuButton {
         display: block;
         height: 40px;
+
         width: 40px;
+
+
+
+
+
+
     }
 
     .searchWrapper {
@@ -284,6 +299,15 @@
         gap: 10px;
         align-items: center;
     }
+
+
+
+
+
+
+
+
+
 }
 
 @media (max-width: 768px) {
@@ -296,13 +320,18 @@
     }
 
     .auth-icons {
+
         width: auto;
         align-self: center;
+
     }
 
     .auth-icons .navLinks {
         /* gap:10px; */
         gap: 0;
+
+
+
     }
 }
 

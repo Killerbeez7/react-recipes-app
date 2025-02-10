@@ -303,6 +303,14 @@ export const Navigation = () => {
                         <>
                             <li>
                                 <Link
+                                    to={`/recipes/saved-recipes/${userId}`}
+                                    onClick={closeMenu}
+                                >
+                                    <i class="fa-solid fa-bookmark"/>
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
                                     to={`/auth/${userId}/account-management`}
                                     onClick={closeMenu}
                                 >
@@ -318,7 +326,7 @@ export const Navigation = () => {
                                     onClick={closeMenu}
                                     state={{ from: location.pathname }}
                                 >
-                                    <h3>Sign In</h3>
+                                    <i className="fa-solid fa-user" />
                                 </Link>
                             </li>
                         </>
