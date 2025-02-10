@@ -29,6 +29,8 @@ import { RecipeAdd } from "./components/recipes/recipe-add/RecipeAdd";
 import { RecipeEdit } from "./components/recipes/recipe-edit/RecipeEdit";
 import { RecipeList } from "./components/recipes/recipe-list/RecipeList";
 import { RecipeDetails } from "./components/recipes/recipe-details/RecipeDetails";
+// saved recipes
+import { SavedRecipes } from "./components/recipes/saved-recipes/SavedRecipes";
 // seasonal recipes
 import { FallRecipes } from "./components/seasonal-recipes/fall-recipes/FallRecipes";
 import { SpringRecipes } from "./components/seasonal-recipes/spring-recipes/SpringRecipes";
@@ -87,6 +89,10 @@ function App() {
                                         darkMode={darkMode}
                                     />
                                 }
+                            />
+                            <Route
+                                path="/recipes/saved-recipes/:userId"
+                                element={<SavedRecipes />}
                             />
                             {/* recipes */}
                             <Route
