@@ -1,396 +1,385 @@
 .pageWrapper {
-    max-width: 850px;
-    width: 85%;
-    margin: 40px auto;
-    padding: 20px;
-    background-color: var(--primary-bg-color);
-    color: var(--primary-text-color);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px var(--box-shadow-color);
-}
-
-/* Loading / Not Found states */
-
-.loading,
-.notFound {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: sans-serif;
+    color: #333;
+  }
+  
+  /* Loading / Not found */
+  .loading,
+  .notFound {
     text-align: center;
-    margin: 2rem;
+    margin-top: 2rem;
     font-size: 1.2rem;
-}
-
-/* HERO SECTION */
-
-.hero {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-}
-
-.heroImage {
-    display: block;
-    width: 100%;
-    max-height: 380px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.heroOverlay {
-    position: absolute;
-    bottom: 1rem;
-    left: 1rem;
-    background: rgba(0, 0, 0, 0.4);
-    padding: 0.6rem 1rem;
-    border-radius: 4px;
-    color: #fff;
+  }
+  
+  /* Title row & top controls */
+  .titleRow {
     display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    max-width: 90%;
-}
-
-.recipeTitle {
-    font-size: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .recipeTitle {
+    font-size: 2.2rem;
     margin: 0;
-    font-weight: bold;
-}
-
-.heroActions {
+    flex: 1;
+  }
+  .buttonGroup {
     display: flex;
+    align-items: center;
     gap: 0.5rem;
-}
-
-.heroBtn {
-    background-color: rgba(255, 255, 255, 0.9);
-    border: none;
-    padding: 0.4rem 0.6rem;
+  }
+  .iconBtn {
+    background: #fff;
+    border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1.3rem;
-    transition: background-color 0.2s, transform 0.2s;
-}
-
-.heroBtn:hover {
-    background-color: #fff;
-    transform: scale(1.05);
-}
-
-.saved i {
-    color: var(--accent-color, #f1c40f);
-}
-
-.liked i {
-    color: var(--error-color, #e74c3c);
-}
-
-/* CONTENT SECTION */
-.contentSection {
-    padding: 1.5rem;
-}
-
-/* Stats row (rating, time, likes) */
-.recipeStats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    align-items: center;
-    margin-bottom: 1rem;
-    /* Light card background */
-    background-color: var(--card-bg, #fafafa);
-    padding: 1rem;
-    border-radius: 4px;
-}
-
-.ratingBox {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-}
-
-.ratingNumber {
-    font-size: 2rem;
-    font-weight: 700;
-    /* gold-ish color for rating text */
-    color: var(--rating-color, #e27c39);
-}
-
-.ratingStars i {
-    color: var(--accent-color, #f1c40f);
-}
-
-.reviewCount {
-    font-size: 0.9rem;
-    color: var(--card-desc-color, #555);
-}
-
-.statItem {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--card-desc-color, #666);
-    font-weight: 500;
-}
-
-.statItem i {
-    color: var(--card-meta-color, #999);
-}
-
-/* If user is author, show these on the right */
-.recipeOwnerActions {
-    margin-left: auto;
+    padding: 0.4rem 0.6rem;
+  }
+  .saved i {
+    color: #f1c40f;
+  }
+  .liked i {
+    color: #e74c3c;
+  }
+  .ownerControls {
     display: flex;
     gap: 0.5rem;
-}
-
-/* Edit/Delete recipe buttons */
-.editBtn,
-.deleteBtn {
+    margin-left: 0.5rem;
+  }
+  .editBtn,
+  .deleteBtn {
+    background-color: #eee;
     border: none;
-    padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 0.9rem;
-    display: flex;
-    gap: 0.4rem;
-    align-items: center;
-    transition: background-color 0.3s ease;
-}
-
-.editBtn {
-    background-color: var(--highlight-color, #3498db);
-    color: #fff;
-}
-.editBtn:hover {
-    background-color: var(--highlight-hover-color, #2980b9);
-}
-
-.deleteBtn {
-    background-color: var(--error-color, #e74c3c);
-    color: #fff;
-}
-.deleteBtn:hover {
-    background-color: var(--error-hover-color, #c0392b);
-}
-
-.sectionDivider {
-    margin: 1rem 0;
-    border: none;
-    border-top: 1px solid var(--border-light-color, #eee);
-}
-
-/* Main Sections (desc, ingredients, steps) */
-.sectionBlock {
-    margin-bottom: 2rem;
-}
-
-.sectionBlock h2 {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
-    color: var(--accent-color, #b40e26);
-}
-
-.sectionBlock p {
-    line-height: 1.6;
-    color: var(--card-desc-color, #666);
-}
-
-/* Ingredients list */
-.ingredientsList {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-.ingredientsList li {
-    margin-bottom: 0.4rem;
-    padding-left: 20px;
-    position: relative;
-    color: var(--primary-text-color, #333);
-}
-.ingredientsList li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--accent-color, #b40e26);
-}
-
-/* Steps list */
-.stepsList {
-    counter-reset: step-counter;
-    list-style: none;
-    margin: 0;
-    padding-left: 0;
-}
-
-.stepsList li {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  /* Hero / Gallery */
+  .heroGallery {
+    margin-bottom: 1.5rem;
+  }
+  .heroImageWrapper {
+    text-align: center;
     margin-bottom: 1rem;
-    padding-left: 30px;
+  }
+  .heroImage {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 6px;
+  }
+  .thumbnailRow {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+  }
+  .thumbnail {
+    width: 120px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  
+  /* Info Bar (rating, time, cost, etc.) */
+  .infoBar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    background-color: #fafafa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 1.5rem;
+  }
+  .ratingBox {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+  }
+  .ratingScore {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #e27c39;
+  }
+  .reviewCount {
+    font-size: 0.85rem;
+    color: #555;
+  }
+  .timeBox,
+  .likeBox,
+  .servingsBox,
+  .costBox {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-weight: 500;
+  }
+  .printBtnWrapper {
+    margin-left: auto;
+  }
+  .printBtn {
+    background-color: #2ecc71;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  
+  /* Nutrition facts */
+  .nutritionBox {
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .nutritionBox h2 {
+    margin-top: 0;
+    color: #b40e26;
+  }
+  .nutritionBox ul {
+    margin: 0;
+    padding-left: 1.2rem;
+  }
+  
+  /* Description */
+  .descriptionBox {
+    background-color: #fefefe;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid #eee;
+  }
+  
+  /* Recipe content (Ingredients + Directions) */
+  .recipeContent {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .recipeBlock {
+    flex: 1;
+    min-width: 280px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 1rem;
+  }
+  .recipeBlock h2 {
+    margin-top: 0;
+    color: #b40e26;
+  }
+  .ingredientList {
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+  .directionList {
+    counter-reset: stepCounter;
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+  .directionList li {
+    margin-bottom: 1rem;
     position: relative;
-    line-height: 1.6;
-    color: var(--primary-text-color, #333);
-}
-.stepsList li::before {
-    counter-increment: step-counter;
-    content: counter(step-counter) ". ";
+    padding-left: 30px;
+    line-height: 1.5;
+  }
+  .directionList li::before {
+    counter-increment: stepCounter;
+    content: counter(stepCounter) ". ";
     position: absolute;
     left: 0;
     font-weight: bold;
-    color: var(--accent-color, #b40e26);
-}
-
-/* Tips list */
-.tipsList {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-.tipsList li {
-    margin-bottom: 0.5rem;
-    padding-left: 20px;
-    position: relative;
-    color: var(--primary-text-color, #333);
-}
-.tipsList li::before {
-    content: "💡";
-    position: absolute;
-    left: 0;
-}
-
-/************************************
-   * COMMENTS
-   ************************************/
-.noComments {
-    font-style: italic;
-    color: var(--card-desc-color, #777);
-}
-
-.commentList {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
-
-.commentItem {
-    display: flex;
-    gap: 1rem;
-    margin-bottom: 1rem;
-    background-color: var(--card-bg, #fafafa);
+    color: #b40e26;
+  }
+  
+  /* Tips */
+  .tipsBox {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .tipsBox h2 {
+    margin-top: 0;
+    color: #b40e26;
+  }
+  
+  /* Chef Notes */
+  .chefNotes {
+    background: #faf8f4;
+    border: 1px solid #eee;
     border-radius: 6px;
     padding: 1rem;
-    box-shadow: 0 1px 3px var(--box-shadow-color, rgba(0, 0, 0, 0.1));
+    margin-bottom: 1.5rem;
+  }
+  .chefNotes h2 {
+    margin-top: 0;
+    color: #b40e26;
+  }
+  
+  /* Rate Box */
+  .rateBox {
+    background: #fefefe;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .starRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  /* Comments */
+  .commentSection {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+  .commentSection h2 {
+    margin-top: 0;
+    color: #b40e26;
+  }
+  .noComments {
+    font-style: italic;
+    color: #777;
+  }
+  .commentList {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .commentItem {
+    display: flex;
+    gap: 0.6rem;
+    align-items: center;
+    background-color: #f3f3f3;
+    padding: 10px;
+    border-radius: 10px;
 }
-
-.commentAvatar {
-    width: 50px;
-    height: 50px;
+  .commentAvatar {
+    width: 45px;
+    height: 45px;
     object-fit: cover;
     border-radius: 50%;
-}
-
-.commentContent {
-    flex: 1;
-}
-
-.commentTopRow {
+  }
+  .commentHeader {
     display: flex;
-    justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 0.3rem;
-}
-
-.commentAuthor {
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .commentAuthor {
     font-weight: 600;
-    color: var(--link-color, #2c3e50);
+    color: #2c3e50;
     text-decoration: none;
-}
-.commentAuthor:hover {
+  }
+  .commentAuthor:hover {
     text-decoration: underline;
-}
-
-.commentTime {
+  }
+  .commentTime {
     font-size: 0.85rem;
-    color: var(--card-meta-color, #999);
-}
-
-.commentText {
-    margin: 0.5rem 0;
-    line-height: 1.4;
-    color: var(--primary-text-color, #444);
-}
-
-/* Edit/Delete for each comment */
-.commentActions {
+    color: #999;
+  }
+  .commentText {
+    margin: 0.3rem 0;
+  }
+  .commentActions {
     display: flex;
-    gap: 0.8rem;
-    margin-top: 0.5rem;
-}
-.commentActions button {
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .commentActions button {
     background: none;
     border: none;
-    color: var(--highlight-color, #3498db);
-    font-size: 1rem;
+    color: #3498db;
     cursor: pointer;
-    transition: color 0.2s;
-}
-.commentActions button:hover {
-    color: var(--highlight-hover-color, #2980b9);
-}
-
-/************************************
-   * Comment Form
-   ************************************/
-.commentForm {
-    margin-top: 1rem;
+    font-size: 1rem;
+  }
+  .commentForm {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-}
-
-.commentInput {
+    margin-top: 1rem;
+  }
+  .commentInput {
     width: 100%;
-    min-height: 80px;
-    border: 1px solid var(--border-color, #ccc);
+    border: 1px solid #ccc;
     border-radius: 4px;
-    padding: 0.8rem;
-    font-size: 1rem;
+    padding: 0.6rem;
     resize: vertical;
-    color: var(--primary-text-color, #333);
-    background-color: var(--card-bg, #fff);
-}
-
-.commentSubmit {
+  }
+  .commentSubmit {
     align-self: flex-end;
-    background-color: var(--success-color, #2ecc71);
+    background-color: #2ecc71;
     border: none;
-    padding: 0.6rem 1.2rem;
+    padding: 0.5rem 1rem;
     border-radius: 4px;
     color: #fff;
     cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
-}
-.commentSubmit:hover {
-    background-color: var(--success-hover-color, #27ae60);
-}
-
-/************************************
-   * RESPONSIVE
-   ************************************/
-@media (max-width: 768px) {
-    .heroOverlay {
-        bottom: 0.5rem;
-        left: 0.5rem;
+  }
+  
+  /* Similar Recipes */
+  .similarRecipes {
+    background: #fafafa;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid #eee;
+  }
+  .similarRecipes h2 {
+    margin-top: 0;
+    color: #b40e26;
+  }
+  .similarList {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .similarItem {
+    width: 120px;
+  }
+  .similarImg {
+    width: 100%;
+    border-radius: 4px;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .recipeContent {
+      flex-direction: column;
     }
-    .recipeStats {
-        flex-direction: column;
-        gap: 1rem;
+    .titleRow {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
     }
-}
-
-@media (max-width: 480px) {
-    .recipeTitle {
-        font-size: 1.5rem;
+    .thumbnailRow {
+      gap: 0.5rem;
     }
-    .heroOverlay {
-        padding: 0.4rem 0.6rem;
-    }
-}
-
+  }
+  
