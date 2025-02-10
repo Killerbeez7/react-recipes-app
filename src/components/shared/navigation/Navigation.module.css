@@ -35,14 +35,10 @@
     width: 130px;
     height: 100%;
     align-items: center;
-
-
-
 }
 
 .logo {
     font-size: 1.8rem;
-
 
     text-align: center;
     text-decoration: none;
@@ -55,7 +51,6 @@
     font-weight: 700;
     height: 100%;
     line-height: 1;
-
 }
 
 .logo-eat {
@@ -63,11 +58,9 @@
 }
 
 .logo-and {
-
     color: #bb1919;
     font-weight: 400;
     font-size: 1.6rem;
-
 }
 
 .logo-amare {
@@ -101,6 +94,7 @@
     display: none;
     color: var(--primary-text-color);
     padding: 0;
+    align-self: center;
 }
 
 .hideLinks {
@@ -196,14 +190,6 @@
     .menuButton {
         display: block;
         height: 40px;
-
-        width: 40px;
-
-
-
-
-
-
     }
 
     .searchWrapper {
@@ -296,18 +282,9 @@
     .nav-icons {
         display: flex;
         flex-direction: row;
-        gap: 10px;
+        gap: 15px;
         align-items: center;
     }
-
-
-
-
-
-
-
-
-
 }
 
 @media (max-width: 768px) {
@@ -320,18 +297,12 @@
     }
 
     .auth-icons {
-
         width: auto;
         align-self: center;
-
     }
 
     .auth-icons .navLinks {
-        /* gap:10px; */
-        gap: 0;
-
-
-
+        gap: 15px;
     }
 }
 
