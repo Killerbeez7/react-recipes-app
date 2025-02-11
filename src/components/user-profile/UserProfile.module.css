@@ -175,3 +175,7 @@
         height: 90px;
     }
 }
+
+.recipeLink {
+    text-decoration: none;
+}

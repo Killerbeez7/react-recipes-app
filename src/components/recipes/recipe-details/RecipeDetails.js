@@ -39,14 +39,12 @@ export const RecipeDetails = () => {
     );
     const [isLiked, setIsLiked] = useState(false);
 
-
-    // gallery images 
+    // gallery images
     const [galleryImages, setGalleryImages] = useState([]);
 
     // cost price: TO FINISH
-    const costEstimate = "$10 - $12"
+    const costEstimate = "$10 - $12";
 
-    
     // nutrition fatcs: TO FINISH
     const nutritionFacts = {
         calories: 280,
@@ -73,7 +71,7 @@ export const RecipeDetails = () => {
     useEffect(() => {
         setLoading(!currentRecipe);
 
-        // add more gallery images: TO FINISH 
+        // add more gallery images: TO FINISH
         if (currentRecipe) {
             setGalleryImages(
                 currentRecipe.galleryImages || [
@@ -410,12 +408,22 @@ export const RecipeDetails = () => {
                                 />
                                 <div>
                                     <div className={styles.commentHeader}>
-                                        <Link
+                                        {/* <Link
                                             to={`/user/${comment.userId}`}
                                             className={styles.commentAuthor}
                                         >
                                             {comment.username}
-                                        </Link>
+                                        </Link> */}
+                                        <strong
+                                            onClick={() =>
+                                                navigate(
+                                                    `/profile/${comment.userId}`
+                                                )
+                                            }
+                                            className={styles.commentAuthor}
+                                        >
+                                            {comment.username}
+                                        </strong>
                                         {comment.createdAt && (
                                             <span
                                                 className={styles.commentTime}

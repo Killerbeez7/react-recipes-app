@@ -297,6 +297,7 @@
   }
   .commentAuthor:hover {
     text-decoration: underline;
+    cursor: pointer;
   }
   .commentTime {
     font-size: 0.85rem;
