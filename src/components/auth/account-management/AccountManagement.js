@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 import styles from "./AccountManagement.module.css";
 import { doSignOut } from "../../../firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const AccountManagement = ({ toggleTheme, darkMode }) => {
     const { currentUser } = useAuth();
     const userId = currentUser?.uid;
+    const navigate = useNavigate();
 
     const logoutHandler = () => {
         doSignOut();
@@ -14,7 +16,6 @@ export const AccountManagement = ({ toggleTheme, darkMode }) => {
 
     return (
         <div className={styles.accountPage}>
-            {/* Grid Container */}
             <div className={styles.accountGrid}>
                 {/* Sidebar */}
                 <aside className={styles.sidebar}>
@@ -84,7 +85,7 @@ export const AccountManagement = ({ toggleTheme, darkMode }) => {
                                 <strong>Email:</strong> {currentUser.email}
                             </p>
                             <Link
-                                to={`/auth/${userId}/profile-details`}
+                                to={`/auth/${userId}/edit-profile`}
                                 className={styles.editProfileLink}
                             >
                                 Edit Profile
@@ -97,7 +98,10 @@ export const AccountManagement = ({ toggleTheme, darkMode }) => {
                         <h3>Security</h3>
                         <div className={styles.securityGroup}>
                             <p>Change Password</p>
-                            <button className={styles.btnPrimary}>
+                            <button
+                                onClick={() => navigate("/settings")}
+                                className={styles.btnPrimary}
+                            >
                                 Change Password
                             </button>
                         </div>

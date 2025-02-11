@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
 // context
 import { AuthProvider } from "./contexts/AuthContext";
 import { RecipeProvider } from "./contexts/RecipeContext";
@@ -16,11 +15,12 @@ import { SignIn } from "./components/auth/sign-in/SignIn";
 import { SignUp } from "./components/auth/sign-up/SignUp";
 import { ProfileDetails } from "./components/auth/profile-details/ProfileDetails";
 import { AccountManagement } from "./components/auth/account-management/AccountManagement";
-// util
+// utils
+import { DarkMode } from "./components/utils/DarkMode";
 import { NotFound } from "./components/not-found/NotFound";
+import { Settings } from "./components/utils/settings/settings";
 import { PrivateRoute } from "./components/common/PrivateRoute";
 import { AdminPanel } from "./components/admin-panel/AdminPanel";
-import { DarkMode } from "./components/utils/DarkMode";
 import { ErrorBoundary } from "./components/common/ErrorBoundary";
 import { UserProfile } from "./components/user-profile/UserProfile";
 import { ScrollToTopButton } from "./components/utils/scroll-to-top-button/ScrollToTopButton";
@@ -78,7 +78,11 @@ function App() {
                             <Route path="/auth/sign-in" element={<SignIn />} />
                             <Route path="/auth/sign-up" element={<SignUp />} />
                             <Route
-                                path="/auth/:userId/profile-details"
+                                path="/auth/settings"
+                                element={<Settings />}
+                            />
+                            <Route
+                                path="/auth/:userId/edit-profile"
                                 element={<ProfileDetails />}
                             />
                             <Route
@@ -159,9 +163,8 @@ function App() {
                                 path="/recipes/details/:recipeId"
                                 element={<RecipeDetails />}
                             />
-
                             <Route
-                                path="/user/:userId"
+                                path="/profile/:userId"
                                 element={<UserProfile />}
                             />
 
