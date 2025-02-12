@@ -10,12 +10,15 @@ import styles from "./SignUp.module.css";
 export const SignUp = () => {
     const { userLoggedIn, setCurrentUser } = useAuth();
 
+    // user data
     const [email, setEmail] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    // utils
     const [errorMessage, setErrorMessage] = useState("");
     const [agreed, setAgreed] = useState(false);
+    
     const navigate = useNavigate();
     const location = useLocation();
 
