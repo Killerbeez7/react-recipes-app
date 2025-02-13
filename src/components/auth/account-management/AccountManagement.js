@@ -1,17 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
+
 import styles from "./AccountManagement.module.css";
-import { doSignOut } from "../../../firebase/auth";
-import { useNavigate } from "react-router-dom";
 
 export const AccountManagement = ({ toggleTheme, darkMode }) => {
-    const { currentUser } = useAuth();
-    const userId = currentUser?.uid;
+    const { currentUser, handleSignOut } = useAuth();
+    const userId = currentUser.uid;
     const navigate = useNavigate();
 
-    const logoutHandler = () => {
-        doSignOut();
+    const onSignOut = async () => {
+        await handleSignOut();
+        navigate("/");
     };
 
     return (
@@ -47,7 +47,7 @@ export const AccountManagement = ({ toggleTheme, darkMode }) => {
                             </li>
                             <br></br>
                             <li>
-                                <Link to="/" onClick={logoutHandler}>
+                                <Link to="/" onClick={onSignOut}>
                                     <h3>
                                         <i className="fa-solid fa-arrow-right-from-bracket" />{" "}
                                         Sign out
