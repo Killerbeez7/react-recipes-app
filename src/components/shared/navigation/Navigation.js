@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
-import { doSignOut } from "../../../firebase/auth";
+
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
 
