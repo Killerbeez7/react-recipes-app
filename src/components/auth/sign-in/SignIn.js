@@ -1,70 +1,57 @@
 import { useState } from "react";
 import { Navigate, useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import {
-    doSignInWithEmailAndPassword,
-    doSignInWithGoogle,
-    addUserToDatabase,
-    getUserFromDatabase,
-} from "../../../firebase/auth";
+
 import styles from "./SignIn.module.css";
 
 export const SignIn = () => {
-    const { userLoggedIn } = useAuth();
+    const { currentUser, handleEmailSignIn, handleGoogleSignIn } = useAuth();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+
     const [isSigningIn, setIsSigningIn] = useState(false);
     const [isSigningInWithGoogle, setIsSigningInWithGoogle] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [userData, setUserData] = useState(null);
+
     const navigate = useNavigate();
     const location = useLocation();
 
-    if (userLoggedIn) {
+    if (currentUser) {
         return <Navigate to={"/"} replace={true} />;
     }
 
     const onSubmit = async (e) => {
         e.preventDefault();
-        if (!isSigningIn) {
-            setIsSigningIn(true);
-            try {
-                const userCredential = await doSignInWithEmailAndPassword(email, password);
-                const user = userCredential.user;
-                getUserFromDatabase(user.uid, (data) => {
-                    setUserData(data);
-                });
-            } catch (err) {
-                setErrorMessage("Failed to sign in. Please check your credentials.");
-                console.error("Email/Password Sign-In Error:", err);
-            } finally {
-                setIsSigningIn(false);
-            }
+
+        setIsSigningIn(true);
+        try {
+            await handleEmailSignIn(email, password);
+            navigate("/");
+        } catch (error) {
+            setErrorMessage(
+                "Failed to sign in. Please check your credentials."
+            );
+        } finally {
+            setIsSigningIn(false);
         }
     };
 
     const onGoogleSignIn = async (e) => {
         e.preventDefault();
-        if (!isSigningInWithGoogle) {
-            setIsSigningInWithGoogle(true);
-            try {
-                const result = await doSignInWithGoogle();
-                const user = result.user;
-                await addUserToDatabase(user.uid, user.displayName, user.email);
-                getUserFromDatabase(user.uid, (data) => {
-                    setUserData(data);
-                });
-            } catch (err) {
-                setErrorMessage("Failed to sign in with Google. Please try again.");
-                console.error("Google Sign-In Error:", err);
-            } finally {
-                setIsSigningIn(false);
-            }
+
+        setIsSigningInWithGoogle(true);
+        try {
+            await handleGoogleSignIn();
+            navigate("/");
+        } catch (error) {
+            setErrorMessage("Failed to sign in with Google.");
+        } finally {
+            setIsSigningInWithGoogle(false);
         }
     };
 
     const from = location.state?.from || "/";
-
     const handleGoBack = () => {
         navigate(from);
     };
@@ -74,22 +61,24 @@ export const SignIn = () => {
             {/* Left Section */}
             <div className={styles["left-section"]}>
                 <h1>Welcome to Eat & Amare</h1>
-            </div>{" "}
+            </div>
+
             {/* Right Section */}
             <div className={styles["right-section"]}>
-                {/* Go Back Button */}
                 <button onClick={handleGoBack} className={styles.goBackButton}>
                     ← Go Back
                 </button>
                 <h1>Welcome back</h1>
                 <p>Please enter your details.</p>
-                <form className={styles["form"]} onSubmit={onSubmit}>
+
+                <form className={styles.form} onSubmit={onSubmit}>
                     <div className={styles.containers}>
                         <input
                             type="email"
                             placeholder="Enter your email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            disabled={isSigningIn || isSigningInWithGoogle}
                         />
                     </div>
                     <div className={styles.containers}>
@@ -98,21 +87,34 @@ export const SignIn = () => {
                             placeholder="Enter your password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            disabled={isSigningIn || isSigningInWithGoogle}
                         />
                     </div>
-                    {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
-                    <button type="submit" className={styles["auth-btn"]}>
+                    {errorMessage && (
+                        <p style={{ color: "red" }}>{errorMessage}</p>
+                    )}
+
+                    {/* Disable button if still signing in */}
+                    <button
+                        type="submit"
+                        className={styles["auth-btn"]}
+                        disabled={isSigningIn || isSigningInWithGoogle}
+                    >
                         {isSigningIn ? "Signing In..." : "Sign In"}
                     </button>
-                    <button onClick={onGoogleSignIn} className={styles["auth-btn"]}>
-                        {isSigningInWithGoogle ? "Signing with Google..." : "with Google"}
+
+                    <button
+                        onClick={onGoogleSignIn}
+                        className={styles["auth-btn"]}
+                        disabled={isSigningIn || isSigningInWithGoogle}
+                    >
+                        {isSigningInWithGoogle
+                            ? "Signing with Google..."
+                            : "with Google"}
                     </button>
 
                     <div className={styles["extra-options"]}>
                         <a href="/forgot-password">Forgot Password?</a>
-                        {/* <label>
-                            <input type="checkbox" /> Remember me
-                        </label> */}
                         <p>
                             No account?
                             <Link to="/auth/sign-up" state={{ from }}>
