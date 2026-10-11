@@ -40,3 +40,35 @@ test("pushIdToDate decodes Firebase push IDs", () => {
     );
     expect(pushIdToDate("not-a-push-id")).toBeNull();
 });
+
+test("experimental layout helpers split and match ingredients", () => {
+    const {
+        splitIngredient,
+        ingredientsInStep,
+    } = require("../components/recipes/recipe-details/layouts/recipeParts");
+    expect(splitIngredient("350 g spaghetti 12 oz")).toEqual({
+        quantity: "350 g",
+        name: "spaghetti 12 oz",
+    });
+    expect(splitIngredient("4 eggs")).toEqual({ quantity: "4", name: "eggs" });
+    expect(splitIngredient("Black pepper ground")).toEqual({
+        quantity: "",
+        name: "Black pepper ground",
+    });
+    expect(splitIngredient("4 бр. червени чушки").quantity).toBe("4 бр.");
+    const ingredients = [
+        "350 g spaghetti",
+        "4 eggs",
+        "100 g pecorino Romano",
+        "Black pepper",
+    ];
+    expect(
+        ingredientsInStep(
+            "In a bowl put the eggs and pecorino Romano cheese.",
+            ingredients
+        )
+    ).toEqual([1, 2]);
+    expect(
+        ingredientsInStep("Add some freshly ground black pepper.", ingredients)
+    ).toEqual([3]);
+});

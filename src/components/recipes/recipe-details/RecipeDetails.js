@@ -3,8 +3,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import {
     Bookmark,
-    Check,
-    ChefHat,
     ChevronRight,
     Clock,
     Gauge,
@@ -37,15 +35,16 @@ import { PageLoader } from "../../ui/Loader";
 import { EmptyState } from "../../ui/EmptyState";
 import { RecipeGrid } from "../recipe-grid/RecipeGrid";
 import { RecipeComments } from "./RecipeComments";
+import { RecipeBody } from "./layouts/RecipeBody";
+import { plural } from "./layouts/recipeParts";
+import { LayoutSwitcher, useRecipeLayout } from "./layouts/LayoutSwitcher";
+import { useMediaQuery } from "../../../hooks/useMediaQuery";
 
 const difficultyStyles = {
     easy: "bg-emerald-600",
     medium: "bg-amber-500",
     hard: "bg-red-600",
 };
-
-const plural = (count, word) =>
-    `${count} ${word}${Number(count) === 1 ? "" : "s"}`;
 
 const Stat = ({ icon: Icon, label, value }) => (
     <div className="flex flex-col items-center gap-1 px-2 py-4 text-center">
@@ -71,6 +70,9 @@ export const RecipeDetails = () => {
 
     const [checkedIngredients, setCheckedIngredients] = useState(new Set());
     const [doneSteps, setDoneSteps] = useState(new Set());
+    // Desktop-only layout experiment; phones always get the classic layout
+    const isDesktop = useMediaQuery("(min-width: 1024px)");
+    const [layout, setLayout] = useRecipeLayout();
     const [actionError, setActionError] = useState("");
     const [linkCopied, setLinkCopied] = useState(false);
     const ratingSectionRef = useRef(null);
@@ -467,177 +469,27 @@ export const RecipeDetails = () => {
                 </div>
             </header>
 
-            {/* One centred column: ingredients, directions, reviews */}
+            {/* Ingredients & steps (layout experiment on desktop), then reviews */}
             <div className="mt-16 border-t border-neutral-200 pt-12 dark:border-neutral-800">
-                <div className="mx-auto max-w-3xl space-y-16">
-                    <section aria-labelledby="ingredients-title">
-                        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-                            <h2
-                                id="ingredients-title"
-                                className="section-title"
-                            >
-                                Ingredients
-                            </h2>
-                            <div className="flex items-center gap-2">
-                                {recipe.servings && (
-                                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-                                        <Users
-                                            className="h-3.5 w-3.5"
-                                            aria-hidden="true"
-                                        />
-                                        {plural(recipe.servings, "serving")}
-                                    </span>
-                                )}
-                                {checkedIngredients.size > 0 ? (
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            setCheckedIngredients(new Set())
-                                        }
-                                        className="badge bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:hover:bg-brand-500/20 print:hidden"
-                                    >
-                                        {checkedIngredients.size} of{" "}
-                                        {ingredients.length} ready · Clear
-                                    </button>
-                                ) : (
-                                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-                                        {plural(ingredients.length, "item")}
-                                    </span>
-                                )}
-                            </div>
-                        </div>
-                        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
-                            Tick off what you have ready.
-                        </p>
+                {isDesktop && (
+                    <LayoutSwitcher value={layout} onChange={setLayout} />
+                )}
+                <RecipeBody
+                    layout={isDesktop ? layout : "classic"}
+                    recipe={recipe}
+                    ingredients={ingredients}
+                    steps={steps}
+                    checkedIngredients={checkedIngredients}
+                    onToggleIngredient={(i) =>
+                        toggleInSet(setCheckedIngredients, i)
+                    }
+                    onClearIngredients={() => setCheckedIngredients(new Set())}
+                    doneSteps={doneSteps}
+                    onToggleStep={(i) => toggleInSet(setDoneSteps, i)}
+                    onSetDoneSteps={setDoneSteps}
+                />
 
-                        <ul className="mt-6 grid gap-2 sm:grid-cols-2">
-                            {ingredients.map((item, i) => {
-                                const checked = checkedIngredients.has(i);
-                                return (
-                                    <li key={i}>
-                                        <label
-                                            className={`flex h-full cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 text-sm leading-6 transition-colors ${
-                                                checked
-                                                    ? "border-emerald-200 bg-emerald-50/60 dark:border-emerald-900/50 dark:bg-emerald-950/20"
-                                                    : "border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
-                                            }`}
-                                        >
-                                            <input
-                                                type="checkbox"
-                                                className="checkbox mt-1 print:hidden"
-                                                checked={checked}
-                                                onChange={() =>
-                                                    toggleInSet(
-                                                        setCheckedIngredients,
-                                                        i
-                                                    )
-                                                }
-                                            />
-                                            <span
-                                                className={`first-letter:uppercase ${
-                                                    checked
-                                                        ? "text-neutral-400 line-through dark:text-neutral-500"
-                                                        : "text-neutral-800 dark:text-neutral-200"
-                                                }`}
-                                            >
-                                                {item}
-                                            </span>
-                                        </label>
-                                    </li>
-                                );
-                            })}
-                        </ul>
-                    </section>
-
-                    <section aria-labelledby="directions-title">
-                        <div className="flex items-center justify-between gap-4">
-                            <h2 id="directions-title" className="section-title">
-                                Directions
-                            </h2>
-                            <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 print:hidden">
-                                {doneSteps.size} of{" "}
-                                {plural(steps.length, "step")} done
-                            </span>
-                        </div>
-                        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
-                            Tap a step to mark it as done.
-                        </p>
-
-                        <ol className="mt-6">
-                            {steps.map((step, i) => {
-                                const done = doneSteps.has(i);
-                                const last = i === steps.length - 1;
-                                return (
-                                    <li key={i} className="relative">
-                                        {/* Timeline connector */}
-                                        {!last && (
-                                            <span
-                                                aria-hidden="true"
-                                                className={`absolute bottom-0 left-4 top-11 w-px ${
-                                                    done
-                                                        ? "bg-emerald-300 dark:bg-emerald-800"
-                                                        : "bg-neutral-200 dark:bg-neutral-800"
-                                                }`}
-                                            />
-                                        )}
-                                        <button
-                                            type="button"
-                                            onClick={() =>
-                                                toggleInSet(setDoneSteps, i)
-                                            }
-                                            aria-pressed={done}
-                                            aria-label={`Step ${i + 1}${done ? " (done)" : ""}`}
-                                            className={`group flex w-full gap-4 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
-                                                last ? "" : "pb-8"
-                                            }`}
-                                        >
-                                            <span
-                                                className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold ring-4 ring-neutral-50 transition-colors dark:ring-neutral-950 ${
-                                                    done
-                                                        ? "bg-emerald-600 text-white"
-                                                        : "bg-brand-600 text-white group-hover:bg-brand-700"
-                                                }`}
-                                            >
-                                                {done ? (
-                                                    <Check className="h-4 w-4" />
-                                                ) : (
-                                                    i + 1
-                                                )}
-                                            </span>
-                                            <span
-                                                className={`pt-0.5 leading-7 transition-colors first-letter:uppercase ${
-                                                    done
-                                                        ? "text-neutral-400 line-through decoration-neutral-300 dark:text-neutral-500 dark:decoration-neutral-700"
-                                                        : "text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-200 dark:group-hover:text-white"
-                                                }`}
-                                            >
-                                                {step}
-                                            </span>
-                                        </button>
-                                    </li>
-                                );
-                            })}
-                        </ol>
-
-                        {Array.isArray(recipe.tips) &&
-                            recipe.tips.length > 0 && (
-                                <div className="mt-10 rounded-2xl border border-brand-200 bg-brand-50 p-6 dark:border-brand-500/20 dark:bg-brand-500/5">
-                                    <h3 className="flex items-center gap-2 font-semibold">
-                                        <ChefHat
-                                            className="h-5 w-5 text-brand-600"
-                                            aria-hidden="true"
-                                        />
-                                        Tips
-                                    </h3>
-                                    <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm">
-                                        {recipe.tips.map((tip, i) => (
-                                            <li key={i}>{tip}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                    </section>
-
+                <div className="mx-auto mt-16 max-w-3xl">
                     {/* Reviews: rating summary, your rating, comments */}
                     <section
                         ref={ratingSectionRef}
