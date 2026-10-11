@@ -475,6 +475,8 @@ export const RecipeDetails = () => {
                     <LayoutSwitcher value={layout} onChange={setLayout} />
                 )}
                 <RecipeBody
+                    // Fresh step position/progress for every recipe
+                    key={recipeId}
                     layout={isDesktop ? layout : "classic"}
                     recipe={recipe}
                     ingredients={ingredients}
