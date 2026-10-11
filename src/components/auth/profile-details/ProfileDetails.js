@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Camera } from "lucide-react";
-import { ref, update } from "firebase/database";
+import { doc, setDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
 import {
     ref as storageRef,
     uploadBytes,
     getDownloadURL,
 } from "firebase/storage";
-import { auth, database, storage } from "../../../firebase/firebaseConfig";
+import { auth, db, storage } from "../../../firebase/firebaseConfig";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Avatar } from "../../ui/Avatar";
 import { Spinner } from "../../ui/Loader";
@@ -73,11 +73,15 @@ export const ProfileDetails = () => {
                 displayName: username.trim(),
                 photoURL,
             });
-            await update(ref(database, `users/${user.uid}`), {
-                username: username.trim(),
-                bio: bio.trim(),
-                profilePicture: photoURL,
-            });
+            await setDoc(
+                doc(db, "users", user.uid),
+                {
+                    username: username.trim(),
+                    bio: bio.trim(),
+                    profilePicture: photoURL,
+                },
+                { merge: true }
+            );
 
             refreshUser();
             navigate(accountPath);

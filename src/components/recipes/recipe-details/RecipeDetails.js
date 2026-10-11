@@ -117,7 +117,7 @@ export const RecipeDetails = () => {
     }
 
     const isOwner = currentUser?.uid === recipe.authorId;
-    const isSaved = !!userProfile?.savedRecipes?.[recipeId];
+    const isSaved = !!userProfile?.savedRecipes?.includes(recipeId);
     const isLiked = !!(currentUser && recipe.likes?.[currentUser.uid]);
     const averageRating = getAverageRating(recipe.ratings);
     const ratingCount = Object.keys(recipe.ratings || {}).length;
@@ -125,7 +125,7 @@ export const RecipeDetails = () => {
     const ingredients = parseIngredients(recipe.ingredients);
     const steps = parseSteps(recipe.steps);
     const categories = toCategoryArray(recipe.categories);
-    const commentCount = Object.keys(recipe.comments || {}).length;
+    const commentCount = recipe.commentCount || 0;
     const createdAt = getRecipeDate(recipe);
     const authorName = recipe.authorName || author?.username || "A home cook";
     const difficulty = recipe.difficulty || "Easy";
@@ -648,10 +648,7 @@ export const RecipeDetails = () => {
                     )}
                 </section>
 
-                <RecipeComments
-                    recipeId={recipeId}
-                    comments={recipe.comments}
-                />
+                <RecipeComments recipeId={recipeId} />
             </div>
 
             {/* Similar recipes */}

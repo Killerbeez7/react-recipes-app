@@ -1,12 +1,21 @@
 import { createContext, useEffect, useState } from "react";
-import { ref, onValue, update } from "firebase/database";
+import {
+    collection,
+    deleteField,
+    doc,
+    increment,
+    onSnapshot,
+    runTransaction,
+    updateDoc,
+} from "firebase/firestore";
 import * as recipeService from "../services/recipeService";
 import * as commentService from "../services/commentService";
-import { database } from "../firebase/firebaseConfig";
+import { db } from "../firebase/firebaseConfig";
+import { fromDoc } from "../firebase/firestore";
 
 export const RecipeContext = createContext();
 
-// All writes go to Firebase; the realtime listener below keeps `recipes`
+// All writes go to Firestore; the realtime listener below keeps `recipes`
 // in sync (local writes fire it immediately), so no manual state patching.
 export const RecipeProvider = ({ children }) => {
     const [recipes, setRecipes] = useState([]);
@@ -14,28 +23,18 @@ export const RecipeProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // The SDK neither resolves nor errors when the DB is unreachable
-        // (offline, deactivated...), so give up waiting after a while.
+        // Don't spin forever if Firestore is unreachable
         const timeoutId = setTimeout(() => {
             setLoading(false);
             setError("timeout");
         }, 10000);
 
-        const recipesRef = ref(database, "recipes");
-        const unsubscribe = onValue(
-            recipesRef,
+        const unsubscribe = onSnapshot(
+            collection(db, "recipes"),
             (snapshot) => {
                 clearTimeout(timeoutId);
                 setError(null);
-                const data = snapshot.val();
-                setRecipes(
-                    data
-                        ? Object.entries(data).map(([id, recipe]) => ({
-                              id,
-                              ...recipe,
-                          }))
-                        : []
-                );
+                setRecipes(snapshot.docs.map(fromDoc));
                 setLoading(false);
             },
             (err) => {
@@ -81,35 +80,35 @@ export const RecipeProvider = ({ children }) => {
         const recipe = selectRecipe(recipeId);
         if (!recipe || !user) return;
 
-        const likes = { ...(recipe.likes || {}) };
-        if (likes[user.uid]) {
-            delete likes[user.uid];
-        } else {
-            likes[user.uid] = true;
-        }
-
-        await update(ref(database, `recipes/${recipeId}`), {
-            likes,
-            likeCount: Object.keys(likes).length,
+        const liked = !!recipe.likes?.[user.uid];
+        await updateDoc(doc(db, "recipes", recipeId), {
+            [`likes.${user.uid}`]: liked ? deleteField() : true,
+            likeCount: increment(liked ? -1 : 1),
         });
     };
 
-    const rateRecipe = async (recipeId, user, ratingValue) => {
-        const recipe = selectRecipe(recipeId);
-        if (!recipe || !user) return;
+    // A transaction, so concurrent ratings can't overwrite each other's average
+    const rateRecipe = (recipeId, user, ratingValue) =>
+        runTransaction(db, async (transaction) => {
+            const recipeRef = doc(db, "recipes", recipeId);
+            const snapshot = await transaction.get(recipeRef);
+            if (!snapshot.exists() || !user) return;
 
-        const ratings = { ...(recipe.ratings || {}), [user.uid]: ratingValue };
-        const values = Object.values(ratings);
-        const averageRating = parseFloat(
-            (values.reduce((sum, v) => sum + v, 0) / values.length).toFixed(2)
-        );
-
-        await update(ref(database, `recipes/${recipeId}`), {
-            ratings,
-            ratingCount: values.length,
-            averageRating,
+            const ratings = {
+                ...(snapshot.data().ratings || {}),
+                [user.uid]: ratingValue,
+            };
+            const values = Object.values(ratings);
+            transaction.update(recipeRef, {
+                [`ratings.${user.uid}`]: ratingValue,
+                ratingCount: values.length,
+                averageRating: Number(
+                    (
+                        values.reduce((sum, v) => sum + v, 0) / values.length
+                    ).toFixed(2)
+                ),
+            });
         });
-    };
 
     return (
         <RecipeContext.Provider

@@ -1,27 +1,63 @@
-import { ref, set, get, push, update, remove, child } from "firebase/database";
-import { database } from "../firebase/firebaseConfig";
+import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    addDoc,
+    updateDoc,
+    setDoc,
+    writeBatch,
+    serverTimestamp,
+    arrayUnion,
+    arrayRemove,
+} from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
+import { fromDoc } from "../firebase/firestore";
 
-const recipesRef = ref(database, "recipes");
+const recipesRef = collection(db, "recipes");
 
 export const getOne = async (recipeId) => {
-    const snapshot = await get(child(recipesRef, recipeId));
-    return snapshot.exists() ? { id: recipeId, ...snapshot.val() } : null;
+    const snapshot = await getDoc(doc(recipesRef, recipeId));
+    return snapshot.exists() ? fromDoc(snapshot) : null;
 };
 
 export const create = async (recipeData) => {
-    const newRecipeRef = push(recipesRef);
-    const recipe = { ...recipeData, createdAt: new Date().toISOString() };
-    await set(newRecipeRef, recipe);
-    return { id: newRecipeRef.key, ...recipe };
+    const ref = await addDoc(recipesRef, {
+        ...recipeData,
+        likes: {},
+        likeCount: 0,
+        ratings: {},
+        ratingCount: 0,
+        averageRating: 0,
+        commentCount: 0,
+        createdAt: serverTimestamp(),
+    });
+    return { id: ref.id, ...recipeData };
 };
 
 export const edit = (recipeId, recipeData) =>
-    update(child(recipesRef, recipeId), recipeData);
+    updateDoc(doc(recipesRef, recipeId), {
+        ...recipeData,
+        updatedAt: serverTimestamp(),
+    });
 
-export const del = (recipeId) => remove(child(recipesRef, recipeId));
+// Deletes the recipe together with its comments
+export const del = async (recipeId) => {
+    const recipeRef = doc(recipesRef, recipeId);
+    const comments = await getDocs(collection(recipeRef, "comments"));
+    const batch = writeBatch(db);
+    comments.forEach((comment) => batch.delete(comment.ref));
+    batch.delete(recipeRef);
+    await batch.commit();
+};
 
 export const toggleSavedRecipe = (userId, recipeId, isSaved) =>
-    set(
-        ref(database, `users/${userId}/savedRecipes/${recipeId}`),
-        isSaved ? null : true
+    setDoc(
+        doc(db, "users", userId),
+        {
+            savedRecipes: isSaved
+                ? arrayRemove(recipeId)
+                : arrayUnion(recipeId),
+        },
+        { merge: true }
     );

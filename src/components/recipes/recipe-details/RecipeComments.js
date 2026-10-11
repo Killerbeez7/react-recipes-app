@@ -1,9 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { MessageCircle, Pencil, Trash2 } from "lucide-react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
+import { db } from "../../../firebase/firebaseConfig";
+import { fromDoc } from "../../../firebase/firestore";
 import { Avatar } from "../../ui/Avatar";
 
 const timeAgo = (iso) => {
@@ -14,7 +17,7 @@ const timeAgo = (iso) => {
     }
 };
 
-export const RecipeComments = ({ recipeId, comments }) => {
+export const RecipeComments = ({ recipeId }) => {
     const { currentUser } = useAuth();
     const { addComment, editComment, deleteComment } =
         useContext(RecipeContext);
@@ -24,9 +27,22 @@ export const RecipeComments = ({ recipeId, comments }) => {
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState("");
 
-    const sorted = Object.entries(comments || {}).sort(([, a], [, b]) =>
-        (a.createdAt || "").localeCompare(b.createdAt || "")
-    );
+    const [comments, setComments] = useState([]);
+
+    // Comments live in the recipes/{id}/comments subcollection
+    useEffect(() => {
+        const commentsQuery = query(
+            collection(db, "recipes", recipeId, "comments"),
+            orderBy("createdAt")
+        );
+        return onSnapshot(
+            commentsQuery,
+            (snapshot) => setComments(snapshot.docs.map(fromDoc)),
+            (err) => console.error("Error loading comments:", err)
+        );
+    }, [recipeId]);
+
+    const sorted = comments.map((comment) => [comment.id, comment]);
 
     const reset = () => {
         setText("");

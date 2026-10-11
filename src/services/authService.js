@@ -1,5 +1,11 @@
-import { auth, googleProvider, database } from "../firebase/firebaseConfig";
-import { ref, set, get, remove } from "firebase/database";
+import { auth, googleProvider, db } from "../firebase/firebaseConfig";
+import {
+    doc,
+    getDoc,
+    setDoc,
+    deleteDoc,
+    serverTimestamp,
+} from "firebase/firestore";
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -19,20 +25,19 @@ const getHighResPhotoURL = (photoURL) => {
     return photoURL || "";
 };
 
-// Create the user's profile record in the DB
-export const addUserToDatabase = async (
+// Create the user's public profile. The email stays in Firebase Auth only,
+// because profiles are readable by everyone (author names, avatars...).
+export const addUserToDatabase = (
     userId,
-    email,
     username = "Anonymous",
     profilePicture = ""
-) => {
-    await set(ref(database, `users/${userId}`), {
+) =>
+    setDoc(doc(db, "users", userId), {
         username,
-        email,
         profilePicture,
-        createdAt: new Date().toISOString(),
+        savedRecipes: [],
+        createdAt: serverTimestamp(),
     });
-};
 
 // Email: Sign Up
 export const signUpWithEmail = async (email, password, username) => {
@@ -44,7 +49,7 @@ export const signUpWithEmail = async (email, password, username) => {
     const displayName = username?.trim() || email.split("@")[0];
 
     await updateProfile(user, { displayName });
-    await addUserToDatabase(user.uid, email, displayName);
+    await addUserToDatabase(user.uid, displayName);
 
     return user;
 };
@@ -60,11 +65,10 @@ export const signInWithGoogle = async () => {
     const { user } = await signInWithPopup(auth, googleProvider);
 
     // Only create the profile on first sign in so later edits aren't overwritten
-    const snapshot = await get(ref(database, `users/${user.uid}`));
+    const snapshot = await getDoc(doc(db, "users", user.uid));
     if (!snapshot.exists()) {
         await addUserToDatabase(
             user.uid,
-            user.email,
             user.displayName || "Google User",
             getHighResPhotoURL(user.photoURL)
         );
@@ -80,15 +84,15 @@ export const changePassword = (newPassword) =>
 
 export const deleteAccount = async () => {
     const user = auth.currentUser;
-    const userRef = ref(database, `users/${user.uid}`);
-    const snapshot = await get(userRef);
+    const userRef = doc(db, "users", user.uid);
+    const snapshot = await getDoc(userRef);
 
-    await remove(userRef);
+    await deleteDoc(userRef);
     try {
         await deleteUser(user);
     } catch (error) {
         // e.g. auth/requires-recent-login – put the profile back
-        if (snapshot.exists()) await set(userRef, snapshot.val());
+        if (snapshot.exists()) await setDoc(userRef, snapshot.data());
         throw error;
     }
 };

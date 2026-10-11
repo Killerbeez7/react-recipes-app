@@ -1,8 +1,8 @@
 import { useEffect, useState, useContext } from "react";
-import { ref, get } from "firebase/database";
+import { doc, getDoc } from "firebase/firestore";
 import { useParams, Link } from "react-router-dom";
 import { UserX } from "lucide-react";
-import { database } from "../../firebase/firebaseConfig";
+import { db } from "../../firebase/firebaseConfig";
 import { RecipeContext } from "../../contexts/RecipeContext";
 import { getAverageRating } from "../../utils/recipe";
 import { RecipeGrid } from "../recipes/recipe-grid/RecipeGrid";
@@ -19,8 +19,12 @@ export const UserProfile = () => {
     useEffect(() => {
         let ignore = false;
         setLoading(true);
-        get(ref(database, `users/${userId}`))
-            .then((snapshot) => !ignore && setUserData(snapshot.val()))
+        getDoc(doc(db, "users", userId))
+            .then(
+                (snapshot) =>
+                    !ignore &&
+                    setUserData(snapshot.exists() ? snapshot.data() : null)
+            )
             .catch((error) => console.error("Error fetching user data:", error))
             .finally(() => !ignore && setLoading(false));
         return () => {
@@ -58,7 +62,7 @@ export const UserProfile = () => {
         ? rated.reduce((sum, r) => sum + getAverageRating(r.ratings), 0) /
           rated.length
         : 0;
-    const name = userData.username || "Unknown user";
+    const name = userData.username || userData.displayName || "Unknown user";
 
     const stats = [
         {

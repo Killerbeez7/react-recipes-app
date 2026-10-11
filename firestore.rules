@@ -1,0 +1,97 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isUser(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // Top-level fields an update touches
+    function changedKeys() {
+      return request.resource.data.diff(resource.data).affectedKeys();
+    }
+
+    // Fields only the like/rating/comment flows may change
+    function counterFields() {
+      return ['likes', 'likeCount', 'ratings', 'ratingCount', 'averageRating', 'commentCount'];
+    }
+
+    // A signed-in user adds or removes only their own like
+    function isLikeUpdate() {
+      let before = resource.data.get('likes', {});
+      let after = request.resource.data.get('likes', {});
+      return changedKeys().hasOnly(['likes', 'likeCount'])
+        && after.diff(before).affectedKeys().hasOnly([request.auth.uid])
+        && request.resource.data.likeCount == after.size();
+    }
+
+    // A signed-in user sets only their own 1–5 rating
+    function isRatingUpdate() {
+      let after = request.resource.data.get('ratings', {});
+      let mine = after.get(request.auth.uid, 0);
+      return changedKeys().hasOnly(['ratings', 'ratingCount', 'averageRating'])
+        && after.diff(resource.data.get('ratings', {})).affectedKeys().hasOnly([request.auth.uid])
+        && mine is int && mine >= 1 && mine <= 5
+        && request.resource.data.ratingCount == after.size();
+    }
+
+    // Adding/removing one comment moves the counter by exactly one
+    function isCommentCountUpdate() {
+      return changedKeys().hasOnly(['commentCount'])
+        && math.abs(request.resource.data.commentCount - resource.data.get('commentCount', 0)) == 1;
+    }
+
+    match /recipes/{recipeId} {
+      allow read: if true;
+
+      allow create: if signedIn()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.get('likeCount', 0) == 0
+        && request.resource.data.get('likes', {}).size() == 0
+        && request.resource.data.get('ratings', {}).size() == 0
+        && request.resource.data.get('commentCount', 0) == 0;
+
+      // Authors edit their own recipe content; counters go through the flows below
+      allow update: if (isUser(resource.data.authorId)
+          && !changedKeys().hasAny(counterFields().concat(['authorId', 'createdAt'])))
+        || (signedIn() && (isLikeUpdate() || isRatingUpdate() || isCommentCountUpdate()));
+
+      allow delete: if isUser(resource.data.authorId);
+
+      match /comments/{commentId} {
+        allow read: if true;
+
+        allow create: if signedIn()
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 2000;
+
+        allow update: if isUser(resource.data.userId)
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['text', 'updatedAt'])
+          && request.resource.data.text is string
+          && request.resource.data.text.size() > 0
+          && request.resource.data.text.size() <= 2000;
+
+        // Comment authors, plus the recipe author when deleting the recipe
+        allow delete: if isUser(resource.data.userId)
+          || isUser(get(/databases/$(database)/documents/recipes/$(recipeId)).data.authorId);
+      }
+    }
+
+    // Public profiles: never store private data (e.g. email) here
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if isUser(userId)
+        && !request.resource.data.keys().hasAny(['email']);
+      allow delete: if isUser(userId);
+    }
+  }
+}

@@ -1,21 +1,35 @@
-import { database } from "../firebase/firebaseConfig";
-import { ref, push, update, remove, set } from "firebase/database";
+import {
+    collection,
+    doc,
+    writeBatch,
+    updateDoc,
+    serverTimestamp,
+    increment,
+} from "firebase/firestore";
+import { db } from "../firebase/firebaseConfig";
 
-const commentRef = (recipeId, commentId = "") =>
-    ref(database, `recipes/${recipeId}/comments/${commentId}`);
+const recipeRef = (recipeId) => doc(db, "recipes", recipeId);
+const commentsRef = (recipeId) => collection(recipeRef(recipeId), "comments");
 
+// Comment writes also keep the recipe's commentCount in sync
 export const create = async (recipeId, comment) => {
-    const newCommentRef = push(commentRef(recipeId));
-    const data = { ...comment, createdAt: new Date().toISOString() };
-    await set(newCommentRef, data);
-    return { id: newCommentRef.key, ...data };
+    const commentRef = doc(commentsRef(recipeId));
+    const batch = writeBatch(db);
+    batch.set(commentRef, { ...comment, createdAt: serverTimestamp() });
+    batch.update(recipeRef(recipeId), { commentCount: increment(1) });
+    await batch.commit();
+    return commentRef.id;
 };
 
 export const edit = (recipeId, commentId, updatedComment) =>
-    update(commentRef(recipeId, commentId), {
+    updateDoc(doc(commentsRef(recipeId), commentId), {
         ...updatedComment,
-        updatedAt: new Date().toISOString(),
+        updatedAt: serverTimestamp(),
     });
 
-export const del = (recipeId, commentId) =>
-    remove(commentRef(recipeId, commentId));
+export const del = async (recipeId, commentId) => {
+    const batch = writeBatch(db);
+    batch.delete(doc(commentsRef(recipeId), commentId));
+    batch.update(recipeRef(recipeId), { commentCount: increment(-1) });
+    await batch.commit();
+};

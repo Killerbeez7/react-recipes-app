@@ -11,8 +11,8 @@ export const SavedRecipes = () => {
     const { userProfile } = useAuth();
     const { recipes, loading } = useContext(RecipeContext);
 
-    const savedIds = userProfile?.savedRecipes || {};
-    const savedRecipes = recipes.filter((recipe) => savedIds[recipe.id]);
+    const savedIds = new Set(userProfile?.savedRecipes || []);
+    const savedRecipes = recipes.filter((recipe) => savedIds.has(recipe.id));
 
     return (
         <div className="page">

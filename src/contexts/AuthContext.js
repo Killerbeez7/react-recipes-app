@@ -1,7 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { ref, onValue } from "firebase/database";
-import { auth, database } from "../firebase/firebaseConfig";
+import { doc, onSnapshot } from "firebase/firestore";
+import { auth, db } from "../firebase/firebaseConfig";
+import { fromDoc } from "../firebase/firestore";
 import { PageLoader } from "../components/ui/Loader";
 import {
     signUpWithEmail,
@@ -16,7 +17,7 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
-    // Profile record stored in the realtime DB (username, bio, savedRecipes...)
+    // Public profile document in Firestore (username, bio, savedRecipes...)
     const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -37,9 +38,24 @@ export const AuthProvider = ({ children }) => {
             return;
         }
 
-        return onValue(ref(database, `users/${uid}`), (snapshot) => {
-            setUserProfile(snapshot.val());
-        });
+        return onSnapshot(
+            doc(db, "users", uid),
+            (snapshot) => {
+                if (!snapshot.exists()) {
+                    setUserProfile(null);
+                    return;
+                }
+                const profile = fromDoc(snapshot);
+                setUserProfile({
+                    ...profile,
+                    username: profile.username || profile.displayName || "",
+                    savedRecipes: Array.isArray(profile.savedRecipes)
+                        ? profile.savedRecipes
+                        : [],
+                });
+            },
+            (error) => console.error("Error loading profile:", error)
+        );
     }, [uid]);
 
     // Firebase doesn't emit an auth change after updateProfile(), so callers
