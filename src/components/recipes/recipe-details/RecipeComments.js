@@ -18,7 +18,8 @@ const timeAgo = (iso) => {
 };
 
 export const RecipeComments = ({ recipeId }) => {
-    const { currentUser } = useAuth();
+    const { currentUser, userProfile } = useAuth();
+    const myPhoto = userProfile?.profilePicture || currentUser?.photoURL || "";
     const { addComment, editComment, deleteComment } =
         useContext(RecipeContext);
 
@@ -64,7 +65,7 @@ export const RecipeComments = ({ recipeId }) => {
                     text: value,
                     userId: currentUser.uid,
                     username: currentUser.displayName || currentUser.email,
-                    userPhoto: currentUser.photoURL || "",
+                    userPhoto: myPhoto,
                 });
             }
             reset();
@@ -104,7 +105,7 @@ export const RecipeComments = ({ recipeId }) => {
             {currentUser ? (
                 <form onSubmit={onSubmit} className="mt-6 flex gap-3">
                     <Avatar
-                        src={currentUser.photoURL}
+                        src={myPhoto}
                         name={currentUser.displayName || currentUser.email}
                         size="sm"
                         className="mt-1 hidden sm:inline-flex"

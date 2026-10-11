@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useImageSrc } from "../../hooks/useImageSrc";
 
 const sizes = {
     sm: "h-9 w-9 text-sm",
@@ -7,8 +8,12 @@ const sizes = {
     xl: "h-32 w-32 text-4xl",
 };
 
-export const Avatar = ({ src, name, size = "md", className = "" }) => {
+export const Avatar = ({ src: value, name, size = "md", className = "" }) => {
     const [failed, setFailed] = useState(false);
+    const { src } = useImageSrc(value);
+
+    // A new image deserves a fresh attempt
+    useEffect(() => setFailed(false), [src]);
     const initial = (name || "?").trim().charAt(0).toUpperCase();
     const base = `${sizes[size]} shrink-0 rounded-full object-cover ${className}`;
 

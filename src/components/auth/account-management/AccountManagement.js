@@ -80,7 +80,11 @@ export const AccountManagement = () => {
 
             {/* Profile summary */}
             <section className="card flex flex-col items-center gap-5 p-6 text-center sm:flex-row sm:text-left">
-                <Avatar src={currentUser.photoURL} name={name} size="lg" />
+                <Avatar
+                    src={userProfile?.profilePicture || currentUser.photoURL}
+                    name={name}
+                    size="lg"
+                />
                 <div className="min-w-0 flex-1">
                     <p className="truncate text-xl font-semibold text-neutral-900 dark:text-white">
                         {name}

@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase/firebaseConfig";
 import { fromDoc } from "../firebase/firestore";
+import { deleteImage } from "./imageService";
 
 const recipesRef = collection(db, "recipes");
 
@@ -41,14 +42,16 @@ export const edit = (recipeId, recipeData) =>
         updatedAt: serverTimestamp(),
     });
 
-// Deletes the recipe together with its comments
+// Deletes the recipe together with its comments and stored photo
 export const del = async (recipeId) => {
     const recipeRef = doc(recipesRef, recipeId);
+    const recipe = await getDoc(recipeRef);
     const comments = await getDocs(collection(recipeRef, "comments"));
     const batch = writeBatch(db);
     comments.forEach((comment) => batch.delete(comment.ref));
     batch.delete(recipeRef);
     await batch.commit();
+    await deleteImage(recipe.get("imageUrl"));
 };
 
 export const toggleSavedRecipe = (userId, recipeId, isSaved) =>

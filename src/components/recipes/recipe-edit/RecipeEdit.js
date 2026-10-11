@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
 import * as recipeService from "../../../services/recipeService";
+import { deleteImage } from "../../../services/imageService";
 import { RecipeForm } from "../recipe-form/RecipeForm";
 import { PageLoader } from "../../ui/Loader";
 import { EmptyState } from "../../ui/EmptyState";
@@ -31,6 +32,10 @@ export const RecipeEdit = () => {
 
     const onSubmit = async (recipeData) => {
         await editRecipe(recipeId, recipeData);
+        // A replaced uploaded photo is no longer referenced anywhere
+        if (recipe.imageUrl !== recipeData.imageUrl) {
+            deleteImage(recipe.imageUrl);
+        }
         navigate(`/recipes/details/${recipeId}`);
     };
 

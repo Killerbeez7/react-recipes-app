@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { ImagePlus, RefreshCw, Trash2 } from "lucide-react";
+import { isStoredImage, resolveImage } from "../../../services/imageService";
 
-const MAX_SIZE_MB = 5;
+// Photos are compressed before saving, so large phone photos are fine
+const MAX_SIZE_MB = 20;
 
 export const isValidImageUrl = (value) => {
     try {
@@ -22,6 +24,13 @@ export const ImageField = ({ file, url, onFileChange, onUrlChange }) => {
             const objectUrl = URL.createObjectURL(file);
             setPreview(objectUrl);
             return () => URL.revokeObjectURL(objectUrl);
+        }
+        if (isStoredImage(url)) {
+            let ignore = false;
+            resolveImage(url).then((data) => !ignore && setPreview(data));
+            return () => {
+                ignore = true;
+            };
         }
         setPreview(isValidImageUrl(url) ? url : "");
     }, [file, url]);
@@ -132,7 +141,7 @@ export const ImageField = ({ file, url, onFileChange, onUrlChange }) => {
                 </p>
             )}
 
-            {!file && (
+            {!file && !isStoredImage(url) && (
                 <div className="mt-4">
                     <label htmlFor="imageUrl" className="label">
                         Or paste an image link

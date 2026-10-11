@@ -1,12 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Check, Circle, Minus, Plus, RotateCcw } from "lucide-react";
-import {
-    ref as storageRef,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
-import { storage } from "../../../firebase/firebaseConfig";
+import { isStoredImage, uploadImage } from "../../../services/imageService";
 import { useAuth } from "../../../contexts/AuthContext";
 import {
     CATEGORIES,
@@ -82,7 +77,11 @@ const validate = (form, imageFile) => {
         errors.servings = "How many people does it serve?";
     if (!imageFile && !form.imageUrl.trim())
         errors.image = "Add a photo of the dish.";
-    else if (!imageFile && !isValidImageUrl(form.imageUrl.trim()))
+    else if (
+        !imageFile &&
+        !isStoredImage(form.imageUrl) &&
+        !isValidImageUrl(form.imageUrl.trim())
+    )
         errors.image =
             "That image link doesn't look right (it should start with https://).";
     if (!clean(form.ingredients).length)
@@ -125,6 +124,8 @@ const describeSaveError = (stage, error) => {
         unauthenticated: "Your session expired — please sign in again.",
         unavailable: "You seem to be offline. Check your connection.",
         "invalid-argument": "Some recipe data was invalid.",
+        "image/too-large":
+            "The photo is too large even after compressing. Try a smaller one.",
     };
     const what = stage === "upload" ? "upload the photo" : "save the recipe";
     return `Couldn't ${what}. ${reasons[code] || "Please try again."} (${code})`;
@@ -192,6 +193,8 @@ export const RecipeForm = ({
     const [draftSaved, setDraftSaved] = useState(false);
     const [filePreview, setFilePreview] = useState("");
     const submittedRef = useRef(false);
+    // Remember the uploaded photo so a retry after a failed save reuses it
+    const uploadedRef = useRef({ file: null, ref: "" });
 
     useEffect(() => {
         if (!imageFile) {
@@ -276,12 +279,13 @@ export const RecipeForm = ({
         try {
             let imageUrl = form.imageUrl.trim();
             if (imageFile) {
-                const fileRef = storageRef(
-                    storage,
-                    `recipesPictures/${currentUser.uid}/${Date.now()}-${imageFile.name}`
-                );
-                await uploadBytes(fileRef, imageFile);
-                imageUrl = await getDownloadURL(fileRef);
+                if (uploadedRef.current.file !== imageFile) {
+                    uploadedRef.current = {
+                        file: imageFile,
+                        ref: await uploadImage(imageFile, currentUser.uid),
+                    };
+                }
+                imageUrl = uploadedRef.current.ref;
             }
 
             stage = "save";
@@ -316,7 +320,10 @@ export const RecipeForm = ({
     // Live preview + checklist
     const ingredientCount = clean(form.ingredients).length;
     const stepCount = clean(form.steps).length;
-    const hasImage = !!imageFile || isValidImageUrl(form.imageUrl);
+    const hasImage =
+        !!imageFile ||
+        isStoredImage(form.imageUrl) ||
+        isValidImageUrl(form.imageUrl);
     const previewImage = imageFile ? filePreview : form.imageUrl;
     const checklist = [
         { label: "Title", done: !!form.title.trim() },

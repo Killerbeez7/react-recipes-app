@@ -42,7 +42,7 @@ export const Navigation = () => {
     const [openSection, setOpenSection] = useState(null);
 
     const location = useLocation();
-    const { currentUser } = useAuth();
+    const { currentUser, userProfile } = useAuth();
     const userId = currentUser?.uid;
 
     // Close the mobile menu on navigation
@@ -194,7 +194,10 @@ export const Navigation = () => {
                                     title="My account"
                                 >
                                     <Avatar
-                                        src={currentUser.photoURL}
+                                        src={
+                                            userProfile?.profilePicture ||
+                                            currentUser.photoURL
+                                        }
                                         name={
                                             currentUser.displayName ||
                                             currentUser.email

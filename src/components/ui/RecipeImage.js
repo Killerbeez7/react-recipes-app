@@ -1,8 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ChefHat } from "lucide-react";
+import { useImageSrc } from "../../hooks/useImageSrc";
 
-export const RecipeImage = ({ src, alt, className = "" }) => {
+export const RecipeImage = ({ src: value, alt, className = "" }) => {
     const [failed, setFailed] = useState(false);
+    const { src, loading } = useImageSrc(value);
+
+    // A new image deserves a fresh attempt
+    useEffect(() => setFailed(false), [src]);
+
+    if (loading) {
+        return (
+            <div
+                className={`animate-pulse bg-neutral-200 dark:bg-neutral-800 ${className}`}
+                role="img"
+                aria-label={alt}
+            />
+        );
+    }
 
     if (!src || failed) {
         return (

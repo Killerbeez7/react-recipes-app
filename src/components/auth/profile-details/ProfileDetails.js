@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Camera } from "lucide-react";
 import { doc, setDoc } from "firebase/firestore";
 import { updateProfile } from "firebase/auth";
+import { auth, db } from "../../../firebase/firebaseConfig";
 import {
-    ref as storageRef,
-    uploadBytes,
-    getDownloadURL,
-} from "firebase/storage";
-import { auth, db, storage } from "../../../firebase/firebaseConfig";
+    deleteImage,
+    isStoredImage,
+    uploadImage,
+} from "../../../services/imageService";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Avatar } from "../../ui/Avatar";
 import { Spinner } from "../../ui/Loader";
@@ -20,7 +20,9 @@ export const ProfileDetails = () => {
     const [username, setUsername] = useState(currentUser.displayName || "");
     const [bio, setBio] = useState("");
     const [imageFile, setImageFile] = useState(null);
-    const [preview, setPreview] = useState(currentUser.photoURL || "");
+    const [preview, setPreview] = useState(
+        userProfile?.profilePicture || currentUser.photoURL || ""
+    );
     const [initialised, setInitialised] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [error, setError] = useState("");
@@ -58,30 +60,34 @@ export const ProfileDetails = () => {
 
         try {
             const user = auth.currentUser;
-            let photoURL = userProfile?.profilePicture || user.photoURL || "";
+            const previousPicture =
+                userProfile?.profilePicture || user.photoURL || "";
+            let profilePicture = previousPicture;
 
             if (imageFile) {
-                const imageRef = storageRef(
-                    storage,
-                    `profilePictures/${user.uid}`
-                );
-                await uploadBytes(imageRef, imageFile);
-                photoURL = await getDownloadURL(imageRef);
+                profilePicture = await uploadImage(imageFile, user.uid, {
+                    maxSize: 512,
+                });
             }
 
+            // Auth's photoURL only accepts real links; stored photos live on
+            // the profile document instead
             await updateProfile(user, {
                 displayName: username.trim(),
-                photoURL,
+                photoURL: isStoredImage(profilePicture) ? null : profilePicture,
             });
             await setDoc(
                 doc(db, "users", user.uid),
                 {
                     username: username.trim(),
                     bio: bio.trim(),
-                    profilePicture: photoURL,
+                    profilePicture,
                 },
                 { merge: true }
             );
+            if (profilePicture !== previousPicture) {
+                deleteImage(previousPicture);
+            }
 
             refreshUser();
             navigate(accountPath);
