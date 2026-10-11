@@ -1,27 +1,31 @@
-import { useContext, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { formatDistanceToNow, parseISO } from "date-fns";
+import { format } from "date-fns";
 import {
-    ArrowLeft,
     Bookmark,
+    Check,
     ChefHat,
+    ChevronRight,
     Clock,
     Gauge,
     Globe,
     Heart,
-    MessageCircle,
+    Link2,
     Pencil,
     Printer,
     SearchX,
+    Share2,
     Trash2,
     Users,
 } from "lucide-react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useUserProfile } from "../../../hooks/useUserProfile";
 import { toggleSavedRecipe } from "../../../services/recipeService";
 import { getCategoryLabel } from "../../../constants/categories";
 import {
     getAverageRating,
+    getRecipeDate,
     parseIngredients,
     parseSteps,
     toCategoryArray,
@@ -32,28 +36,26 @@ import { Avatar } from "../../ui/Avatar";
 import { PageLoader } from "../../ui/Loader";
 import { EmptyState } from "../../ui/EmptyState";
 import { RecipeGrid } from "../recipe-grid/RecipeGrid";
+import { RecipeComments } from "./RecipeComments";
 
-const timeAgo = (iso) => {
-    try {
-        return formatDistanceToNow(parseISO(iso), { addSuffix: true });
-    } catch {
-        return "";
-    }
+const difficultyStyles = {
+    easy: "bg-emerald-600",
+    medium: "bg-amber-500",
+    hard: "bg-red-600",
 };
 
-const Stat = ({ icon: Icon, label, children }) => (
-    <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400">
-            <Icon className="h-5 w-5" />
-        </div>
-        <div>
-            <p className="text-xs uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-                {label}
-            </p>
-            <p className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                {children}
-            </p>
-        </div>
+const Stat = ({ icon: Icon, label, value }) => (
+    <div className="flex flex-col items-center gap-1 px-2 py-4 text-center">
+        <Icon
+            className="h-5 w-5 text-brand-600 dark:text-brand-400"
+            aria-hidden="true"
+        />
+        <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
+            {value}
+        </span>
+        <span className="text-xs text-neutral-500 dark:text-neutral-400">
+            {label}
+        </span>
     </div>
 );
 
@@ -61,24 +63,24 @@ export const RecipeDetails = () => {
     const { recipeId } = useParams();
     const navigate = useNavigate();
     const { currentUser, userProfile } = useAuth();
-    const {
-        recipes,
-        loading,
-        addComment,
-        toggleLike,
-        deleteComment,
-        editComment,
-        deleteRecipe,
-        rateRecipe,
-    } = useContext(RecipeContext);
+    const { recipes, loading, toggleLike, deleteRecipe, rateRecipe } =
+        useContext(RecipeContext);
 
-    const [newComment, setNewComment] = useState("");
-    const [editCommentId, setEditCommentId] = useState(null);
-    const [editCommentText, setEditCommentText] = useState("");
+    const [checkedIngredients, setCheckedIngredients] = useState(new Set());
+    const [doneSteps, setDoneSteps] = useState(new Set());
     const [actionError, setActionError] = useState("");
+    const [linkCopied, setLinkCopied] = useState(false);
     const ratingSectionRef = useRef(null);
 
     const recipe = recipes.find((r) => r.id === recipeId);
+    const author = useUserProfile(recipe?.authorId);
+
+    // Start fresh when moving to another recipe (e.g. via "You might also like")
+    useEffect(() => {
+        setCheckedIngredients(new Set());
+        setDoneSteps(new Set());
+        setActionError("");
+    }, [recipeId]);
 
     const similarRecipes = useMemo(() => {
         if (!recipe) return [];
@@ -118,14 +120,22 @@ export const RecipeDetails = () => {
     const isSaved = !!userProfile?.savedRecipes?.[recipeId];
     const isLiked = !!(currentUser && recipe.likes?.[currentUser.uid]);
     const averageRating = getAverageRating(recipe.ratings);
-    const reviewsCount = Object.keys(recipe.ratings || {}).length;
+    const ratingCount = Object.keys(recipe.ratings || {}).length;
     const userRating = currentUser ? recipe.ratings?.[currentUser.uid] : null;
     const ingredients = parseIngredients(recipe.ingredients);
     const steps = parseSteps(recipe.steps);
     const categories = toCategoryArray(recipe.categories);
-    const comments = Object.entries(recipe.comments || {}).sort(
-        ([, a], [, b]) => (a.createdAt || "").localeCompare(b.createdAt || "")
-    );
+    const commentCount = Object.keys(recipe.comments || {}).length;
+    const createdAt = getRecipeDate(recipe);
+    const authorName = recipe.authorName || author?.username || "A home cook";
+    const difficulty = recipe.difficulty || "Easy";
+
+    const toggleInSet = (setter, value) =>
+        setter((prev) => {
+            const next = new Set(prev);
+            next.has(value) ? next.delete(value) : next.add(value);
+            return next;
+        });
 
     const requireUser = () => {
         if (currentUser) return true;
@@ -165,49 +175,36 @@ export const RecipeDetails = () => {
             "Couldn't save your rating."
         );
 
-    const handleDeleteRecipe = async () => {
+    const handleShare = async () => {
+        const url = window.location.href;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: recipe.title,
+                    text: recipe.description,
+                    url,
+                });
+            } catch {
+                // dismissed by the user
+            }
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(url);
+            setLinkCopied(true);
+            setTimeout(() => setLinkCopied(false), 2000);
+        } catch {
+            setActionError("Couldn't copy the link.");
+        }
+    };
+
+    const handleDelete = async () => {
         if (!window.confirm("Are you sure you want to delete this recipe?"))
             return;
         await runAction(async () => {
             await deleteRecipe(recipeId);
             navigate("/recipes/all");
         }, "Couldn't delete the recipe.");
-    };
-
-    const resetCommentFields = () => {
-        setNewComment("");
-        setEditCommentId(null);
-        setEditCommentText("");
-    };
-
-    const handleCommentSubmit = async (e) => {
-        e.preventDefault();
-        const text = (editCommentId ? editCommentText : newComment).trim();
-        if (!text) return;
-
-        await runAction(async () => {
-            if (editCommentId) {
-                await editComment(recipeId, editCommentId, { text });
-            } else {
-                await addComment(recipeId, {
-                    text,
-                    userId: currentUser.uid,
-                    username: currentUser.displayName || currentUser.email,
-                    userPhoto: currentUser.photoURL || "",
-                });
-            }
-            resetCommentFields();
-        }, "Couldn't save your comment.");
-    };
-
-    const handleDeleteComment = async (commentId) => {
-        if (!window.confirm("Are you sure you want to delete this comment?"))
-            return;
-        await runAction(
-            () => deleteComment(recipeId, commentId),
-            "Couldn't delete the comment."
-        );
-        resetCommentFields();
     };
 
     const scrollToRating = () =>
@@ -217,83 +214,193 @@ export const RecipeDetails = () => {
         });
 
     return (
-        <article className="page max-w-5xl">
-            <button
-                type="button"
-                onClick={() => navigate(-1)}
-                className="btn-ghost -ml-3 mb-6 px-3 print:hidden"
-            >
-                <ArrowLeft className="h-4 w-4" /> Back
-            </button>
-
-            {/* Header */}
-            <header>
-                {categories.length > 0 && (
-                    <ul className="mb-3 flex flex-wrap gap-2">
-                        {categories.map((slug) => (
-                            <li key={slug}>
-                                <Link
-                                    to={`/recipes/${slug}`}
-                                    className="badge bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:hover:bg-brand-500/20"
-                                >
-                                    {getCategoryLabel(slug) || slug}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                <h1 className="font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
-                    {recipe.title}
-                </h1>
-                <p className="mt-4 max-w-3xl text-lg text-neutral-600 dark:text-neutral-400">
-                    {recipe.description}
-                </p>
-
-                <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-neutral-600 dark:text-neutral-400">
-                        {recipe.authorId && (
-                            <Link
-                                to={`/profile/${recipe.authorId}`}
-                                className="font-medium text-neutral-900 hover:text-brand-600 dark:text-neutral-100 dark:hover:text-brand-400"
-                            >
-                                By {recipe.authorName || "a home cook"}
-                            </Link>
-                        )}
-                        <button
-                            type="button"
-                            onClick={scrollToRating}
-                            className="inline-flex items-center gap-2 hover:text-neutral-900 dark:hover:text-neutral-100"
+        <article className="page">
+            {/* Breadcrumb */}
+            <nav aria-label="Breadcrumb" className="mb-6 print:hidden">
+                <ol className="flex flex-wrap items-center gap-1 text-sm text-neutral-500 dark:text-neutral-400">
+                    <li>
+                        <Link
+                            to="/recipes/all"
+                            className="hover:text-neutral-900 dark:hover:text-neutral-100"
                         >
-                            <StarRating value={averageRating} />
-                            <span>
-                                {averageRating.toFixed(1)} · {reviewsCount}{" "}
-                                {reviewsCount === 1 ? "rating" : "ratings"}
-                            </span>
-                        </button>
-                        <span className="inline-flex items-center gap-1">
-                            <MessageCircle className="h-4 w-4" />{" "}
-                            {comments.length}
+                            Recipes
+                        </Link>
+                    </li>
+                    {categories[0] && (
+                        <li className="flex items-center gap-1">
+                            <ChevronRight
+                                className="h-4 w-4"
+                                aria-hidden="true"
+                            />
+                            <Link
+                                to={`/recipes/${categories[0]}`}
+                                className="hover:text-neutral-900 dark:hover:text-neutral-100"
+                            >
+                                {getCategoryLabel(categories[0]) ||
+                                    categories[0]}
+                            </Link>
+                        </li>
+                    )}
+                    <li className="flex min-w-0 items-center gap-1">
+                        <ChevronRight
+                            className="h-4 w-4 shrink-0"
+                            aria-hidden="true"
+                        />
+                        <span
+                            aria-current="page"
+                            className="max-w-[16rem] truncate font-medium text-neutral-900 first-letter:uppercase dark:text-neutral-100"
+                        >
+                            {recipe.title}
                         </span>
+                    </li>
+                </ol>
+            </nav>
+
+            {/* Hero: image + summary */}
+            <header className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+                <div className="relative overflow-hidden rounded-3xl shadow-card">
+                    <RecipeImage
+                        src={recipe.imageUrl}
+                        alt={recipe.title}
+                        className="aspect-[4/3] w-full"
+                    />
+                    <span
+                        className={`badge absolute left-4 top-4 text-white shadow ${
+                            difficultyStyles[difficulty.toLowerCase()] ||
+                            difficultyStyles.easy
+                        }`}
+                    >
+                        {difficulty}
+                    </span>
+                </div>
+
+                <div className="flex flex-col">
+                    {categories.length > 0 && (
+                        <ul className="flex flex-wrap gap-2">
+                            {categories.map((slug) => (
+                                <li key={slug}>
+                                    <Link
+                                        to={`/recipes/${slug}`}
+                                        className="badge bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:hover:bg-brand-500/20"
+                                    >
+                                        {getCategoryLabel(slug) || slug}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                    <h1 className="mt-4 font-display text-4xl font-bold leading-tight tracking-tight first-letter:uppercase sm:text-5xl">
+                        {recipe.title}
+                    </h1>
+
+                    {/* Author & date */}
+                    <div className="mt-5 flex items-center gap-3">
+                        <Avatar
+                            src={author?.profilePicture}
+                            name={authorName}
+                            size="sm"
+                        />
+                        <div className="text-sm leading-tight">
+                            {recipe.authorId && author ? (
+                                <Link
+                                    to={`/profile/${recipe.authorId}`}
+                                    className="font-semibold text-neutral-900 hover:text-brand-600 dark:text-neutral-100 dark:hover:text-brand-400"
+                                >
+                                    {authorName}
+                                </Link>
+                            ) : (
+                                <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+                                    {authorName}
+                                </span>
+                            )}
+                            {createdAt && (
+                                <p className="mt-0.5 text-neutral-500 dark:text-neutral-400">
+                                    Published {format(createdAt, "MMM d, yyyy")}
+                                </p>
+                            )}
+                        </div>
                     </div>
 
-                    <div className="flex flex-wrap gap-2 print:hidden">
+                    <p className="mt-5 text-lg leading-8 text-neutral-600 first-letter:uppercase dark:text-neutral-400">
+                        {recipe.description}
+                    </p>
+
+                    {/* Rating summary */}
+                    <button
+                        type="button"
+                        onClick={scrollToRating}
+                        className="mt-5 inline-flex items-center gap-2 self-start text-sm text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-100 print:hidden"
+                    >
+                        {ratingCount > 0 ? (
+                            <>
+                                <StarRating value={averageRating} />
+                                <span className="font-semibold text-neutral-900 dark:text-neutral-100">
+                                    {averageRating.toFixed(1)}
+                                </span>
+                                <span>
+                                    ({ratingCount}{" "}
+                                    {ratingCount === 1 ? "rating" : "ratings"})
+                                    · {commentCount}{" "}
+                                    {commentCount === 1
+                                        ? "comment"
+                                        : "comments"}
+                                </span>
+                            </>
+                        ) : (
+                            <>
+                                <StarRating value={0} />
+                                <span>
+                                    No ratings yet — be the first to rate
+                                </span>
+                            </>
+                        )}
+                    </button>
+
+                    {/* Stats */}
+                    <div className="mt-6 grid grid-cols-4 divide-x divide-neutral-200 rounded-2xl border border-neutral-200 bg-white dark:divide-neutral-800 dark:border-neutral-800 dark:bg-neutral-900">
+                        <Stat
+                            icon={Clock}
+                            label="Minutes"
+                            value={recipe.timeToCook || "—"}
+                        />
+                        <Stat
+                            icon={Users}
+                            label="Servings"
+                            value={recipe.servings || "—"}
+                        />
+                        <Stat
+                            icon={Gauge}
+                            label="Difficulty"
+                            value={difficulty}
+                        />
+                        <Stat
+                            icon={Globe}
+                            label="Cuisine"
+                            value={recipe.cuisine || "—"}
+                        />
+                    </div>
+
+                    {/* Actions */}
+                    <div className="mt-6 flex flex-wrap items-center gap-2 print:hidden">
                         <button
                             type="button"
                             onClick={handleSave}
                             aria-pressed={isSaved}
-                            className={
-                                isSaved ? "btn-primary" : "btn-secondary"
-                            }
+                            className={`${isSaved ? "btn-secondary" : "btn-primary"} flex-1 sm:flex-none`}
                         >
                             <Bookmark
-                                className={`h-4 w-4 ${isSaved ? "fill-current" : ""}`}
+                                className={`h-4 w-4 ${isSaved ? "fill-current text-brand-600" : ""}`}
                             />
-                            {isSaved ? "Saved" : "Save"}
+                            {isSaved ? "Saved" : "Save recipe"}
                         </button>
                         <button
                             type="button"
                             onClick={handleLike}
                             aria-pressed={isLiked}
+                            aria-label={
+                                isLiked ? "Unlike recipe" : "Like recipe"
+                            }
                             className="btn-secondary"
                         >
                             <Heart
@@ -303,95 +410,194 @@ export const RecipeDetails = () => {
                         </button>
                         <button
                             type="button"
+                            onClick={handleShare}
+                            className="btn-secondary"
+                            aria-label="Share recipe"
+                        >
+                            {linkCopied ? (
+                                <Link2 className="h-4 w-4 text-emerald-600" />
+                            ) : (
+                                <Share2 className="h-4 w-4" />
+                            )}
+                            <span className="hidden sm:inline">
+                                {linkCopied ? "Link copied" : "Share"}
+                            </span>
+                        </button>
+                        <button
+                            type="button"
                             onClick={() => window.print()}
                             className="btn-secondary"
                             aria-label="Print recipe"
                         >
                             <Printer className="h-4 w-4" />
                         </button>
-                        {isOwner && (
-                            <>
-                                <Link
-                                    to={`/recipes/edit/${recipeId}`}
-                                    className="btn-secondary"
-                                >
-                                    <Pencil className="h-4 w-4" /> Edit
-                                </Link>
-                                <button
-                                    type="button"
-                                    onClick={handleDeleteRecipe}
-                                    className="btn-danger"
-                                >
-                                    <Trash2 className="h-4 w-4" /> Delete
-                                </button>
-                            </>
-                        )}
                     </div>
+
+                    {isOwner && (
+                        <div className="mt-4 flex items-center gap-1 border-t border-neutral-200 pt-4 text-sm dark:border-neutral-800 print:hidden">
+                            <span className="mr-auto text-neutral-500 dark:text-neutral-400">
+                                This is your recipe
+                            </span>
+                            <Link
+                                to={`/recipes/edit/${recipeId}`}
+                                className="btn-ghost px-3 py-2"
+                            >
+                                <Pencil className="h-4 w-4" /> Edit
+                            </Link>
+                            <button
+                                type="button"
+                                onClick={handleDelete}
+                                className="btn-ghost px-3 py-2 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
+                            >
+                                <Trash2 className="h-4 w-4" /> Delete
+                            </button>
+                        </div>
+                    )}
+
+                    {actionError && (
+                        <p className="alert-error mt-4">{actionError}</p>
+                    )}
                 </div>
-                {actionError && (
-                    <p className="alert-error mt-4">{actionError}</p>
-                )}
             </header>
 
-            {/* Hero image */}
-            <RecipeImage
-                src={recipe.imageUrl}
-                alt={recipe.title}
-                className="mt-8 aspect-[16/9] w-full rounded-2xl shadow-card"
-            />
-
-            {/* Stats */}
-            <div className="card mt-8 grid grid-cols-2 gap-6 p-6 md:grid-cols-4">
-                <Stat icon={Clock} label="Time">
-                    {recipe.timeToCook || "?"} min
-                </Stat>
-                <Stat icon={Users} label="Servings">
-                    {recipe.servings || "?"}
-                </Stat>
-                <Stat icon={Gauge} label="Difficulty">
-                    {recipe.difficulty || "Easy"}
-                </Stat>
-                <Stat icon={Globe} label="Cuisine">
-                    {recipe.cuisine || "—"}
-                </Stat>
-            </div>
-
             {/* Ingredients & directions */}
-            <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)]">
-                <section className="card h-fit p-6 lg:sticky lg:top-24">
-                    <h2 className="section-title">Ingredients</h2>
-                    <ul className="mt-4 space-y-3">
-                        {ingredients.map((item, i) => (
-                            <li key={i}>
-                                <label className="flex cursor-pointer items-start gap-3 text-sm leading-6">
-                                    <input
-                                        type="checkbox"
-                                        className="checkbox mt-1 print:hidden"
-                                    />
-                                    <span>{item}</span>
-                                </label>
-                            </li>
-                        ))}
-                    </ul>
+            <div className="mt-16 grid gap-10 border-t border-neutral-200 pt-12 dark:border-neutral-800 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+                <section
+                    aria-labelledby="ingredients-title"
+                    className="lg:sticky lg:top-24 lg:self-start"
+                >
+                    <div className="card p-6">
+                        <div className="flex items-baseline justify-between gap-4">
+                            <h2
+                                id="ingredients-title"
+                                className="section-title"
+                            >
+                                Ingredients
+                            </h2>
+                            {checkedIngredients.size > 0 ? (
+                                <button
+                                    type="button"
+                                    onClick={() =>
+                                        setCheckedIngredients(new Set())
+                                    }
+                                    className="link text-xs print:hidden"
+                                >
+                                    Clear
+                                </button>
+                            ) : (
+                                <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                                    {ingredients.length} items
+                                </span>
+                            )}
+                        </div>
+                        {recipe.servings && (
+                            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                                For {recipe.servings} servings
+                            </p>
+                        )}
+                        <ul className="mt-5 space-y-1">
+                            {ingredients.map((item, i) => {
+                                const checked = checkedIngredients.has(i);
+                                return (
+                                    <li key={i}>
+                                        <label className="-mx-2 flex cursor-pointer items-start gap-3 rounded-lg px-2 py-2 text-sm leading-6 hover:bg-neutral-50 dark:hover:bg-neutral-800/60">
+                                            <input
+                                                type="checkbox"
+                                                className="checkbox mt-1 print:hidden"
+                                                checked={checked}
+                                                onChange={() =>
+                                                    toggleInSet(
+                                                        setCheckedIngredients,
+                                                        i
+                                                    )
+                                                }
+                                            />
+                                            <span
+                                                className={`first-letter:uppercase ${
+                                                    checked
+                                                        ? "text-neutral-400 line-through dark:text-neutral-600"
+                                                        : ""
+                                                }`}
+                                            >
+                                                {item}
+                                            </span>
+                                        </label>
+                                    </li>
+                                );
+                            })}
+                        </ul>
+                    </div>
                 </section>
 
-                <section>
-                    <h2 className="section-title">Directions</h2>
-                    <ol className="mt-4 space-y-6">
-                        {steps.map((step, i) => (
-                            <li key={i} className="flex gap-4">
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-semibold text-white">
-                                    {i + 1}
-                                </span>
-                                <p className="pt-1 leading-7">{step}</p>
-                            </li>
-                        ))}
+                <section aria-labelledby="directions-title">
+                    <div className="flex items-baseline justify-between gap-4">
+                        <h2 id="directions-title" className="section-title">
+                            Directions
+                        </h2>
+                        <span className="text-xs text-neutral-500 dark:text-neutral-400 print:hidden">
+                            {doneSteps.size}/{steps.length} done
+                        </span>
+                    </div>
+                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+                        Tap a step to mark it as done.
+                    </p>
+                    <ol className="mt-6 space-y-3">
+                        {steps.map((step, i) => {
+                            const done = doneSteps.has(i);
+                            return (
+                                <li key={i}>
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            toggleInSet(setDoneSteps, i)
+                                        }
+                                        aria-pressed={done}
+                                        className={`flex w-full gap-4 rounded-2xl border p-4 text-left transition-colors sm:p-5 ${
+                                            done
+                                                ? "border-emerald-200 bg-emerald-50/60 dark:border-emerald-900/50 dark:bg-emerald-950/20"
+                                                : "border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
+                                        }`}
+                                    >
+                                        <span
+                                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
+                                                done
+                                                    ? "bg-emerald-600 text-white"
+                                                    : "bg-brand-600 text-white"
+                                            }`}
+                                        >
+                                            {done ? (
+                                                <Check className="h-4 w-4" />
+                                            ) : (
+                                                i + 1
+                                            )}
+                                        </span>
+                                        <span className="min-w-0">
+                                            <span className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
+                                                Step {i + 1}
+                                            </span>
+                                            <span
+                                                className={`mt-1 block leading-7 first-letter:uppercase ${
+                                                    done
+                                                        ? "text-neutral-500 dark:text-neutral-500"
+                                                        : "text-neutral-800 dark:text-neutral-200"
+                                                }`}
+                                            >
+                                                {step}
+                                            </span>
+                                        </span>
+                                    </button>
+                                </li>
+                            );
+                        })}
                     </ol>
 
                     {Array.isArray(recipe.tips) && recipe.tips.length > 0 && (
-                        <div className="mt-10 rounded-2xl border border-brand-200 bg-brand-50 p-6 dark:border-brand-500/20 dark:bg-brand-500/5">
+                        <div className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-6 dark:border-brand-500/20 dark:bg-brand-500/5">
                             <h3 className="flex items-center gap-2 font-semibold">
-                                <ChefHat className="h-5 w-5 text-brand-600" />{" "}
+                                <ChefHat
+                                    className="h-5 w-5 text-brand-600"
+                                    aria-hidden="true"
+                                />{" "}
                                 Tips
                             </h3>
                             <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm">
@@ -404,186 +610,53 @@ export const RecipeDetails = () => {
                 </section>
             </div>
 
-            {/* Rating */}
-            <section
-                ref={ratingSectionRef}
-                className="card mt-12 p-6 print:hidden"
-            >
-                <h2 className="section-title">Rate this recipe</h2>
-                {currentUser ? (
-                    <div className="mt-4 flex flex-wrap items-center gap-4">
-                        <StarInput value={userRating} onChange={handleRate} />
-                        <span className="text-sm text-neutral-600 dark:text-neutral-400">
-                            {userRating
-                                ? `You rated this ${userRating}/5`
-                                : "Tap a star to rate"}
-                        </span>
-                    </div>
-                ) : (
-                    <p className="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
-                        <Link
-                            to="/auth/sign-in"
-                            state={{ from: `/recipes/details/${recipeId}` }}
-                            className="link"
-                        >
-                            Sign in
-                        </Link>{" "}
-                        to rate this recipe.
-                    </p>
-                )}
-            </section>
-
-            {/* Comments */}
-            <section className="mt-12 print:hidden">
-                <h2 className="section-title">Comments ({comments.length})</h2>
-
-                {currentUser ? (
-                    <form
-                        onSubmit={handleCommentSubmit}
-                        className="mt-6 flex gap-4"
-                    >
-                        <Avatar
-                            src={currentUser.photoURL}
-                            name={currentUser.displayName || currentUser.email}
-                            size="sm"
-                            className="hidden sm:inline-flex"
-                        />
-                        <div className="flex-1">
-                            <label htmlFor="comment" className="sr-only">
-                                {editCommentId
-                                    ? "Edit your comment"
-                                    : "Write a comment"}
-                            </label>
-                            <textarea
-                                id="comment"
-                                rows={3}
-                                className="input"
-                                placeholder="Share your thoughts or tips..."
-                                value={
-                                    editCommentId ? editCommentText : newComment
-                                }
-                                onChange={(e) =>
-                                    editCommentId
-                                        ? setEditCommentText(e.target.value)
-                                        : setNewComment(e.target.value)
-                                }
+            {/* Rating & comments */}
+            <div className="mx-auto mt-16 max-w-3xl space-y-12 border-t border-neutral-200 pt-12 dark:border-neutral-800 print:hidden">
+                <section
+                    ref={ratingSectionRef}
+                    aria-labelledby="rate-title"
+                    className="card flex flex-col items-center gap-3 p-8 text-center"
+                >
+                    <h2 id="rate-title" className="section-title">
+                        {userRating
+                            ? "Thanks for rating!"
+                            : "Made this recipe?"}
+                    </h2>
+                    {currentUser ? (
+                        <>
+                            <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {userRating
+                                    ? `You gave it ${userRating} out of 5. Tap a star to change your rating.`
+                                    : "Let others know how it turned out."}
+                            </p>
+                            <StarInput
+                                value={userRating}
+                                onChange={handleRate}
                             />
-                            <div className="mt-3 flex justify-end gap-2">
-                                {editCommentId && (
-                                    <button
-                                        type="button"
-                                        onClick={resetCommentFields}
-                                        className="btn-secondary"
-                                    >
-                                        Cancel
-                                    </button>
-                                )}
-                                <button
-                                    type="submit"
-                                    className="btn-primary"
-                                    disabled={
-                                        !(
-                                            editCommentId
-                                                ? editCommentText
-                                                : newComment
-                                        ).trim()
-                                    }
-                                >
-                                    {editCommentId
-                                        ? "Update comment"
-                                        : "Post comment"}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                ) : (
-                    <p className="mt-3 text-sm text-neutral-600 dark:text-neutral-400">
-                        <Link
-                            to="/auth/sign-in"
-                            state={{ from: `/recipes/details/${recipeId}` }}
-                            className="link"
-                        >
-                            Sign in
-                        </Link>{" "}
-                        to join the conversation.
-                    </p>
-                )}
+                        </>
+                    ) : (
+                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
+                            <Link
+                                to="/auth/sign-in"
+                                state={{ from: `/recipes/details/${recipeId}` }}
+                                className="link"
+                            >
+                                Sign in
+                            </Link>{" "}
+                            to rate it and help other cooks.
+                        </p>
+                    )}
+                </section>
 
-                {comments.length === 0 ? (
-                    <p className="mt-6 text-sm text-neutral-500 dark:text-neutral-400">
-                        Be the first to comment!
-                    </p>
-                ) : (
-                    <ul className="mt-8 space-y-6">
-                        {comments.map(([key, comment]) => (
-                            <li key={key} className="flex gap-4">
-                                <Link
-                                    to={`/profile/${comment.userId}`}
-                                    className="shrink-0"
-                                >
-                                    <Avatar
-                                        src={comment.userPhoto}
-                                        name={comment.username}
-                                        size="sm"
-                                    />
-                                </Link>
-                                <div className="min-w-0 flex-1">
-                                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                                        <Link
-                                            to={`/profile/${comment.userId}`}
-                                            className="text-sm font-semibold text-neutral-900 hover:text-brand-600 dark:text-neutral-100 dark:hover:text-brand-400"
-                                        >
-                                            {comment.username || "Anonymous"}
-                                        </Link>
-                                        {comment.createdAt && (
-                                            <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                                                {timeAgo(comment.createdAt)}
-                                                {comment.updatedAt &&
-                                                    " · edited"}
-                                            </span>
-                                        )}
-                                        {currentUser?.uid ===
-                                            comment.userId && (
-                                            <span className="ml-auto flex gap-1">
-                                                <button
-                                                    type="button"
-                                                    className="btn-icon h-8 w-8"
-                                                    aria-label="Edit comment"
-                                                    onClick={() => {
-                                                        setEditCommentId(key);
-                                                        setEditCommentText(
-                                                            comment.text
-                                                        );
-                                                    }}
-                                                >
-                                                    <Pencil className="h-4 w-4" />
-                                                </button>
-                                                <button
-                                                    type="button"
-                                                    className="btn-icon h-8 w-8 hover:text-red-600 dark:hover:text-red-400"
-                                                    aria-label="Delete comment"
-                                                    onClick={() =>
-                                                        handleDeleteComment(key)
-                                                    }
-                                                >
-                                                    <Trash2 className="h-4 w-4" />
-                                                </button>
-                                            </span>
-                                        )}
-                                    </div>
-                                    <p className="mt-1 whitespace-pre-line break-words text-sm leading-6 text-neutral-700 dark:text-neutral-300">
-                                        {comment.text}
-                                    </p>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </section>
+                <RecipeComments
+                    recipeId={recipeId}
+                    comments={recipe.comments}
+                />
+            </div>
 
             {/* Similar recipes */}
             {similarRecipes.length > 0 && (
-                <section className="mt-16 print:hidden">
+                <section className="mt-20 print:hidden">
                     <h2 className="section-title mb-6">You might also like</h2>
                     <RecipeGrid recipes={similarRecipes} />
                 </section>

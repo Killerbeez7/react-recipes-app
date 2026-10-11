@@ -13,7 +13,7 @@ import {
 import { useAuth } from "../../../contexts/AuthContext";
 import { useTheme } from "../../../contexts/ThemeContext";
 import { CATEGORIES, SEASONS, NEWS } from "../../../constants/categories";
-import { LiveSearch } from "../../search/live-search/LiveSearch";
+import { Search } from "../../search/Search";
 import { Avatar } from "../../ui/Avatar";
 import { Logo } from "../../ui/Logo";
 
@@ -179,7 +179,7 @@ export const Navigation = () => {
 
                     {/* Right: actions */}
                     <div className="flex items-center gap-1">
-                        <LiveSearch />
+                        <Search />
                         <button
                             type="button"
                             className="btn-icon hidden sm:inline-flex"

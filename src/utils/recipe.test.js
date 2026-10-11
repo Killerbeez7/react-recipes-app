@@ -3,6 +3,7 @@ import {
     parseIngredients,
     parseSteps,
     getAverageRating,
+    pushIdToDate,
 } from "./recipe";
 
 test("toCategoryArray handles arrays, strings and empty values", () => {
@@ -31,4 +32,11 @@ test("parseSteps keeps decimals intact in legacy format", () => {
 test("getAverageRating", () => {
     expect(getAverageRating({ a: 4, b: 5 })).toBe(4.5);
     expect(getAverageRating(null)).toBe(0);
+});
+
+test("pushIdToDate decodes Firebase push IDs", () => {
+    expect(pushIdToDate("-OAy2dvFZugIeZkmn5FB").toISOString()).toBe(
+        "2024-11-05T20:40:24.016Z"
+    );
+    expect(pushIdToDate("not-a-push-id")).toBeNull();
 });
