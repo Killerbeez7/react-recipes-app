@@ -149,7 +149,7 @@ export const Search = () => {
                             onClick={close}
                             aria-hidden="true"
                         />
-                        <div className="relative border-b border-neutral-200 bg-white shadow-lg dark:border-neutral-800 dark:bg-neutral-950">
+                        <div className="relative border-b border-neutral-200 bg-white shadow-lg dark:border-neutral-800 dark:bg-neutral-900">
                             <div className="container py-3">
                                 <div className="relative">
                                     <SearchIcon

@@ -118,7 +118,7 @@ export const RecipeComments = ({ recipeId }) => {
                         <textarea
                             id="comment"
                             rows={3}
-                            className="input resize-y"
+                            className="input resize-y bg-white dark:bg-neutral-900"
                             placeholder="Made it? Share how it went, or a tip for others..."
                             value={text}
                             onChange={(e) => setText(e.target.value)}

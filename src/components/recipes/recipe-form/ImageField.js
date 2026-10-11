@@ -104,7 +104,7 @@ export const ImageField = ({ file, url, onFileChange, onUrlChange }) => {
                     className={`flex aspect-[16/9] cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-6 text-center transition-colors focus:outline-none focus-within:ring-2 focus-within:ring-brand-500 ${
                         dragging
                             ? "border-brand-500 bg-brand-50 dark:bg-brand-500/10"
-                            : "border-neutral-300 bg-neutral-50 hover:border-brand-400 hover:bg-brand-50/50 dark:border-neutral-700 dark:bg-neutral-800/40 dark:hover:border-brand-500"
+                            : "border-neutral-300 bg-neutral-50 hover:border-brand-400 hover:bg-brand-50/50 dark:border-neutral-700 dark:bg-neutral-950 dark:hover:border-brand-500"
                     }`}
                 >
                     <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-brand-600 shadow-sm dark:bg-neutral-900">

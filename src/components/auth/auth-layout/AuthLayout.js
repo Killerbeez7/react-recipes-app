@@ -29,7 +29,7 @@ export const AuthLayout = ({ title, subtitle, backTo = "/", children }) => {
             </div>
 
             {/* Form panel */}
-            <div className="flex flex-col px-4 py-8 sm:px-8">
+            <div className="flex flex-col bg-white px-4 py-8 dark:bg-neutral-900 sm:px-8">
                 <button
                     type="button"
                     onClick={() => navigate(backTo)}

@@ -423,10 +423,10 @@ export const RecipeForm = ({
                                 role="radiogroup"
                                 aria-labelledby="difficulty-label"
                                 tabIndex={-1}
-                                className={`grid grid-cols-3 gap-1 rounded-lg border bg-neutral-100 p-1 focus:outline-none dark:bg-neutral-800/60 ${
+                                className={`grid grid-cols-3 gap-1 rounded-lg border bg-neutral-50 p-1 shadow-sm focus:outline-none dark:bg-neutral-950 ${
                                     errors.difficulty
                                         ? "border-red-400 dark:border-red-500/70"
-                                        : "border-neutral-200 dark:border-neutral-700"
+                                        : "border-neutral-300 dark:border-neutral-700"
                                 }`}
                             >
                                 {DIFFICULTIES.map((level) => {
@@ -442,7 +442,7 @@ export const RecipeForm = ({
                                             }
                                             className={`rounded-md py-1.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
                                                 selected
-                                                    ? "bg-white text-neutral-900 shadow-sm dark:bg-neutral-950 dark:text-white"
+                                                    ? "bg-white text-neutral-900 shadow-sm ring-1 ring-neutral-200 dark:bg-neutral-800 dark:text-white dark:ring-neutral-700"
                                                     : "text-neutral-600 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-white"
                                             }`}
                                         >
@@ -486,7 +486,7 @@ export const RecipeForm = ({
                                     type="button"
                                     onClick={() => stepServings(-1)}
                                     aria-label="Fewer servings"
-                                    className="flex w-11 shrink-0 items-center justify-center rounded-l-lg border border-r-0 border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                    className="flex w-11 shrink-0 items-center justify-center rounded-l-lg border border-r-0 border-neutral-300 bg-neutral-50 text-neutral-600 hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-300 dark:hover:bg-neutral-800"
                                 >
                                     <Minus className="h-4 w-4" />
                                 </button>
@@ -505,7 +505,7 @@ export const RecipeForm = ({
                                     type="button"
                                     onClick={() => stepServings(1)}
                                     aria-label="More servings"
-                                    className="flex w-11 shrink-0 items-center justify-center rounded-r-lg border border-l-0 border-neutral-300 bg-white text-neutral-600 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                    className="flex w-11 shrink-0 items-center justify-center rounded-r-lg border border-l-0 border-neutral-300 bg-neutral-50 text-neutral-600 hover:bg-neutral-100 dark:border-neutral-700 dark:bg-neutral-950 dark:text-neutral-300 dark:hover:bg-neutral-800"
                                 >
                                     <Plus className="h-4 w-4" />
                                 </button>
@@ -631,13 +631,34 @@ export const RecipeForm = ({
                 {submitError && <p className="alert-error">{submitError}</p>}
 
                 {/* Action bar stays visible while scrolling the form */}
-                <div className="sticky bottom-0 z-10 -mx-4 border-t border-neutral-200 bg-neutral-50/90 px-4 py-4 backdrop-blur dark:border-neutral-800 dark:bg-neutral-950/90 sm:mx-0 sm:rounded-t-2xl sm:px-0">
-                    <div className="flex items-center gap-3">
-                        <span className="mr-auto hidden text-sm text-neutral-500 dark:text-neutral-400 sm:inline">
-                            {draftKey && draftSaved
-                                ? "Draft saved on this device"
-                                : `${doneCount} of ${checklist.length} sections complete`}
-                        </span>
+                <div className="sticky bottom-0 z-20 -mx-4 sm:bottom-4 sm:mx-0">
+                    <div className="flex items-center gap-3 border-t border-neutral-200 bg-white px-4 py-3 shadow-[0_-8px_24px_-12px_rgb(0_0_0/0.15)] dark:border-neutral-800 dark:bg-neutral-900 sm:rounded-2xl sm:border sm:px-5 sm:shadow-card-hover">
+                        <div className="mr-auto hidden items-center gap-4 text-sm sm:flex">
+                            <span className="flex items-center gap-2">
+                                <span className="h-1.5 w-16 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
+                                    <span
+                                        className="block h-full rounded-full bg-brand-600 transition-all"
+                                        style={{
+                                            width: `${(doneCount / checklist.length) * 100}%`,
+                                        }}
+                                    />
+                                </span>
+                                <span className="font-medium text-neutral-700 dark:text-neutral-300">
+                                    {doneCount}/{checklist.length} complete
+                                </span>
+                            </span>
+                            {draftKey && (
+                                <span
+                                    className={`inline-flex items-center gap-1 text-neutral-500 transition-opacity duration-300 dark:text-neutral-400 ${
+                                        draftSaved ? "opacity-100" : "opacity-0"
+                                    }`}
+                                    aria-live="polite"
+                                >
+                                    <Check className="h-3.5 w-3.5 text-emerald-600" />
+                                    {draftSaved ? "Draft saved" : ""}
+                                </span>
+                            )}
+                        </div>
                         <Link
                             to={cancelTo}
                             className="btn-secondary flex-1 sm:flex-none"

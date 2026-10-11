@@ -98,10 +98,12 @@
     }
 
     .input {
-        @apply block w-full rounded-lg border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm
-               placeholder:text-neutral-400 focus:border-brand-500 focus:ring-brand-500 disabled:cursor-not-allowed
-               disabled:bg-neutral-100 disabled:text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900
-               dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:disabled:bg-neutral-800;
+        /* Recessed from card surfaces (white / neutral-900) so fields stand out */
+        @apply block w-full rounded-lg border-neutral-300 bg-neutral-50 px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm
+               transition-colors placeholder:text-neutral-400 focus:border-brand-500 focus:bg-white focus:ring-brand-500
+               disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:text-neutral-500 dark:border-neutral-700
+               dark:bg-neutral-950 dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:focus:bg-neutral-950
+               dark:disabled:bg-neutral-800;
     }
 
     .checkbox {
