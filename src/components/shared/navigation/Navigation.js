@@ -166,9 +166,13 @@ export const Navigation = () => {
                         ))}
                     </ul>
 
-                    {/* Right: actions */}
-                    <div className="flex items-center gap-1">
+                    {/* Right: actions – desktop items share one 40px height and pill shape */}
+                    <div className="flex items-center gap-1 lg:gap-2">
                         <Search />
+                        <span
+                            aria-hidden="true"
+                            className="mx-1 hidden h-6 w-px bg-neutral-200 dark:bg-neutral-800 lg:block"
+                        />
                         {currentUser ? (
                             <>
                                 <Link
@@ -180,7 +184,7 @@ export const Navigation = () => {
                                 </Link>
                                 <Link
                                     to="/recipes/add"
-                                    className="btn-primary mx-1 hidden px-2.5 py-2 sm:inline-flex xl:px-3"
+                                    className="btn-primary mx-1 hidden px-2.5 py-2 sm:inline-flex lg:mx-0 lg:h-10 lg:w-10 lg:rounded-full lg:p-0 xl:w-auto xl:px-4"
                                     aria-label="Add recipe"
                                 >
                                     <Plus className="h-4 w-4" />
@@ -190,7 +194,7 @@ export const Navigation = () => {
                                 </Link>
                                 <Link
                                     to={`/auth/${userId}/account-management`}
-                                    className="ml-1 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+                                    className="ml-1 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 lg:ml-0 lg:flex"
                                     aria-label="My account"
                                 >
                                     <Avatar
@@ -200,6 +204,7 @@ export const Navigation = () => {
                                             currentUser.email
                                         }
                                         size="sm"
+                                        className="lg:h-10 lg:w-10"
                                     />
                                 </Link>
                             </>
@@ -207,7 +212,7 @@ export const Navigation = () => {
                             <Link
                                 to="/auth/sign-in"
                                 state={{ from: location.pathname }}
-                                className="btn-primary ml-1 px-3 py-2"
+                                className="btn-primary ml-1 px-3 py-2 lg:ml-0 lg:h-10 lg:rounded-full lg:px-4"
                             >
                                 <User className="h-4 w-4" />
                                 <span className="hidden sm:inline">
