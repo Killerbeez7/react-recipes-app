@@ -166,36 +166,32 @@ export const Navigation = () => {
                         ))}
                     </ul>
 
-                    {/* Right: actions – desktop items share one 40px height and pill shape */}
-                    <div className="flex items-center gap-1 lg:gap-2">
+                    {/* Right: one wide search field, then matching 40px circles */}
+                    <div className="flex items-center gap-1 lg:gap-3">
                         <Search />
-                        <span
-                            aria-hidden="true"
-                            className="mx-1 hidden h-6 w-px bg-neutral-200 dark:bg-neutral-800 lg:block"
-                        />
                         {currentUser ? (
                             <>
                                 <Link
                                     to={`/recipes/saved-recipes/${userId}`}
                                     className="btn-icon hidden sm:inline-flex"
                                     aria-label="Saved recipes"
+                                    title="Saved recipes"
                                 >
                                     <Bookmark className="h-5 w-5" />
                                 </Link>
                                 <Link
                                     to="/recipes/add"
-                                    className="btn-primary mx-1 hidden px-2.5 py-2 sm:inline-flex lg:mx-0 lg:h-10 lg:w-10 lg:rounded-full lg:p-0 xl:w-auto xl:px-4"
+                                    className="btn-primary mx-1 hidden h-10 w-10 rounded-full p-0 sm:inline-flex lg:mx-0"
                                     aria-label="Add recipe"
+                                    title="Add recipe"
                                 >
-                                    <Plus className="h-4 w-4" />
-                                    <span className="hidden xl:inline">
-                                        Add recipe
-                                    </span>
+                                    <Plus className="h-5 w-5" />
                                 </Link>
                                 <Link
                                     to={`/auth/${userId}/account-management`}
                                     className="ml-1 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 lg:ml-0 lg:flex"
                                     aria-label="My account"
+                                    title="My account"
                                 >
                                     <Avatar
                                         src={currentUser.photoURL}

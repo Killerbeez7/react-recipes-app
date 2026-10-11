@@ -112,7 +112,7 @@ export const Search = () => {
                 />
                 <input
                     {...inputProps}
-                    className="h-10 w-44 rounded-full border-transparent bg-neutral-100 pl-9 pr-4 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-brand-500 focus:bg-white focus:ring-brand-500 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-400 dark:focus:bg-neutral-950 xl:w-64"
+                    className="h-10 w-48 rounded-full border-transparent bg-neutral-100 pl-9 pr-4 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-brand-500 focus:bg-white focus:ring-brand-500 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-400 dark:focus:bg-neutral-950 xl:w-80"
                 />
                 {showResults && term && (
                     <div className="card absolute left-0 top-full z-50 mt-2 w-full min-w-[18rem] overflow-hidden xl:min-w-0">
