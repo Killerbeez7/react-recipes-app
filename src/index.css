@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    html {
+        @apply scroll-smooth antialiased;
+        scrollbar-gutter: stable;
+    }
+
+    body {
+        @apply bg-neutral-50 font-sans text-neutral-800 dark:bg-neutral-950 dark:text-neutral-200;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply text-neutral-900 dark:text-neutral-50;
+    }
+
+    ::selection {
+        @apply bg-brand-200 text-brand-950;
+    }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: theme("colors.neutral.300") transparent;
+    }
+
+    .dark * {
+        scrollbar-color: theme("colors.neutral.700") transparent;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+    }
+}
+
+@layer components {
+    /* Layout */
+    .page {
+        @apply container py-8 sm:py-12;
+    }
+
+    .page-title {
+        @apply font-display text-3xl font-bold tracking-tight sm:text-4xl;
+    }
+
+    .page-subtitle {
+        @apply mt-2 text-base text-neutral-600 dark:text-neutral-400;
+    }
+
+    .section-title {
+        @apply font-display text-2xl font-bold tracking-tight;
+    }
+
+    /* Surfaces */
+    .card {
+        @apply rounded-2xl border border-neutral-200 bg-white shadow-card dark:border-neutral-800 dark:bg-neutral-900;
+    }
+
+    /* Buttons */
+    .btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors
+               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2
+               focus-visible:ring-offset-white disabled:cursor-not-allowed disabled:opacity-50 dark:focus-visible:ring-offset-neutral-950;
+    }
+
+    .btn-primary {
+        @apply btn bg-brand-600 text-white shadow-sm hover:bg-brand-700;
+    }
+
+    .btn-secondary {
+        @apply btn border border-neutral-300 bg-white text-neutral-800 shadow-sm hover:bg-neutral-50
+               dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800;
+    }
+
+    .btn-ghost {
+        @apply btn text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800;
+    }
+
+    .btn-danger {
+        @apply btn bg-red-600 text-white shadow-sm hover:bg-red-700;
+    }
+
+    .btn-icon {
+        @apply inline-flex h-10 w-10 items-center justify-center rounded-full text-neutral-700 transition-colors
+               hover:bg-neutral-100 hover:text-neutral-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500
+               dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white;
+    }
+
+    /* Forms */
+    .label {
+        @apply mb-1.5 block text-sm font-medium text-neutral-700 dark:text-neutral-300;
+    }
+
+    .input {
+        @apply block w-full rounded-lg border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 shadow-sm
+               placeholder:text-neutral-400 focus:border-brand-500 focus:ring-brand-500 disabled:cursor-not-allowed
+               disabled:bg-neutral-100 disabled:text-neutral-500 dark:border-neutral-700 dark:bg-neutral-900
+               dark:text-neutral-100 dark:placeholder:text-neutral-500 dark:disabled:bg-neutral-800;
+    }
+
+    .checkbox {
+        @apply h-4 w-4 rounded border-neutral-300 text-brand-600 focus:ring-brand-500 dark:border-neutral-600 dark:bg-neutral-800;
+    }
+
+    .hint {
+        @apply mt-1.5 text-xs text-neutral-500 dark:text-neutral-400;
+    }
+
+    /* Feedback */
+    .alert-error {
+        @apply rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300;
+    }
+
+    .alert-success {
+        @apply rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300;
+    }
+
+    /* Misc */
+    .badge {
+        @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium;
+    }
+
+    .link {
+        @apply font-medium text-brand-600 underline-offset-4 hover:text-brand-700 hover:underline dark:text-brand-400 dark:hover:text-brand-300;
+    }
+}

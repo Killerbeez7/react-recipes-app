@@ -1,13 +1,45 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import styles from "./SavedRecipes.module.css";
+import { Bookmark } from "lucide-react";
+import { RecipeContext } from "../../../contexts/RecipeContext";
+import { useAuth } from "../../../contexts/AuthContext";
+import { RecipeGrid } from "../recipe-grid/RecipeGrid";
+import { PageLoader } from "../../ui/Loader";
+import { EmptyState } from "../../ui/EmptyState";
 
 export const SavedRecipes = () => {
+    const { userProfile } = useAuth();
+    const { recipes, loading } = useContext(RecipeContext);
+
+    const savedIds = userProfile?.savedRecipes || {};
+    const savedRecipes = recipes.filter((recipe) => savedIds[recipe.id]);
+
     return (
-        <>
-            <div  className={styles.savedMain}>
-                <h1 className={styles.savedTitle}>SavedRecipes</h1>
-                <p className={styles.savedDesc}>No saved recipes yet. Please log in and save some!</p>
+        <div className="page">
+            <div className="mb-8">
+                <h1 className="page-title">Saved recipes</h1>
+                <p className="page-subtitle">
+                    Your personal collection of dishes to cook next.
+                </p>
             </div>
-        </>
+
+            {loading ? (
+                <PageLoader />
+            ) : savedRecipes.length === 0 ? (
+                <EmptyState
+                    icon={Bookmark}
+                    title="No saved recipes yet"
+                    action={
+                        <Link to="/recipes/all" className="btn-primary">
+                            Browse recipes
+                        </Link>
+                    }
+                >
+                    Tap the Save button on any recipe to keep it here.
+                </EmptyState>
+            ) : (
+                <RecipeGrid recipes={savedRecipes} />
+            )}
+        </div>
     );
 };

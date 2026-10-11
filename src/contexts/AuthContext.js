@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../firebase/firebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import { ref, onValue } from "firebase/database";
+import { auth, database } from "../firebase/firebaseConfig";
+import { PageLoader } from "../components/ui/Loader";
 import {
     signUpWithEmail,
     signInWithEmail,
@@ -10,12 +12,12 @@ import {
 
 const AuthContext = createContext();
 
-export const useAuth = () => {
-    return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
+    // Profile record stored in the realtime DB (username, bio, savedRecipes...)
+    const [userProfile, setUserProfile] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -24,37 +26,41 @@ export const AuthProvider = ({ children }) => {
             setLoading(false);
         });
 
-        return () => unsubscribe();
+        return unsubscribe;
     }, []);
 
-    const handleEmailSignUp = async (email, password) => {
-        try {
-            const user = await signUpWithEmail(email, password);
+    const uid = currentUser?.uid;
 
-            setCurrentUser(user);
-        } catch (error) {
-            throw error;
+    useEffect(() => {
+        if (!uid) {
+            setUserProfile(null);
+            return;
         }
+
+        return onValue(ref(database, `users/${uid}`), (snapshot) => {
+            setUserProfile(snapshot.val());
+        });
+    }, [uid]);
+
+    // Firebase doesn't emit an auth change after updateProfile(), so callers
+    // use this to pick up a new displayName / photoURL.
+    const refreshUser = () => {
+        setCurrentUser(auth.currentUser ? { ...auth.currentUser } : null);
+    };
+
+    const handleEmailSignUp = async (email, password, username) => {
+        const user = await signUpWithEmail(email, password, username);
+        setCurrentUser({ ...user });
     };
 
     const handleEmailSignIn = async (email, password) => {
-        try {
-            const user = await signInWithEmail(email, password);
-
-            setCurrentUser(user);
-        } catch (error) {
-            throw error;
-        }
+        const user = await signInWithEmail(email, password);
+        setCurrentUser({ ...user });
     };
 
     const handleGoogleSignIn = async () => {
-        try {
-            const result = await signInWithGoogle();
-
-            setCurrentUser(result.user);
-        } catch (error) {
-            throw error;
-        }
+        const user = await signInWithGoogle();
+        setCurrentUser({ ...user });
     };
 
     const handleSignOut = async () => {
@@ -64,6 +70,8 @@ export const AuthProvider = ({ children }) => {
 
     const value = {
         currentUser,
+        userProfile,
+        refreshUser,
         handleEmailSignUp,
         handleEmailSignIn,
         handleGoogleSignIn,
@@ -72,7 +80,7 @@ export const AuthProvider = ({ children }) => {
 
     return (
         <AuthContext.Provider value={value}>
-            {!loading && children}
+            {loading ? <PageLoader /> : children}
         </AuthContext.Provider>
     );
 };

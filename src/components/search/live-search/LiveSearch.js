@@ -1,98 +1,134 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Search, X } from "lucide-react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
-import styles from "./LiveSearch.module.css";
+import { RecipeImage } from "../../ui/RecipeImage";
 
 export const LiveSearch = () => {
     const [query, setQuery] = useState("");
-    const [filteredResults, setFilteredResults] = useState([]);
-    const [showDropdown, setShowDropdown] = useState(false);
-    const [showSearch, setShowSearch] = useState(false);
+    const [results, setResults] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     const navigate = useNavigate();
     const { recipes } = useContext(RecipeContext);
+    const containerRef = useRef(null);
 
     useEffect(() => {
-        if (query.trim() === "") {
-            setFilteredResults([]);
-            setShowDropdown(false);
+        const term = query.trim().toLowerCase();
+        if (!term) {
+            setResults([]);
             return;
         }
 
         const timeoutId = setTimeout(() => {
-            const results = recipes.filter((recipe) =>
-                recipe.title.toLowerCase().includes(query.toLowerCase())
+            setResults(
+                recipes
+                    .filter((recipe) =>
+                        recipe.title?.toLowerCase().includes(term)
+                    )
+                    .slice(0, 8)
             );
-            console.log(results);
-
-            setFilteredResults(results);
-            setShowDropdown(results.length > 0);
-        }, 300);
+        }, 200);
 
         return () => clearTimeout(timeoutId);
     }, [query, recipes]);
 
-    const handleSelect = (id) => {
-        navigate(`/recipes/details/${id}`);
+    // Close when clicking outside
+    useEffect(() => {
+        if (!isOpen) return;
+        const onClick = (e) => {
+            if (!containerRef.current?.contains(e.target)) {
+                setIsOpen(false);
+                setQuery("");
+            }
+        };
+        document.addEventListener("mousedown", onClick);
+        return () => document.removeEventListener("mousedown", onClick);
+    }, [isOpen]);
+
+    const close = () => {
+        setIsOpen(false);
         setQuery("");
-        setShowDropdown(false);
-        setShowSearch(false);
     };
 
-    const handleSearchOpen = () => {
-        setShowSearch((prev) => !prev);
-        setQuery("");
+    const handleSelect = (id) => {
+        navigate(`/recipes/details/${id}`);
+        close();
+    };
+
+    const onKeyDown = (e) => {
+        if (e.key === "Escape") close();
+        if (e.key === "Enter" && results[0]) handleSelect(results[0].id);
     };
 
     return (
-        <div
-            className={`${styles.searchContainer} ${
-                showSearch ? styles.active : ""
-            }`}
-        >
+        <div ref={containerRef} className="relative">
             <button
-                className={`${styles.searchIcon} ${
-                    showSearch ? styles.searchIconContrast : ""
-                }`}
-                onClick={handleSearchOpen}
+                type="button"
+                className="btn-icon"
+                onClick={() => (isOpen ? close() : setIsOpen(true))}
+                aria-label={isOpen ? "Close search" : "Search recipes"}
+                aria-expanded={isOpen}
             >
-                <i className="fa-solid fa-magnifying-glass" />
+                {isOpen ? (
+                    <X className="h-5 w-5" />
+                ) : (
+                    <Search className="h-5 w-5" />
+                )}
             </button>
 
-            {showSearch && (
-                <div className={styles.searchBox}>
-                    <input
-                        type="text"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        placeholder="Search recipes..."
-                        className={styles.searchInput}
-                        autoFocus
-                    />
-                    {showDropdown && (
-                        <ul className={styles.searchDropdown}>
-                            {filteredResults.map((recipe) => (
-                                <li
-                                    key={recipe.id}
-                                    onClick={() => handleSelect(recipe.id)}
-                                    className={styles.searchItem}
-                                >
-                                    <img
-                                        src={recipe.imageUrl}
-                                        alt={recipe.title}
-                                        className={styles.searchImg}
-                                    />
-                                    <div className={styles.searchText}>
-                                        <span className={styles.recipeTitle}>
-                                            {recipe.title}
-                                        </span>
-                                        <span className={styles.recipeDesc}>
-                                            {recipe.description}
-                                        </span>
-                                    </div>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+            {isOpen && (
+                <div className="fixed inset-x-4 top-[4.5rem] z-50 sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:mt-2 sm:w-96">
+                    <div className="card overflow-hidden">
+                        <div className="relative border-b border-neutral-200 dark:border-neutral-800">
+                            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                            <input
+                                type="search"
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                onKeyDown={onKeyDown}
+                                placeholder="Search recipes..."
+                                aria-label="Search recipes"
+                                className="w-full border-0 bg-transparent py-3 pl-10 pr-4 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-0 dark:text-neutral-100"
+                                autoFocus
+                            />
+                        </div>
+
+                        {query.trim() && (
+                            <ul className="max-h-96 overflow-y-auto p-2">
+                                {results.length === 0 ? (
+                                    <li className="px-3 py-6 text-center text-sm text-neutral-500 dark:text-neutral-400">
+                                        No recipes match “{query.trim()}”.
+                                    </li>
+                                ) : (
+                                    results.map((recipe) => (
+                                        <li key={recipe.id}>
+                                            <button
+                                                type="button"
+                                                onClick={() =>
+                                                    handleSelect(recipe.id)
+                                                }
+                                                className="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800"
+                                            >
+                                                <RecipeImage
+                                                    src={recipe.imageUrl}
+                                                    alt=""
+                                                    className="h-12 w-12 shrink-0 rounded-md"
+                                                />
+                                                <span className="min-w-0">
+                                                    <span className="block truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                                                        {recipe.title}
+                                                    </span>
+                                                    <span className="block truncate text-xs text-neutral-500 dark:text-neutral-400">
+                                                        {recipe.description}
+                                                    </span>
+                                                </span>
+                                            </button>
+                                        </li>
+                                    ))
+                                )}
+                            </ul>
+                        )}
+                    </div>
                 </div>
             )}
         </div>

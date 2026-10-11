@@ -1,29 +1,22 @@
-import styles from "./FoodCultureAndTravel.module.css";
+import { NewsPage } from "../NewsPage";
 
-export const FoodCultureAndTravel = () => {
-    return (
-        <section className={styles.travelSection}>
-            <h2 className={styles.travelTitle}>Food Culture & Travel</h2>
-            <div className={styles.travelList}>
-                <div className={styles.travelItem}>
-                    <h3 className={styles.travelHeading}>
-                        Flavors of the World: Exploring Thai Street Food
-                    </h3>
-                    <p className={styles.travelText}>
-                        Discover the vibrant street food culture of Thailand.
-                    </p>
-                    <a href="#" className={styles.travelLink}>Read More</a>
-                </div>
-                <div className={styles.travelItem}>
-                    <h3 className={styles.travelHeading}>
-                        Regional Specialties: What Makes Southern BBQ Unique?
-                    </h3>
-                    <p className={styles.travelText}>
-                        Unravel the smoky secrets behind the best Southern BBQ styles.
-                    </p>
-                    <a href="#" className={styles.travelLink}>Read More</a>
-                </div>
-            </div>
-        </section>
-    );
-};
+const articles = [
+    {
+        tag: "Flavours of the world",
+        title: "Exploring Thai street food",
+        text: "Discover the vibrant street food culture of Thailand.",
+    },
+    {
+        tag: "Regional specialties",
+        title: "What makes Southern BBQ unique?",
+        text: "Unravel the smoky secrets behind the best Southern BBQ styles.",
+    },
+];
+
+export const FoodCultureAndTravel = () => (
+    <NewsPage
+        title="Food Culture & Travel"
+        intro="Stories and dishes from kitchens around the globe."
+        articles={articles}
+    />
+);

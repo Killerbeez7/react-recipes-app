@@ -3,48 +3,25 @@ import { database } from "../firebase/firebaseConfig";
 
 const recipesRef = ref(database, "recipes");
 
-export const getAll = async () => {
-    const snapshot = await get(recipesRef);
-    return snapshot.exists() ? Object.values(snapshot.val()) : [];
-};
-
 export const getOne = async (recipeId) => {
-    const recipeRef = child(recipesRef, recipeId);
-    const snapshot = await get(recipeRef);
-    return snapshot.exists() ? snapshot.val() : null;
+    const snapshot = await get(child(recipesRef, recipeId));
+    return snapshot.exists() ? { id: recipeId, ...snapshot.val() } : null;
 };
 
 export const create = async (recipeData) => {
     const newRecipeRef = push(recipesRef);
-    await set(newRecipeRef, recipeData);
-    return { id: newRecipeRef.key, ...recipeData };
+    const recipe = { ...recipeData, createdAt: new Date().toISOString() };
+    await set(newRecipeRef, recipe);
+    return { id: newRecipeRef.key, ...recipe };
 };
 
-export const edit = async (recipeId, recipeData) => {
-    const recipeRef = child(recipesRef, recipeId);
-    await update(recipeRef, recipeData);
-};
+export const edit = (recipeId, recipeData) =>
+    update(child(recipesRef, recipeId), recipeData);
 
-export const del = async (recipeId) => {
-    const recipeRef = child(recipesRef, recipeId);
-    await remove(recipeRef);
-};
+export const del = (recipeId) => remove(child(recipesRef, recipeId));
 
-export const addRecipeToFavorites = async (userId, recipeId, isSaved) => {
-    const userRef = ref(database, `users/${userId}`);
-    try {
-        const snapshot = await get(userRef);
-        const savedRecipes = snapshot.val()?.savedRecipes || {};
-
-        if (isSaved) {
-            delete savedRecipes[recipeId];
-        } else {
-            savedRecipes[recipeId] = true;
-        }
-
-        await update(userRef, { savedRecipes });
-    } catch (error) {
-        console.error("Error saving recipe for user:", error);
-        throw error;
-    }
-};
+export const toggleSavedRecipe = (userId, recipeId, isSaved) =>
+    set(
+        ref(database, `users/${userId}/savedRecipes/${recipeId}`),
+        isSaved ? null : true
+    );

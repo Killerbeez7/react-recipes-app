@@ -1,232 +1,190 @@
 import { useState, useEffect } from "react";
-import { useAuth } from "../../../contexts/AuthContext";
-import { ref, update, get, remove } from "firebase/database";
-import { updateProfile, updatePassword, deleteUser } from "firebase/auth";
-
+import { Link, useNavigate } from "react-router-dom";
+import { ArrowLeft, Camera } from "lucide-react";
+import { ref, update } from "firebase/database";
+import { updateProfile } from "firebase/auth";
 import {
     ref as storageRef,
     uploadBytes,
     getDownloadURL,
 } from "firebase/storage";
 import { auth, database, storage } from "../../../firebase/firebaseConfig";
-import { useNavigate } from "react-router-dom";
-
-import styles from "./ProfileDetails.module.css";
+import { useAuth } from "../../../contexts/AuthContext";
+import { Avatar } from "../../ui/Avatar";
+import { Spinner } from "../../ui/Loader";
 
 export const ProfileDetails = () => {
-    const { currentUser, setCurrentUser } = useAuth();
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [bio, setBio] = useState("");
-    const [profilePicture, setProfilePicture] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const { currentUser, userProfile, refreshUser } = useAuth();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (currentUser) {
-            const userRef = ref(database, `users/${currentUser.uid}`);
-            get(userRef)
-                .then((snapshot) => {
-                    if (snapshot.exists()) {
-                        const userData = snapshot.val();
-                        setUsername(userData.username);
-                        setEmail(userData.email);
-                        setBio(userData.bio || "");
-                        setProfilePicture(userData.profilePicture || "");
-                    }
-                    setIsLoading(false);
-                })
-                .catch((error) => {
-                    console.error("Error fetching user data:", error);
-                    setIsLoading(false);
-                });
-        }
-    }, [currentUser]);
+    const [username, setUsername] = useState(currentUser.displayName || "");
+    const [bio, setBio] = useState("");
+    const [imageFile, setImageFile] = useState(null);
+    const [preview, setPreview] = useState(currentUser.photoURL || "");
+    const [initialised, setInitialised] = useState(false);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState("");
 
-    const handleInputChange = (setter) => (e) => {
-        setter(e.target.value);
-    };
+    const accountPath = `/auth/${currentUser.uid}/account-management`;
+
+    // Fill the form once the DB profile has loaded (it may arrive after mount)
+    useEffect(() => {
+        if (userProfile && !initialised) {
+            setUsername(userProfile.username || currentUser.displayName || "");
+            setBio(userProfile.bio || "");
+            setPreview(
+                userProfile.profilePicture || currentUser.photoURL || ""
+            );
+            setInitialised(true);
+        }
+    }, [userProfile, initialised, currentUser]);
+
+    useEffect(() => {
+        if (!imageFile) return;
+        const url = URL.createObjectURL(imageFile);
+        setPreview(url);
+        return () => URL.revokeObjectURL(url);
+    }, [imageFile]);
 
     const handleSaveChanges = async (e) => {
         e.preventDefault();
-
         if (!username.trim()) {
-            alert("Username cannot be empty");
+            setError("Username cannot be empty.");
             return;
         }
 
+        setIsSaving(true);
+        setError("");
+
         try {
             const user = auth.currentUser;
-            if (user) {
-                let newProfilePictureUrl = profilePicture;
-                if (profilePicture instanceof File) {
-                    const imageRef = storageRef(
-                        storage,
-                        `profilePictures/${user.uid}`
-                    );
-                    await uploadBytes(imageRef, profilePicture);
-                    newProfilePictureUrl = await getDownloadURL(imageRef);
-                }
+            let photoURL = userProfile?.profilePicture || user.photoURL || "";
 
-                await updateProfile(user, {
-                    displayName: username,
-                    photoURL: newProfilePictureUrl,
-                });
-
-                const userRef = ref(database, `users/${user.uid}`);
-                await update(userRef, {
-                    username: username,
-                    bio: bio,
-                    profilePicture: newProfilePictureUrl,
-                });
-
-                setCurrentUser({
-                    ...user,
-                    displayName: username,
-                    photoURL: newProfilePictureUrl,
-                });
-
-                console.log("Profile updated successfully.");
-                navigate(-1);
-            } else {
-                console.error("User not found in Firebase Authentication.");
+            if (imageFile) {
+                const imageRef = storageRef(
+                    storage,
+                    `profilePictures/${user.uid}`
+                );
+                await uploadBytes(imageRef, imageFile);
+                photoURL = await getDownloadURL(imageRef);
             }
-        } catch (error) {
-            console.error("Error updating profile:", error);
-            alert(
+
+            await updateProfile(user, {
+                displayName: username.trim(),
+                photoURL,
+            });
+            await update(ref(database, `users/${user.uid}`), {
+                username: username.trim(),
+                bio: bio.trim(),
+                profilePicture: photoURL,
+            });
+
+            refreshUser();
+            navigate(accountPath);
+        } catch (err) {
+            console.error("Error updating profile:", err);
+            setError(
                 "There was an error updating your profile. Please try again."
             );
+            setIsSaving(false);
         }
     };
 
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
-
     return (
-        <div className={styles.mainContainer}>
-            <div className={styles.sideBox}>
-                <h3>Recent Activity</h3>
-                <ul>
-                    <li>
-                        You liked <strong>Spaghetti Carbonara</strong>
-                    </li>
-                    <li>
-                        You commented on <strong>Vegan Brownies</strong>
-                    </li>
-                    <li>
-                        Uploaded <strong>Best Tacos Recipe</strong>
-                    </li>
-                </ul>
-            </div>
+        <div className="page max-w-2xl">
+            <Link to={accountPath} className="btn-ghost -ml-3 mb-6 px-3">
+                <ArrowLeft className="h-4 w-4" /> My account
+            </Link>
+            <h1 className="page-title">Edit profile</h1>
+            <p className="page-subtitle">
+                This is how other cooks will see you.
+            </p>
 
-            <div className={styles.sideBox}>
-                <h3>Quick Actions</h3>
-                <button className={styles.quickActionBtn}>
-                    🔍 Search Recipes
-                </button>
-                <button className={styles.quickActionBtn}>➕ Add Recipe</button>
-                <button className={styles.quickActionBtn}>
-                    ⭐ View Favorites
-                </button>
-                <button className={styles.quickActionBtn}>
-                    ⚙️ Edit Profile
-                </button>
-            </div>
-            <div className={styles.profileContainer}>
-                <h1 className={styles.profileTitle}>Profile Details</h1>
-                <div className={styles.profilePictureSection}>
-                    <img
-                        src={
-                            currentUser.photoURL ||
-                            "https://png.pngtree.com/png-clipart/20231019/original/pngtree-user-profile-avatar-png-image_13369988.png"
-                        }
-                        alt="Profile"
-                        className={styles.profilePicture}
+            <form
+                onSubmit={handleSaveChanges}
+                className="card mt-8 space-y-6 p-6 sm:p-8"
+            >
+                <div className="flex items-center gap-5">
+                    <Avatar
+                        src={preview}
+                        name={username || currentUser.email}
+                        size="lg"
                     />
-                    <label
-                        htmlFor="profilePicture"
-                        className={styles.uploadBtn}
-                    >
-                        Change Picture
+                    <div>
+                        <label
+                            htmlFor="profilePicture"
+                            className="btn-secondary cursor-pointer"
+                        >
+                            <Camera className="h-4 w-4" /> Change picture
+                        </label>
                         <input
                             type="file"
                             id="profilePicture"
-                            name="profilePicture"
-                            className={styles.fileInput}
+                            accept="image/*"
+                            className="sr-only"
                             onChange={(e) =>
-                                setProfilePicture(e.target.files[0])
+                                setImageFile(e.target.files?.[0] || null)
                             }
                         />
+                        <p className="hint">JPG, PNG or GIF.</p>
+                    </div>
+                </div>
+
+                <div>
+                    <label htmlFor="username" className="label">
+                        Username
                     </label>
+                    <input
+                        id="username"
+                        type="text"
+                        className="input"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
                 </div>
-                <form
-                    onSubmit={handleSaveChanges}
-                    className={styles.formContainer}
-                >
-                    <div className={styles.inputContainer}>
-                        <label htmlFor="username">Username</label>
-                        <input
-                            type="text"
-                            id="username"
-                            name="username"
-                            value={username}
-                            onChange={handleInputChange(setUsername)}
-                        />
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <label htmlFor="email">Email</label>
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={email}
-                            disabled
-                        />
-                    </div>
-                    <div className={styles.inputContainer}>
-                        <label htmlFor="bio">Bio</label>
-                        <textarea
-                            id="bio"
-                            name="bio"
-                            value={bio}
-                            onChange={handleInputChange(setBio)}
-                            className={styles.textArea}
-                        />
-                    </div>
-                    <div className={styles.buttonRow}>
-                        <button type="submit" className={styles.saveBtn}>
-                            Save
-                        </button>
-                        <button
-                            type="button"
-                            className={styles.deleteAccountBtn}
-                        >
-                            Delete
-                        </button>
-                        <button
-                            type="button"
-                            className={styles.changePasswordBtn}
-                        >
-                            Change Password
-                        </button>
-                    </div>
-                </form>
-            </div>
-            <div className={styles.sideBox}>
-                <h3>Achievements</h3>
-                <p>🏆 Recipe Master</p>
-                <p>💬 Active Commenter</p>
-                <p>⭐ Top Chef</p>
-            </div>
-            <div className={styles.sideBox}>
-                <h3>Saved Recipes</h3>
-                <div className={styles.recipeGrid}>
-                    <img src="recipe1.jpg" alt="Recipe 1" />
-                    <img src="recipe2.jpg" alt="Recipe 2" />
-                    <img src="recipe3.jpg" alt="Recipe 3" />
+                <div>
+                    <label htmlFor="email" className="label">
+                        Email
+                    </label>
+                    <input
+                        id="email"
+                        type="email"
+                        className="input"
+                        value={currentUser.email || ""}
+                        disabled
+                    />
+                    <p className="hint">Your email can't be changed here.</p>
                 </div>
-            </div>
+                <div>
+                    <label htmlFor="bio" className="label">
+                        Bio
+                    </label>
+                    <textarea
+                        id="bio"
+                        rows={4}
+                        className="input"
+                        placeholder="Tell others a little about your cooking"
+                        value={bio}
+                        onChange={(e) => setBio(e.target.value)}
+                    />
+                </div>
+
+                {error && <p className="alert-error">{error}</p>}
+
+                <div className="flex flex-col-reverse gap-3 border-t border-neutral-200 pt-6 dark:border-neutral-800 sm:flex-row sm:justify-end">
+                    <Link to={accountPath} className="btn-secondary">
+                        Cancel
+                    </Link>
+                    <button
+                        type="submit"
+                        className="btn-primary"
+                        disabled={isSaving}
+                    >
+                        {isSaving && <Spinner className="h-4 w-4" />}
+                        {isSaving ? "Saving..." : "Save changes"}
+                    </button>
+                </div>
+            </form>
         </div>
     );
 };

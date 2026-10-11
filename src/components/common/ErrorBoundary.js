@@ -1,23 +1,34 @@
 import { Component } from "react";
 
 export class ErrorBoundary extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            error: null,
-        };
-    }
+    state = { error: null };
+
     static getDerivedStateFromError(error) {
-        console.log("getDerivedStateFromError");
+        return { error };
     }
 
     componentDidCatch(error, errorInfo) {
-        console.log("componentDidCatch");
+        console.error("Unhandled error:", error, errorInfo);
     }
 
     render() {
         if (this.state.error) {
-            return <h1>Error</h1>;
+            return (
+                <div className="flex min-h-screen flex-col items-center justify-center gap-4 px-4 text-center">
+                    <h1 className="page-title">Something went wrong</h1>
+                    <p className="text-neutral-600 dark:text-neutral-400">
+                        An unexpected error occurred. Please try reloading the
+                        page.
+                    </p>
+                    <button
+                        type="button"
+                        className="btn-primary"
+                        onClick={() => window.location.assign("/")}
+                    >
+                        Back to home
+                    </button>
+                </div>
+            );
         }
 
         return this.props.children;

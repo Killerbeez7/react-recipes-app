@@ -1,51 +1,69 @@
 import { Link, useParams } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo } from "react";
+import { SearchX } from "lucide-react";
 import { RecipeContext } from "../../../contexts/RecipeContext";
-import { RecipeItem } from "../recipe-item/RecipeItem";
-import styles from "./RecipeList.module.css";
 import { useAuth } from "../../../contexts/AuthContext";
+import { getCategoryLabel } from "../../../constants/categories";
+import { toCategoryArray } from "../../../utils/recipe";
+import { RecipeGrid } from "../recipe-grid/RecipeGrid";
+import { PageLoader } from "../../ui/Loader";
+import { EmptyState } from "../../ui/EmptyState";
 
 export const RecipeList = () => {
     const { currentUser } = useAuth();
-    const { recipes } = useContext(RecipeContext);
+    const { recipes, loading } = useContext(RecipeContext);
     const { category } = useParams();
-    const [filteredRecipes, setFilteredRecipes] = useState([]);
 
-    useEffect(() => {
-        setFilteredRecipes(
+    const filteredRecipes = useMemo(
+        () =>
             category
-                ? recipes.filter((r) => r.categories?.includes(category))
-                : recipes
-        );
-    }, [category, recipes]);
+                ? recipes.filter((r) =>
+                      toCategoryArray(r.categories).includes(category)
+                  )
+                : recipes,
+        [category, recipes]
+    );
+
+    const title = category
+        ? getCategoryLabel(category) || "Recipes"
+        : "All recipes";
 
     return (
-        <div className={styles.recipeGrid}>
-            {currentUser && (
-                <Link to="/recipes/add" className={styles.addRecipeCard}>
-                    <div className={styles.addIcon}>
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            width="24"
-                            height="24"
-                            fill="white"
+        <div className="page">
+            <div className="mb-8">
+                <h1 className="page-title">{title}</h1>
+                {!loading && (
+                    <p className="page-subtitle">
+                        {filteredRecipes.length}{" "}
+                        {filteredRecipes.length === 1 ? "recipe" : "recipes"}
+                    </p>
+                )}
+            </div>
+
+            {loading ? (
+                <PageLoader label="Loading recipes..." />
+            ) : filteredRecipes.length === 0 ? (
+                <EmptyState
+                    icon={SearchX}
+                    title="No recipes here yet"
+                    action={
+                        <Link
+                            to={currentUser ? "/recipes/add" : "/recipes/all"}
+                            className="btn-primary"
                         >
-                            <path
-                                d="M12 5v14M5 12h14"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            />
-                        </svg>
-                    </div>
-                    <p>Add Recipe</p>
-                </Link>
+                            {currentUser
+                                ? "Share the first one"
+                                : "Browse all recipes"}
+                        </Link>
+                    }
+                >
+                    {category
+                        ? "Nobody has added a recipe to this category yet."
+                        : "The recipe library is empty."}
+                </EmptyState>
+            ) : (
+                <RecipeGrid recipes={filteredRecipes} />
             )}
-            {filteredRecipes.map((recipe) => (
-                <RecipeItem key={recipe.id} recipe={recipe} />
-            ))}
         </div>
     );
 };

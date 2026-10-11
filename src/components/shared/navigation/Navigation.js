@@ -1,338 +1,324 @@
 import { useState, useEffect } from "react";
-import { useMediaQuery } from "react-responsive";
-
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import {
+    Bookmark,
+    ChevronDown,
+    Menu,
+    Moon,
+    Plus,
+    Sun,
+    User,
+    X,
+} from "lucide-react";
 import { useAuth } from "../../../contexts/AuthContext";
-
-// LIVE SEARCH NEW ----------------------------------------
+import { useTheme } from "../../../contexts/ThemeContext";
+import { CATEGORIES, SEASONS, NEWS } from "../../../constants/categories";
 import { LiveSearch } from "../../search/live-search/LiveSearch";
-// LIVE SEARCH NEW ----------------------------------------
+import { Avatar } from "../../ui/Avatar";
+import { Logo } from "../../ui/Logo";
 
-import styles from "./Navigation.module.css";
-
-const categories = [
-    { path: "/recipes/breakfast", label: "Breakfast & Brunch" },
-    { path: "/recipes/lunch", label: "Lunch" },
-    { path: "/recipes/appetizers", label: "Appetizers & Snacks" },
-    { path: "/recipes/dinner", label: "Dinner" },
-    { path: "/recipes/desserts", label: "Dessert" },
-    { path: "/recipes/drinks", label: "Drink & Cocktail" },
-    { path: "/recipes/side-dish", label: "Side Dish" },
-    { path: "/recipes/grilling", label: "Grilling & BBQ" },
-    { path: "/recipes/microwave", label: "Microwave" },
-    { path: "/recipes/easy", label: "Quick & Easy" },
-    { path: "/recipes/slow", label: "Slow-Cooker" },
-    { path: "/recipes/fryer", label: "Air Fryer" },
-    { path: "/recipes/instant-pot", label: "Instant Pot" },
-    { path: "/recipes/baking", label: "Baking" },
-    { path: "/recipes/vegetarian", label: "Vegetarian" },
-];
-
-const seasons = [
-    { path: "/recipes/seasonal/spring", label: "Spring" },
-    { path: "/recipes/seasonal/summer", label: "Summer" },
-    { path: "/recipes/seasonal/fall", label: "Fall" },
-    { path: "/recipes/seasonal/winter", label: "Winter" },
-];
-
-const news = [
-    { path: "/news/food-and-nutrition", label: "Food & Nutrition News" },
-    { path: "/news/food-culture-and-travel", label: "Food Culture & Travel" },
-    { path: "/news/cooking-tips-and-tricks", label: "Cooking Tips & Tricks" },
+const menus = [
     {
-        path: "/news/interviews-and-spotlights",
-        label: "Interviews & Spotlights",
+        id: "recipes",
+        label: "Recipes",
+        wide: true,
+        items: CATEGORIES.map(({ slug, label }) => ({
+            path: `/recipes/${slug}`,
+            label,
+        })),
+        footer: { path: "/recipes/all", label: "View all recipes" },
     },
+    {
+        id: "seasonal",
+        label: "Seasonal",
+        items: SEASONS.map(({ slug, label }) => ({
+            path: `/recipes/seasonal/${slug}`,
+            label,
+        })),
+    },
+    { id: "news", label: "News", items: NEWS },
 ];
+
+const links = [
+    { path: "/gallery", label: "Gallery" },
+    { path: "/forum", label: "Forum" },
+];
+
+const topLinkClass =
+    "inline-flex items-center gap-1 rounded-md px-3 py-2 text-[15px] font-medium text-neutral-700 transition-colors hover:text-brand-600 dark:text-neutral-300 dark:hover:text-brand-400";
 
 export const Navigation = () => {
     const [menuOpen, setMenuOpen] = useState(false);
-    const [recipesOpen, setRecipesOpen] = useState(false);
-    const [seasonalOpen, setSeasonalOpen] = useState(false);
-    const [newsOpen, setNewsOpen] = useState(false);
+    const [openSection, setOpenSection] = useState(null);
 
     const location = useLocation();
     const { currentUser } = useAuth();
+    const { darkMode, toggleTheme } = useTheme();
     const userId = currentUser?.uid;
 
-    const isDesktop = useMediaQuery({ query: "(min-width: 1210px)" });
-    const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
-
-    // Close submenus when main menu closes
+    // Close the mobile menu on navigation
     useEffect(() => {
-        if (!menuOpen) {
-            setRecipesOpen(false);
-            setSeasonalOpen(false);
-            setNewsOpen(false);
-        }
-    }, [menuOpen]);
-
-    // Handle locking the body scroll on mobile
-    useEffect(() => {
-        const body = document.body;
-
-        const handleResize = () => {
-            if (menuOpen && !isDesktop) {
-                body.classList.add(styles.mobile);
-            } else if (menuOpen && isDesktop) {
-                body.classList.remove(styles.mobile);
-                closeMenu();
-            }
-        };
-
-        handleResize();
-        window.addEventListener("resize", handleResize);
-        return () => {
-            body.classList.remove(styles.mobile);
-            window.removeEventListener("resize", handleResize);
-        };
-    }, [menuOpen, isMobile, isDesktop]);
-
-    // Auto-close menu if toggled while on desktop
-    useEffect(() => {
-        if (isDesktop) {
-            closeMenu();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menuOpen]);
-
-    // Toggles
-    const toggleMenu = () => setMenuOpen((prev) => !prev);
-    const toggleRecipesDropdown = () => setRecipesOpen((prev) => !prev);
-    const toggleSeasonalDropdown = () => setSeasonalOpen((prev) => !prev);
-    const toggleNewsDropdown = () => setNewsOpen((prev) => !prev);
-
-    // Close all menus
-    const closeMenu = () => {
         setMenuOpen(false);
-        setRecipesOpen(false);
-        setSeasonalOpen(false);
-        setNewsOpen(false);
-    };
+        setOpenSection(null);
+        // Drop focus so the desktop dropdown (opened via :focus-within) closes
+        document.activeElement?.blur();
+    }, [location.pathname]);
+
+    // Lock page scroll while the mobile menu is open
+    useEffect(() => {
+        document.body.classList.toggle("overflow-hidden", menuOpen);
+        return () => document.body.classList.remove("overflow-hidden");
+    }, [menuOpen]);
+
+    // Close the mobile menu if the viewport grows to desktop size
+    useEffect(() => {
+        const mq = window.matchMedia("(min-width: 1024px)");
+        const onChange = (e) => e.matches && setMenuOpen(false);
+        mq.addEventListener("change", onChange);
+        return () => mq.removeEventListener("change", onChange);
+    }, []);
+
+    const toggleSection = (id) =>
+        setOpenSection((prev) => (prev === id ? null : id));
 
     return (
-        <div id="header-wrap" className={styles["view-nav"]}>
-            <div className={styles.brand}>
-                <div className={styles["nav-icons"]}>
-                    <button className={styles.menuButton} onClick={toggleMenu}>
-                        {menuOpen ? (
-                            <i class="fa-solid fa-x" />
-                        ) : (
-                            <i className="fa-solid fa-bars" />
-                        )}
-                    </button>
-                    <Link to="/" className={styles.logo} onClick={closeMenu}>
-                        <span className={styles["logo-eat"]}>I </span>
-                        <span className={styles["logo-and"]}>
-                            <i class="fa-solid fa-heart" />
-                        </span>
-                        <span className={styles["logo-amare"]}> Food</span>
-                    </Link>
-                </div>
-            </div>
-
-            {/* Main Nav Links */}
-            <ul
-                className={`${styles.navLinks} ${styles.hideLinks} ${
-                    menuOpen ? styles.open : ""
-                }`}
-            >
-                {/* Recipes Dropdown */}
-                <li
-                    className={`${styles.dropdown} ${
-                        recipesOpen ? styles.recipesOpen : ""
-                    }`}
-                    {...(isDesktop && {
-                        onMouseEnter: () => setRecipesOpen(true),
-                        onMouseLeave: () => setRecipesOpen(false),
-                    })}
-                >
-                    <Link
-                        to="#"
-                        className={styles.dropdownToggle}
-                        onClick={(e) =>
-                            isDesktop
-                                ? e.preventDefault()
-                                : toggleRecipesDropdown()
-                        }
-                    >
-                        Recipes{" "}
-                        {menuOpen && (
-                            <i
-                                className={`fa-solid ${
-                                    recipesOpen
-                                        ? "fa-chevron-up"
-                                        : "fa-chevron-down"
-                                }`}
-                            />
-                        )}
-                    </Link>
-                    {recipesOpen && (
-                        <ul
-                            className={`${styles.recipesDropdown} ${
-                                recipesOpen ? styles.open : ""
-                            }`}
+        <>
+            <header className="sticky top-0 z-50 border-b border-neutral-200 bg-white/90 backdrop-blur supports-[backdrop-filter]:bg-white/75 dark:border-neutral-800 dark:bg-neutral-950/90 dark:supports-[backdrop-filter]:bg-neutral-950/75 print:hidden">
+                <nav className="container flex h-16 items-center justify-between gap-4">
+                    {/* Left: burger + logo */}
+                    <div className="flex items-center gap-2">
+                        <button
+                            type="button"
+                            className="btn-icon -ml-2 lg:hidden"
+                            onClick={() => setMenuOpen((prev) => !prev)}
+                            aria-expanded={menuOpen}
+                            aria-controls="mobile-menu"
+                            aria-label={menuOpen ? "Close menu" : "Open menu"}
                         >
-                            {categories.map(({ path, label }) => (
-                                <li key={path}>
-                                    <Link to={path} onClick={closeMenu}>
-                                        {label}
-                                    </Link>
-                                </li>
-                            ))}
-                            <li className={styles["all-recipes-button"]}>
-                                <Link to="/recipes/all" onClick={closeMenu}>
-                                    VIEW ALL
-                                </Link>
+                            {menuOpen ? (
+                                <X className="h-6 w-6" />
+                            ) : (
+                                <Menu className="h-6 w-6" />
+                            )}
+                        </button>
+                        <Logo className="text-xl sm:text-2xl" />
+                    </div>
+
+                    {/* Center: desktop links */}
+                    <ul className="hidden items-center gap-1 lg:flex">
+                        {menus.map((menu) => (
+                            <li key={menu.id} className="group relative">
+                                <button
+                                    type="button"
+                                    className={topLinkClass}
+                                    aria-haspopup="true"
+                                >
+                                    {menu.label}
+                                    <ChevronDown className="h-4 w-4 transition-transform group-hover:rotate-180 group-focus-within:rotate-180" />
+                                </button>
+                                {/* pt-2 bridges the gap so the menu doesn't close while moving the mouse */}
+                                <div className="invisible absolute left-1/2 top-full z-50 -translate-x-1/2 pt-2 opacity-0 transition-all duration-150 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                                    <div
+                                        className={`card overflow-hidden p-2 ${
+                                            menu.wide ? "w-[30rem]" : "w-56"
+                                        }`}
+                                    >
+                                        <ul
+                                            className={
+                                                menu.wide
+                                                    ? "grid grid-cols-2 gap-0.5"
+                                                    : "space-y-0.5"
+                                            }
+                                        >
+                                            {menu.items.map(
+                                                ({ path, label }) => (
+                                                    <li key={path}>
+                                                        <NavLink
+                                                            to={path}
+                                                            className={({
+                                                                isActive,
+                                                            }) =>
+                                                                `block rounded-md px-3 py-2 text-sm transition-colors ${
+                                                                    isActive
+                                                                        ? "bg-brand-50 font-medium text-brand-700 dark:bg-brand-500/10 dark:text-brand-300"
+                                                                        : "text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-white"
+                                                                }`
+                                                            }
+                                                        >
+                                                            {label}
+                                                        </NavLink>
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                        {menu.footer && (
+                                            <Link
+                                                to={menu.footer.path}
+                                                className="mt-2 block rounded-md border-t border-neutral-200 px-3 pb-1 pt-3 text-sm font-semibold text-brand-600 hover:text-brand-700 dark:border-neutral-800 dark:text-brand-400"
+                                            >
+                                                {menu.footer.label} →
+                                            </Link>
+                                        )}
+                                    </div>
+                                </div>
                             </li>
-                        </ul>
-                    )}
-                </li>
+                        ))}
+                        {links.map(({ path, label }) => (
+                            <li key={path}>
+                                <NavLink
+                                    to={path}
+                                    className={({ isActive }) =>
+                                        `${topLinkClass} ${isActive ? "text-brand-600 dark:text-brand-400" : ""}`
+                                    }
+                                >
+                                    {label}
+                                </NavLink>
+                            </li>
+                        ))}
+                    </ul>
 
-                {/* Seasonal Dropdown */}
-                <li
-                    className={`${styles.dropdown} ${
-                        seasonalOpen ? styles.seasonalOpen : ""
-                    }`}
-                    {...(isDesktop && {
-                        onMouseEnter: () => setSeasonalOpen(true),
-                        onMouseLeave: () => setSeasonalOpen(false),
-                    })}
-                >
-                    <Link
-                        to="#"
-                        className={styles.dropdownToggle}
-                        onClick={(e) =>
-                            isDesktop
-                                ? e.preventDefault()
-                                : toggleSeasonalDropdown()
-                        }
-                    >
-                        Seasonal{" "}
-                        {menuOpen && (
-                            <i
-                                className={`fa-solid ${
-                                    seasonalOpen
-                                        ? "fa-chevron-up"
-                                        : "fa-chevron-down"
-                                }`}
-                            />
-                        )}
-                    </Link>
-                    {seasonalOpen && (
-                        <ul
-                            className={`${styles.seasonalDropdown} ${
-                                seasonalOpen ? styles.open : ""
-                            }`}
-                        >
-                            {seasons.map(({ path, label }) => (
-                                <li key={path}>
-                                    <Link to={path} onClick={closeMenu}>
-                                        {label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </li>
-
-                {/* News Dropdown */}
-                <li
-                    className={`${styles.dropdown} ${
-                        newsOpen ? styles.newsOpen : ""
-                    }`}
-                    {...(isDesktop && {
-                        onMouseEnter: () => setNewsOpen(true),
-                        onMouseLeave: () => setNewsOpen(false),
-                    })}
-                >
-                    <Link
-                        to="#"
-                        className={styles.dropdownToggle}
-                        onClick={(e) =>
-                            isDesktop
-                                ? e.preventDefault()
-                                : toggleNewsDropdown()
-                        }
-                    >
-                        News{" "}
-                        {menuOpen && (
-                            <i
-                                className={`fa-solid ${
-                                    newsOpen
-                                        ? "fa-chevron-up"
-                                        : "fa-chevron-down"
-                                }`}
-                            />
-                        )}
-                    </Link>
-                    {newsOpen && (
-                        <ul
-                            className={`${styles.newsDropdown} ${
-                                newsOpen ? styles.open : ""
-                            }`}
-                        >
-                            {news.map(({ path, label }) => (
-                                <li key={path}>
-                                    <Link to={path} onClick={closeMenu}>
-                                        {label}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                </li>
-                {/* Other links */}
-                <li>
-                    <Link to="/gallery" onClick={closeMenu}>
-                        Gallery
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/forum" onClick={closeMenu}>
-                        Forum
-                    </Link>
-                </li>
-            </ul>
-            <div className={styles["auth-icons"]}>
-                <ul className={styles.navLinks}>
-                    <li className={styles.searchContainer}>
+                    {/* Right: actions */}
+                    <div className="flex items-center gap-1">
                         <LiveSearch />
-                    </li>
-                    {currentUser ? (
-                        <>
-                            <li>
+                        <button
+                            type="button"
+                            className="btn-icon hidden sm:inline-flex"
+                            onClick={toggleTheme}
+                            aria-label={
+                                darkMode
+                                    ? "Switch to light mode"
+                                    : "Switch to dark mode"
+                            }
+                        >
+                            {darkMode ? (
+                                <Sun className="h-5 w-5" />
+                            ) : (
+                                <Moon className="h-5 w-5" />
+                            )}
+                        </button>
+                        {currentUser ? (
+                            <>
                                 <Link
                                     to={`/recipes/saved-recipes/${userId}`}
-                                    onClick={closeMenu}
+                                    className="btn-icon"
+                                    aria-label="Saved recipes"
                                 >
-                                    <i class="fa-solid fa-bookmark"/>
+                                    <Bookmark className="h-5 w-5" />
                                 </Link>
-                            </li>
-                            <li>
+                                <Link
+                                    to="/recipes/add"
+                                    className="btn-primary mx-1 px-2.5 py-2 sm:px-3"
+                                    aria-label="Add recipe"
+                                >
+                                    <Plus className="h-4 w-4" />
+                                    <span className="hidden sm:inline">
+                                        Add recipe
+                                    </span>
+                                </Link>
                                 <Link
                                     to={`/auth/${userId}/account-management`}
-                                    onClick={closeMenu}
+                                    className="ml-1 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+                                    aria-label="My account"
                                 >
-                                    <i className="fa-solid fa-user" />
+                                    <Avatar
+                                        src={currentUser.photoURL}
+                                        name={
+                                            currentUser.displayName ||
+                                            currentUser.email
+                                        }
+                                        size="sm"
+                                    />
                                 </Link>
-                            </li>
-                        </>
-                    ) : (
-                        <>
-                            <li className={styles["sign-in-box"]}>
+                            </>
+                        ) : (
+                            <Link
+                                to="/auth/sign-in"
+                                state={{ from: location.pathname }}
+                                className="btn-primary ml-1 px-3 py-2"
+                            >
+                                <User className="h-4 w-4" />
+                                <span className="hidden sm:inline">
+                                    Sign in
+                                </span>
+                            </Link>
+                        )}
+                    </div>
+                </nav>
+            </header>
+
+            {/* Mobile menu (outside <header>: backdrop-filter would trap position:fixed) */}
+            {menuOpen && (
+                <div
+                    id="mobile-menu"
+                    className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-y-auto overscroll-contain border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 lg:hidden"
+                >
+                    <ul className="container divide-y divide-neutral-200 py-2 dark:divide-neutral-800">
+                        {menus.map((menu) => {
+                            const isOpen = openSection === menu.id;
+                            return (
+                                <li key={menu.id}>
+                                    <button
+                                        type="button"
+                                        onClick={() => toggleSection(menu.id)}
+                                        aria-expanded={isOpen}
+                                        className="flex w-full items-center justify-between py-4 text-left text-base font-medium text-neutral-900 dark:text-neutral-100"
+                                    >
+                                        {menu.label}
+                                        <ChevronDown
+                                            className={`h-5 w-5 text-neutral-500 transition-transform ${
+                                                isOpen ? "rotate-180" : ""
+                                            }`}
+                                        />
+                                    </button>
+                                    {isOpen && (
+                                        <ul className="grid gap-1 pb-4 sm:grid-cols-2">
+                                            {[
+                                                ...menu.items,
+                                                ...(menu.footer
+                                                    ? [menu.footer]
+                                                    : []),
+                                            ].map(({ path, label }) => (
+                                                <li key={path}>
+                                                    <Link
+                                                        to={path}
+                                                        className="block rounded-md px-3 py-2 text-sm text-neutral-700 hover:bg-neutral-100 dark:text-neutral-300 dark:hover:bg-neutral-800"
+                                                    >
+                                                        {label}
+                                                    </Link>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            );
+                        })}
+                        {links.map(({ path, label }) => (
+                            <li key={path}>
                                 <Link
-                                    to="/auth/sign-in"
-                                    onClick={closeMenu}
-                                    state={{ from: location.pathname }}
+                                    to={path}
+                                    className="block py-4 text-base font-medium text-neutral-900 dark:text-neutral-100"
                                 >
-                                    <i className="fa-solid fa-user" />
+                                    {label}
                                 </Link>
                             </li>
-                        </>
-                    )}
-                </ul>
-            </div>
-        </div>
+                        ))}
+                        <li>
+                            <button
+                                type="button"
+                                onClick={toggleTheme}
+                                className="flex w-full items-center gap-2 py-4 text-base font-medium text-neutral-900 dark:text-neutral-100"
+                            >
+                                {darkMode ? (
+                                    <Sun className="h-5 w-5" />
+                                ) : (
+                                    <Moon className="h-5 w-5" />
+                                )}
+                                {darkMode ? "Light mode" : "Dark mode"}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            )}
+        </>
     );
 };

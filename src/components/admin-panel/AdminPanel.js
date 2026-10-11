@@ -1,194 +1,40 @@
-import { useState, useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { ShieldCheck } from "lucide-react";
 import { RecipeContext } from "../../contexts/RecipeContext";
 import { useAuth } from "../../contexts/AuthContext";
-
-import styles from "./AdminPanel.module.css";
+import { RecipeForm } from "../recipes/recipe-form/RecipeForm";
 
 export const AdminPanel = () => {
     const { currentUser } = useAuth();
-    const [values, setValues] = useState({
-        title: "",
-        description: "",
-        ingredients: "",
-        steps: "",
-        authorId: currentUser.uid,
-        imageUrl: "",
-        likes: 0,
-        timeToCook: "",
-    });
-
-    const [categories, setCategories] = useState([]);
-
-    const { addRecipe } = useContext(RecipeContext);
+    const { addRecipe, recipes } = useContext(RecipeContext);
     const navigate = useNavigate();
-    const [isSubmitting, setIsSubmitting] = useState(false);
 
-    const availableCategories = [
-        "breakfast",
-        "lunch",
-        "appetizers",
-        "dinner",
-        "dessert",
-        "drinks",
-        "side-dish",
-        "grilling",
-        "microwave",
-        "easy",
-        "slow",
-        "fryer",
-        "instant-pot",
-        "baking",
-        "vegetarian",
-    ];
-
-    const changeHandler = (e) => {
-        setValues((state) => ({
-            ...state,
-            [e.target.name]: e.target.value,
-        }));
-    };
-
-    const handleCategoryChange = (e) => {
-        const { value, checked } = e.target;
-
-        if (checked) {
-            setCategories((prev) => [...prev, value]);
-        } else {
-            setCategories((prev) => prev.filter((cat) => cat !== value));
-        }
-    };
-
-    const onSubmit = async (e) => {
-        e.preventDefault();
-        if (isSubmitting) return;
-
-        if (!values.title || !values.description || !values.timeToCook) {
-            alert("Please fill in all required fields");
-            return;
-        }
-
-        if (isNaN(values.timeToCook) || Number(values.timeToCook) <= 0) {
-            alert("Time to cook must be a positive number");
-            return;
-        }
-
-        if (values.imageUrl && !isValidUrl(values.imageUrl)) {
-            alert("Please provide a valid URL for the image");
-            return;
-        }
-
-        setIsSubmitting(true);
-
-        try {
-            await addRecipe({ ...values, categories });
-            navigate(`/recipes/all`);
-        } catch (error) {
-            console.error("Error adding recipe:", error);
-            alert("There was an error adding the recipe. Please try again.");
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
-
-    const isValidUrl = (string) => {
-        try {
-            new URL(string);
-            return true;
-        } catch (_) {
-            return false;
-        }
+    const onSubmit = async (recipeData) => {
+        const newRecipe = await addRecipe({
+            ...recipeData,
+            authorId: currentUser.uid,
+            authorName: currentUser.displayName || "",
+            likeCount: 0,
+        });
+        navigate(`/recipes/details/${newRecipe.id}`);
     };
 
     return (
-        <div className={styles["form-container"]}>
-            <h1 className={styles["admin-msg1"]}>This is the admin panel, here you can manualy add recipes and manage the site.</h1>
-            <h1 className={styles["admin-msg2"]}>Here add tab to chose in which category to add recipes. For example: seasonal, holidays, trending and etc.</h1>
-            <h1 className={styles["add-recipe-title"]}>Add Recipe</h1>
-            <form id="create" className="col-lg-6 offset-lg-3" onSubmit={onSubmit}>
-                <div className={styles["form-group"]}>
-                    <input
-                        type="text"
-                        id="title"
-                        name="title"
-                        placeholder="Recipe title"
-                        value={values.title}
-                        onChange={changeHandler}
-                    />
+        <div className="page max-w-4xl">
+            <div className="mb-8 flex items-start gap-4">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">
+                    <ShieldCheck className="h-6 w-6" />
                 </div>
-                <div className={styles["form-group"]}>
-                    <input
-                        type="text"
-                        id="description"
-                        name="description"
-                        placeholder="Description"
-                        value={values.description}
-                        onChange={changeHandler}
-                    />
+                <div>
+                    <h1 className="page-title">Admin panel</h1>
+                    <p className="page-subtitle">
+                        Manually add recipes and manage the site.{" "}
+                        {recipes.length} recipes published so far.
+                    </p>
                 </div>
-                <div className={styles["form-group"]}>
-                    <input
-                        type="text"
-                        id="imageUrl"
-                        name="imageUrl"
-                        placeholder="Image URL"
-                        value={values.imageUrl}
-                        onChange={changeHandler}
-                    />
-                </div>
-                <div className={styles["form-group"]}>
-                    <input
-                        type="text"
-                        id="timeToCook"
-                        name="timeToCook"
-                        placeholder="Preparation time"
-                        value={values.timeToCook}
-                        onChange={changeHandler}
-                    />
-                </div>
-                <div className={styles["form-group"]}>
-                    <input
-                        type="text"
-                        id="ingredients"
-                        name="ingredients"
-                        placeholder="Ingredients"
-                        value={values.ingredients}
-                        onChange={changeHandler}
-                    />
-                </div>
-                <div className={styles["form-group"]}>
-                    <input
-                        type="text"
-                        id="steps"
-                        name="steps"
-                        placeholder="Preparation steps"
-                        value={values.steps}
-                        onChange={changeHandler}
-                    />
-                </div>
-                <div className={styles["category-section"]}>
-                    <h4>Select Categories:</h4>
-                    {availableCategories.map((category) => (
-                        <label key={category} className={styles["checkbox-label"]}>
-                            <input
-                                type="checkbox"
-                                value={category}
-                                onChange={handleCategoryChange}
-                            />
-                            {category}
-                        </label>
-                    ))}
-                </div>
-
-                <div className={styles["buttons-form"]}>
-                    <button type="submit" className={styles.btn} disabled={isSubmitting}>
-                        Submit
-                    </button>
-                    <Link className={styles.btn} to={`/recipes/all`}>
-                        Cancel
-                    </Link>
-                </div>
-            </form>
+            </div>
+            <RecipeForm onSubmit={onSubmit} submitLabel="Publish recipe" />
         </div>
     );
 };

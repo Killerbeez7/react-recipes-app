@@ -1,33 +1,40 @@
 import { useState } from "react";
-import { Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Navigate, useNavigate, useLocation, Link } from "react-router-dom";
 import { useAuth } from "../../../contexts/AuthContext";
-import styles from "./SignUp.module.css";
+import { AuthLayout } from "../auth-layout/AuthLayout";
+import { Spinner } from "../../ui/Loader";
+
+const errorMessages = {
+    "auth/email-already-in-use":
+        "This email is already in use. Please sign in instead.",
+    "auth/invalid-email": "Please enter a valid email address.",
+    "auth/missing-password": "Please fill in the password field.",
+    "auth/weak-password": "Password should be at least 6 characters.",
+};
 
 export const SignUp = () => {
     const { currentUser, handleEmailSignUp } = useAuth();
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    // const [username, setUsername] = useState("");
-
+    const [values, setValues] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
+    const [agreed, setAgreed] = useState(false);
     const [isSigningUp, setIsSigningUp] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [agreed, setAgreed] = useState(false);
 
     const navigate = useNavigate();
     const location = useLocation();
+    const from = location.state?.from || "/";
 
-    const clearForm = () => {
-        setEmail("");
-        // setUsername("");
-        setPassword("");
-        setConfirmPassword("");
-        setAgreed(false);
-    };
+    if (currentUser && !isSigningUp) {
+        return <Navigate to={from} replace />;
+    }
 
-    const handleInputChange = (setter) => (e) => {
-        setter(e.target.value);
+    const handleChange = (e) => {
+        setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
         setErrorMessage("");
     };
 
@@ -35,10 +42,8 @@ export const SignUp = () => {
         e.preventDefault();
         if (isSigningUp) return;
 
-        if (password !== confirmPassword) {
+        if (values.password !== values.confirmPassword) {
             setErrorMessage("Passwords do not match.");
-            setPassword("");
-            setConfirmPassword("");
             return;
         }
 
@@ -46,130 +51,112 @@ export const SignUp = () => {
         setErrorMessage("");
 
         try {
-            // if adding username change to: handleEmailSignUp(email, password, username);
-            await handleEmailSignUp(email, password);
-            navigate("/");
+            await handleEmailSignUp(
+                values.email,
+                values.password,
+                values.username
+            );
+            navigate(from, { replace: true });
         } catch (error) {
-            if (error.code === "auth/email-already-in-use") {
-                setErrorMessage(
-                    "This email is already in use. Please try another."
-                );
-                clearForm();
-            } else if (error.code === "auth/missing-password") {
-                setErrorMessage("Please fill in the password field.");
-                setPassword("");
-                setConfirmPassword("");
-            } else if (error.code === "auth/weak-password") {
-                setErrorMessage("Password should be at least 6 characters.");
-                setPassword("");
-                setConfirmPassword("");
-            } else {
-                setErrorMessage("Failed to create account. Please try again.");
-                clearForm();
-            }
-        } finally {
+            setErrorMessage(
+                errorMessages[error.code] ||
+                    "Failed to create account. Please try again."
+            );
             setIsSigningUp(false);
         }
     };
 
-    // go back button functionality
-    const isExternalReferrer =
-        !document.referrer ||
-        !document.referrer.includes(window.location.origin);
-    const isFromSignIn = location.state?.from === "/auth/sign-in";
-
-    const from = isExternalReferrer
-        ? "/"
-        : isFromSignIn
-        ? location.state?.previous || "/"
-        : location.state?.from || "/";
-
-    const handleGoBack = () => {
-        navigate(from);
-    };
-
-    if (currentUser) {
-        return <Navigate to="/" replace />;
-    }
+    const fields = [
+        {
+            name: "username",
+            label: "Username",
+            type: "text",
+            autoComplete: "username",
+            placeholder: "Your display name",
+        },
+        {
+            name: "email",
+            label: "Email",
+            type: "email",
+            autoComplete: "email",
+            placeholder: "you@example.com",
+        },
+        {
+            name: "password",
+            label: "Password",
+            type: "password",
+            autoComplete: "new-password",
+            placeholder: "At least 6 characters",
+            minLength: 6,
+        },
+        {
+            name: "confirmPassword",
+            label: "Confirm password",
+            type: "password",
+            autoComplete: "new-password",
+            placeholder: "Repeat your password",
+            minLength: 6,
+        },
+    ];
 
     return (
-        <div className={styles.main}>
-            {/* Left Section */}
-            <div className={styles["left-section"]}>
-                <h1>Welcome to Eat & Amare</h1>
-            </div>
-
-            {/* Right Section */}
-            <div className={styles["right-section"]}>
-                <button onClick={handleGoBack} className={styles.goBackButton}>
-                    ← Go Back
-                </button>
-                <h1 className={styles["title-style"]}>Sign Up</h1>
-
-                <form className={styles.form} onSubmit={handleSubmit}>
-                    {/* if add username uncomment this */}
-                    {/* <div className={styles.containers}>
-                        <input
-                            type="text"
-                            placeholder="Username"
-                            value={username}
-                            onChange={handleInputChange(setUsername)}
-                        />
-                    </div> */}
-                    <div className={styles.containers}>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={email}
-                            onChange={handleInputChange(setEmail)}
-                            disabled={isSigningUp}
-                        />
-                    </div>
-                    <div className={styles.containers}>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={handleInputChange(setPassword)}
-                            disabled={isSigningUp}
-                        />
-                    </div>
-                    <div className={styles.containers}>
-                        <input
-                            type="password"
-                            placeholder="Confirm Password"
-                            value={confirmPassword}
-                            onChange={handleInputChange(setConfirmPassword)}
-                            disabled={isSigningUp}
-                        />
-                    </div>
-
-                    {errorMessage && (
-                        <p style={{ color: "red" }}>{errorMessage}</p>
-                    )}
-
-                    <div className={styles.terms}>
-                        <input
-                            type="checkbox"
-                            id="terms"
-                            checked={agreed}
-                            onChange={(e) => setAgreed(e.target.checked)}
-                            disabled={isSigningUp}
-                        />
-                        <label htmlFor="terms">
-                            I agree to the Terms and Conditions
+        <AuthLayout
+            title="Create an account"
+            subtitle="Join the community and start sharing recipes."
+            backTo={from}
+        >
+            <form className="space-y-5" onSubmit={handleSubmit}>
+                {fields.map(({ name, label, ...rest }) => (
+                    <div key={name}>
+                        <label htmlFor={name} className="label">
+                            {label}
                         </label>
+                        <input
+                            id={name}
+                            name={name}
+                            required
+                            className="input"
+                            value={values[name]}
+                            onChange={handleChange}
+                            disabled={isSigningUp}
+                            {...rest}
+                        />
                     </div>
+                ))}
 
-                    <button
-                        className={styles["auth-btn"]}
-                        type="submit"
-                        disabled={!agreed || isSigningUp}
-                    >
-                        {isSigningUp ? "Signing Up..." : "Sign Up"}
-                    </button>
-                </form>
-            </div>
-        </div>
+                <label
+                    htmlFor="terms"
+                    className="flex items-center gap-2 text-sm text-neutral-700 dark:text-neutral-300"
+                >
+                    <input
+                        id="terms"
+                        type="checkbox"
+                        className="checkbox"
+                        checked={agreed}
+                        onChange={(e) => setAgreed(e.target.checked)}
+                        disabled={isSigningUp}
+                    />
+                    I agree to the Terms and Conditions
+                </label>
+
+                {errorMessage && <p className="alert-error">{errorMessage}</p>}
+
+                <button
+                    type="submit"
+                    className="btn-primary w-full"
+                    disabled={!agreed || isSigningUp}
+                >
+                    {isSigningUp && <Spinner className="h-4 w-4" />}
+                    {isSigningUp ? "Creating account..." : "Sign up"}
+                </button>
+            </form>
+
+            <p className="mt-8 text-center text-sm text-neutral-600 dark:text-neutral-400">
+                Already have an account?{" "}
+                <Link to="/auth/sign-in" state={{ from }} className="link">
+                    Sign in
+                </Link>
+            </p>
+        </AuthLayout>
     );
 };

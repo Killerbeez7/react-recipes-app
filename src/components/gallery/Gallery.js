@@ -1,126 +1,54 @@
-import styles from "./Gallery.module.css";
+import { Link } from "react-router-dom";
 
-export const Gallery = () => {
-    return (
-        <>
-            <div className={styles["gallery-title-wrapper"]}>
-                <div className={styles["gallery-title"]}>
-                    Find the meal you want and learn how to cook it.
-                </div>
-            </div>
-            <div className={styles["content"]}>
-                <div className={styles["table-wrapper"]}>
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/salad.jpg)",
-                            }}
-                        />
-                        <a href="https://www.google.com/search?q=green+salads&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=xsN1ZaXdM8PAxc8Px6qM2AU&ved=0ahUKEwil2MOUg4WDAxVDYPEDHUcVA1sQ4dUDCBA&uact=5&oq=green+salads&gs_lp=Egxnd3Mtd2l6LXNlcnAiDGdyZWVuIHNhbGFkczILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMgsQABiABBiKBRiRAjIFEAAYgAQyBRAAGIAEMgUQABiABDIFEAAYgAQyCxAAGIAEGIoFGJECMgUQABiABDIFEAAYgARIphNQAFjXEnAAeAGQAQCYAbIBoAHpCqoBBDAuMTG4AQPIAQD4AQHCAhAQLhiABBiKBRhDGMcBGNEDwgIKEAAYgAQYigUYQ8ICHxAuGIAEGIoFGEMYxwEY0QMYlwUY3AQY3gQY4ATYAQHCAgsQLhiABBiKBRiRAsICBRAuGIAEwgILEC4YgAQYxwEYrwHCAgoQLhiABBiKBRhDwgIIEAAYgAQYyQPCAgsQLhivARjHARiABMICCBAuGNQCGIAE4gMEGAAgQYgGAboGBggBEAEYFA&sclient=gws-wiz-serp">
-                            <div className={styles["overlay"]}>
-                                <p>Green salad</p>
-                            </div>
-                        </a>
-                    </div>
+const items = [
+    {
+        image: "/assets/salad.jpg",
+        label: "Green salad",
+        to: "/recipes/vegetarian",
+    },
+    { image: "/assets/steak.jpg", label: "Steak", to: "/recipes/grilling" },
+    { image: "/assets/fish.jpg", label: "Fish", to: "/recipes/dinner" },
+    { image: "/assets/pasta.jpg", label: "Pasta", to: "/recipes/dinner" },
+    { image: "/assets/cake.jpeg", label: "Cake", to: "/recipes/baking" },
+    {
+        image: "/assets/icecream.jpg",
+        label: "Ice cream",
+        to: "/recipes/dessert",
+    },
+    { image: "/assets/pizza.jpg", label: "Pizza", to: "/recipes/dinner" },
+    { image: "/assets/juice.jpg", label: "Juice", to: "/recipes/drinks" },
+    { image: "/assets/wine.jpg", label: "Wines", to: "/recipes/drinks" },
+];
 
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/steak.jpg)",
-                            }}
-                        />
-                        <a href="https://www.google.com/search?q=steak+picture&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=S8R1ZYrdJaaLxc8P0oaD0AI&ved=0ahUKEwjKruvTg4WDAxWmRfEDHVLDACoQ4dUDCBA&uact=5&oq=steak+picture&gs_lp=Egxnd3Mtd2l6LXNlcnAiDXN0ZWFrIHBpY3R1cmUyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEcyBBAAGEdI0QhQ3QFY3QFwAXgCkAEAmAEAoAEAqgEAuAEDyAEA-AEBwgIKEAAYRxjWBBiwA-IDBBgAIEGIBgGQBgg&sclient=gws-wiz-serp">
-                            <div className={styles["overlay"]}>
-                                <div className={styles["subtitle"]}>Steak</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/fish.jpg)",
-                            }}
-                        />
-                        <a href="https://www.google.com/search?q=cooked+fish&sca_esv=589569211&rlz=1C1KNTJ_enBG1067BG1067&ei=asR1ZeTuOMK6xc8PtZuK2Ac&oq=coocked+fish&gs_lp=Egxnd3Mtd2l6LXNlcnAiDGNvb2NrZWQgZmlzaCoCCAAyCxAAGIAEGIoFGJECMgsQABiABBiKBRiRAjILEAAYgAQYigUYkQIyCxAAGIAEGIoFGJECMgoQABiABBiKBRhDMgoQABiABBiKBRhDMgcQABiABBgKMgcQABiABBgKMgcQABiABBgKMgcQABiABBgKSNcgUABY4hhwAHgBkAEAmAH0AaABrw6qAQYwLjExLjG4AQPIAQD4AQHCAgwQABiABBiKBRhDGArCAg0QLhiABBiKBRhDGNQCwgIKEC4YgAQYigUYQ8ICBRAAGIAEwgILEC4YgAQYxwEY0QPCAhAQLhiABBiKBRhDGMcBGNEDwgIFEC4YgATCAgcQLhiABBgKwgINEC4YgAQYxwEYrwEYCsICDRAuGK8BGMcBGIAEGAriAwQYACBBiAYB&sclient=gws-wiz-serp">
-                            <div className={styles["overlay"]}>
-                                <div className={styles["subtitle"]}>Fish</div>
-                            </div>
-                        </a>
-                    </div>
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/pasta.jpg)",
-                            }}
-                        />
-                        <div className={styles["overlay"]}>
-                            <div className={styles["subtitle"]}>Pasta</div>
-                        </div>
-                    </div>
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/cake.jpeg)",
-                            }}
-                        />
-                        <div className={styles["overlay"]}>
-                            <div className={styles["subtitle"]}>Cake</div>
-                        </div>
-                    </div>
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/icecream.jpg)",
-                            }}
-                        />
-                        <div className={styles["overlay"]}>
-                            <div className={styles["subtitle"]}>Ice Cream</div>
-                        </div>
-                    </div>
+export const Gallery = () => (
+    <div className="page">
+        <div className="mx-auto mb-10 max-w-2xl text-center">
+            <h1 className="page-title">Gallery</h1>
+            <p className="page-subtitle">
+                Find the meal you want and learn how to cook it.
+            </p>
+        </div>
 
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/pizza.jpg)",
-                            }}
+        <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {items.map(({ image, label, to }) => (
+                <li key={label}>
+                    <Link
+                        to={to}
+                        className="group relative block aspect-[4/3] overflow-hidden rounded-2xl shadow-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2"
+                    >
+                        <img
+                            src={image}
+                            alt={label}
+                            loading="lazy"
+                            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
-                        <div className={styles["overlay"]}>
-                            <div className={styles["subtitle"]}>Pizza</div>
-                        </div>
-                    </div>
-
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/juice.jpg)",
-                            }}
-                        />
-                        <div className={styles["overlay"]}>
-                            <div className={styles["subtitle"]}>Juice</div>
-                        </div>
-                    </div>
-
-                    <div className={styles["table-item"]}>
-                        <div
-                            className={styles["img-background"]}
-                            style={{
-                                backgroundImage: "url(/assets/wine.jpg)",
-                            }}
-                        />
-                        <div className={styles["overlay"]}>
-                            <div className={styles["subtitle"]}>Wines</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    );
-};
+                        <div className="absolute inset-0 bg-gradient-to-t from-neutral-950/70 via-neutral-950/10 to-transparent" />
+                        <span className="absolute bottom-4 left-5 font-display text-2xl font-bold text-white">
+                            {label}
+                        </span>
+                    </Link>
+                </li>
+            ))}
+        </ul>
+    </div>
+);

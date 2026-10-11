@@ -1,12 +1,18 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
-
 export const PrivateRoute = ({ children }) => {
-    const { userLoggedIn } = useAuth()
+    const { currentUser } = useAuth();
+    const location = useLocation();
 
-    if (!userLoggedIn) {
-        return <Navigate to="/login" replace />;
+    if (!currentUser) {
+        return (
+            <Navigate
+                to="/auth/sign-in"
+                replace
+                state={{ from: location.pathname }}
+            />
+        );
     }
 
     return children ? children : <Outlet />;
