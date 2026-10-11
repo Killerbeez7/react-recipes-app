@@ -467,47 +467,61 @@ export const RecipeDetails = () => {
                 </div>
             </header>
 
-            {/* Ingredients (pinned) | directions + reviews */}
-            <div className="mt-16 grid gap-10 border-t border-neutral-200 pt-12 dark:border-neutral-800 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
-                <section
-                    aria-labelledby="ingredients-title"
-                    className="lg:self-start"
-                >
-                    <div className="card p-6">
-                        <div className="flex items-center justify-between gap-4">
+            {/* One centred column: ingredients, directions, reviews */}
+            <div className="mt-16 border-t border-neutral-200 pt-12 dark:border-neutral-800">
+                <div className="mx-auto max-w-3xl space-y-16">
+                    <section aria-labelledby="ingredients-title">
+                        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
                             <h2
                                 id="ingredients-title"
                                 className="section-title"
                             >
                                 Ingredients
                             </h2>
-                            {checkedIngredients.size > 0 ? (
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        setCheckedIngredients(new Set())
-                                    }
-                                    className="link text-xs print:hidden"
-                                >
-                                    Clear
-                                </button>
-                            ) : (
-                                <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-                                    {plural(ingredients.length, "item")}
-                                </span>
-                            )}
+                            <div className="flex items-center gap-2">
+                                {recipe.servings && (
+                                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                                        <Users
+                                            className="h-3.5 w-3.5"
+                                            aria-hidden="true"
+                                        />
+                                        {plural(recipe.servings, "serving")}
+                                    </span>
+                                )}
+                                {checkedIngredients.size > 0 ? (
+                                    <button
+                                        type="button"
+                                        onClick={() =>
+                                            setCheckedIngredients(new Set())
+                                        }
+                                        className="badge bg-brand-50 text-brand-700 hover:bg-brand-100 dark:bg-brand-500/10 dark:text-brand-300 dark:hover:bg-brand-500/20 print:hidden"
+                                    >
+                                        {checkedIngredients.size} of{" "}
+                                        {ingredients.length} ready · Clear
+                                    </button>
+                                ) : (
+                                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                                        {plural(ingredients.length, "item")}
+                                    </span>
+                                )}
+                            </div>
                         </div>
-                        {recipe.servings && (
-                            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                                For {plural(recipe.servings, "serving")}
-                            </p>
-                        )}
-                        <ul className="mt-5 divide-y divide-neutral-100 dark:divide-neutral-800">
+                        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+                            Tick off what you have ready.
+                        </p>
+
+                        <ul className="mt-6 grid gap-2 sm:grid-cols-2">
                             {ingredients.map((item, i) => {
                                 const checked = checkedIngredients.has(i);
                                 return (
                                     <li key={i}>
-                                        <label className="flex cursor-pointer items-start gap-3 py-2.5 text-sm leading-6">
+                                        <label
+                                            className={`flex h-full cursor-pointer items-start gap-3 rounded-xl border px-4 py-3 text-sm leading-6 transition-colors ${
+                                                checked
+                                                    ? "border-emerald-200 bg-emerald-50/60 dark:border-emerald-900/50 dark:bg-emerald-950/20"
+                                                    : "border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
+                                            }`}
+                                        >
                                             <input
                                                 type="checkbox"
                                                 className="checkbox mt-1 print:hidden"
@@ -522,8 +536,8 @@ export const RecipeDetails = () => {
                                             <span
                                                 className={`first-letter:uppercase ${
                                                     checked
-                                                        ? "text-neutral-400 line-through dark:text-neutral-600"
-                                                        : ""
+                                                        ? "text-neutral-400 line-through dark:text-neutral-500"
+                                                        : "text-neutral-800 dark:text-neutral-200"
                                                 }`}
                                             >
                                                 {item}
@@ -533,10 +547,8 @@ export const RecipeDetails = () => {
                                 );
                             })}
                         </ul>
-                    </div>
-                </section>
+                    </section>
 
-                <div className="min-w-0 space-y-16">
                     <section aria-labelledby="directions-title">
                         <div className="flex items-center justify-between gap-4">
                             <h2 id="directions-title" className="section-title">
