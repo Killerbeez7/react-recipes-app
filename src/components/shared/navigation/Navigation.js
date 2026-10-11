@@ -1,17 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import {
-    Bookmark,
-    ChevronDown,
-    Menu,
-    Moon,
-    Plus,
-    Sun,
-    User,
-    X,
-} from "lucide-react";
+import { Bookmark, ChevronDown, Menu, Plus, User, X } from "lucide-react";
 import { useAuth } from "../../../contexts/AuthContext";
-import { useTheme } from "../../../contexts/ThemeContext";
 import { CATEGORIES, SEASONS, NEWS } from "../../../constants/categories";
 import { Search } from "../../search/Search";
 import { Avatar } from "../../ui/Avatar";
@@ -53,7 +43,6 @@ export const Navigation = () => {
 
     const location = useLocation();
     const { currentUser } = useAuth();
-    const { darkMode, toggleTheme } = useTheme();
     const userId = currentUser?.uid;
 
     // Close the mobile menu on navigation
@@ -180,38 +169,22 @@ export const Navigation = () => {
                     {/* Right: actions */}
                     <div className="flex items-center gap-1">
                         <Search />
-                        <button
-                            type="button"
-                            className="btn-icon hidden sm:inline-flex"
-                            onClick={toggleTheme}
-                            aria-label={
-                                darkMode
-                                    ? "Switch to light mode"
-                                    : "Switch to dark mode"
-                            }
-                        >
-                            {darkMode ? (
-                                <Sun className="h-5 w-5" />
-                            ) : (
-                                <Moon className="h-5 w-5" />
-                            )}
-                        </button>
                         {currentUser ? (
                             <>
                                 <Link
                                     to={`/recipes/saved-recipes/${userId}`}
-                                    className="btn-icon"
+                                    className="btn-icon hidden sm:inline-flex"
                                     aria-label="Saved recipes"
                                 >
                                     <Bookmark className="h-5 w-5" />
                                 </Link>
                                 <Link
                                     to="/recipes/add"
-                                    className="btn-primary mx-1 px-2.5 py-2 sm:px-3"
+                                    className="btn-primary mx-1 hidden px-2.5 py-2 sm:inline-flex xl:px-3"
                                     aria-label="Add recipe"
                                 >
                                     <Plus className="h-4 w-4" />
-                                    <span className="hidden sm:inline">
+                                    <span className="hidden xl:inline">
                                         Add recipe
                                     </span>
                                 </Link>
@@ -253,6 +226,23 @@ export const Navigation = () => {
                     className="fixed inset-x-0 bottom-0 top-16 z-50 overflow-y-auto overscroll-contain border-t border-neutral-200 bg-white dark:border-neutral-800 dark:bg-neutral-950 lg:hidden"
                 >
                     <ul className="container divide-y divide-neutral-200 py-2 dark:divide-neutral-800">
+                        {/* On phones these live here instead of the header */}
+                        {currentUser && (
+                            <li className="flex gap-3 py-4 sm:hidden">
+                                <Link
+                                    to="/recipes/add"
+                                    className="btn-primary flex-1"
+                                >
+                                    <Plus className="h-4 w-4" /> Add recipe
+                                </Link>
+                                <Link
+                                    to={`/recipes/saved-recipes/${userId}`}
+                                    className="btn-secondary flex-1"
+                                >
+                                    <Bookmark className="h-4 w-4" /> Saved
+                                </Link>
+                            </li>
+                        )}
                         {menus.map((menu) => {
                             const isOpen = openSection === menu.id;
                             return (
@@ -302,20 +292,6 @@ export const Navigation = () => {
                                 </Link>
                             </li>
                         ))}
-                        <li>
-                            <button
-                                type="button"
-                                onClick={toggleTheme}
-                                className="flex w-full items-center gap-2 py-4 text-base font-medium text-neutral-900 dark:text-neutral-100"
-                            >
-                                {darkMode ? (
-                                    <Sun className="h-5 w-5" />
-                                ) : (
-                                    <Moon className="h-5 w-5" />
-                                )}
-                                {darkMode ? "Light mode" : "Dark mode"}
-                            </button>
-                        </li>
                     </ul>
                 </div>
             )}
