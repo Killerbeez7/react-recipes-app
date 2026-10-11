@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# firebase migration: database exports and admin credentials
+/scripts/*.json
+*firebase-adminsdk*.json
+serviceAccountKey.json
