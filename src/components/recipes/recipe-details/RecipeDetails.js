@@ -471,7 +471,7 @@ export const RecipeDetails = () => {
             <div className="mt-16 grid gap-10 border-t border-neutral-200 pt-12 dark:border-neutral-800 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
                 <section
                     aria-labelledby="ingredients-title"
-                    className="lg:sticky lg:top-24 lg:self-start"
+                    className="lg:self-start"
                 >
                     <div className="card p-6">
                         <div className="flex items-center justify-between gap-4">

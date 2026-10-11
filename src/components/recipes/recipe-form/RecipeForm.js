@@ -709,7 +709,7 @@ export const RecipeForm = ({
 
             {/* Preview & checklist */}
             <aside className="hidden lg:block">
-                <div className="sticky top-24 space-y-6">
+                <div className="space-y-6">
                     <div>
                         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
                             Card preview
