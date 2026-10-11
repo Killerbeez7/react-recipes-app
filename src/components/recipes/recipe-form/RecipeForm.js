@@ -107,6 +107,29 @@ const errorTargets = [
     ["categories", "categories"],
 ];
 
+// Turn Firebase errors into something the user (and we) can act on
+const describeSaveError = (stage, error) => {
+    const code = error?.code || "unknown";
+    const reasons = {
+        "storage/unauthorized":
+            "Photo upload was blocked by Firebase Storage permissions.",
+        "storage/unauthenticated":
+            "Your session expired — please sign in again.",
+        "storage/quota-exceeded":
+            "Photo storage quota is exceeded on the Firebase plan.",
+        "storage/retry-limit-exceeded":
+            "The photo upload timed out. Check your connection.",
+        "storage/canceled": "The photo upload was cancelled.",
+        "permission-denied":
+            "The database rejected the save (permission denied).",
+        unauthenticated: "Your session expired — please sign in again.",
+        unavailable: "You seem to be offline. Check your connection.",
+        "invalid-argument": "Some recipe data was invalid.",
+    };
+    const what = stage === "upload" ? "upload the photo" : "save the recipe";
+    return `Couldn't ${what}. ${reasons[code] || "Please try again."} (${code})`;
+};
+
 // ------------------------------------------------------------------ UI pieces
 
 const Section = ({ number, title, description, optional, children }) => (
@@ -249,6 +272,7 @@ export const RecipeForm = ({
         setIsSubmitting(true);
         setSubmitError("");
 
+        let stage = "upload";
         try {
             let imageUrl = form.imageUrl.trim();
             if (imageFile) {
@@ -260,6 +284,7 @@ export const RecipeForm = ({
                 imageUrl = await getDownloadURL(fileRef);
             }
 
+            stage = "save";
             submittedRef.current = true;
             await onSubmit({
                 title: form.title.trim(),
@@ -281,11 +306,9 @@ export const RecipeForm = ({
                 } catch {}
             }
         } catch (error) {
-            console.error("Error saving recipe:", error);
+            console.error(`Recipe ${stage} failed:`, error);
             submittedRef.current = false;
-            setSubmitError(
-                "There was an error saving the recipe. Please try again."
-            );
+            setSubmitError(describeSaveError(stage, error));
             setIsSubmitting(false);
         }
     };
