@@ -83,37 +83,33 @@ export const ClassicLayout = ({
         </section>
 
         <section aria-labelledby="directions-title">
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex items-center justify-between gap-4">
                 <div>
                     <h2 id="directions-title" className="section-title">
                         Directions
                     </h2>
                     <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+                        {doneSteps.size > 0 && (
+                            <span className="font-medium text-neutral-700 dark:text-neutral-300">
+                                {doneSteps.size} of{" "}
+                                {plural(steps.length, "step")} done ·{" "}
+                            </span>
+                        )}
                         Tap a step to mark it as done.
                     </p>
                 </div>
-                {/* "Start cooking" (desktop) with the progress underneath */}
-                <div
-                    className={`flex shrink-0 flex-col gap-2 print:hidden ${
-                        onStartCooking ? "items-center" : "items-end"
-                    }`}
-                >
-                    {onStartCooking && steps.length > 0 && (
-                        <button
-                            type="button"
-                            onClick={onStartCooking}
-                            className="btn-primary px-4 py-2"
-                        >
-                            <Play className="h-4 w-4 fill-current" />
-                            {doneSteps.size > 0 && doneSteps.size < steps.length
-                                ? "Continue cooking"
-                                : "Start cooking"}
-                        </button>
-                    )}
-                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-                        {doneSteps.size} of {plural(steps.length, "step")} done
-                    </span>
-                </div>
+                {onStartCooking && steps.length > 0 && (
+                    <button
+                        type="button"
+                        onClick={onStartCooking}
+                        className="btn-primary shrink-0 px-4 py-2 print:hidden"
+                    >
+                        <Play className="h-4 w-4 fill-current" />
+                        {doneSteps.size > 0 && doneSteps.size < steps.length
+                            ? "Continue cooking"
+                            : "Start cooking"}
+                    </button>
+                )}
             </div>
 
             <ol className="mt-6">
