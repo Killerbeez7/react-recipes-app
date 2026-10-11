@@ -44,6 +44,9 @@ const difficultyStyles = {
     hard: "bg-red-600",
 };
 
+const plural = (count, word) =>
+    `${count} ${word}${Number(count) === 1 ? "" : "s"}`;
+
 const Stat = ({ icon: Icon, label, value }) => (
     <div className="flex flex-col items-center gap-1 px-2 py-4 text-center">
         <Icon
@@ -121,6 +124,10 @@ export const RecipeDetails = () => {
     const isLiked = !!(currentUser && recipe.likes?.[currentUser.uid]);
     const averageRating = getAverageRating(recipe.ratings);
     const ratingCount = Object.keys(recipe.ratings || {}).length;
+    const ratingBreakdown = Object.values(recipe.ratings || {}).reduce(
+        (acc, value) => ({ ...acc, [value]: (acc[value] || 0) + 1 }),
+        { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+    );
     const userRating = currentUser ? recipe.ratings?.[currentUser.uid] : null;
     const ingredients = parseIngredients(recipe.ingredients);
     const steps = parseSteps(recipe.steps);
@@ -460,14 +467,14 @@ export const RecipeDetails = () => {
                 </div>
             </header>
 
-            {/* Ingredients & directions */}
+            {/* Ingredients (pinned) | directions + reviews */}
             <div className="mt-16 grid gap-10 border-t border-neutral-200 pt-12 dark:border-neutral-800 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
                 <section
                     aria-labelledby="ingredients-title"
                     className="lg:sticky lg:top-24 lg:self-start"
                 >
                     <div className="card p-6">
-                        <div className="flex items-baseline justify-between gap-4">
+                        <div className="flex items-center justify-between gap-4">
                             <h2
                                 id="ingredients-title"
                                 className="section-title"
@@ -485,22 +492,22 @@ export const RecipeDetails = () => {
                                     Clear
                                 </button>
                             ) : (
-                                <span className="text-xs text-neutral-500 dark:text-neutral-400">
-                                    {ingredients.length} items
+                                <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                                    {plural(ingredients.length, "item")}
                                 </span>
                             )}
                         </div>
                         {recipe.servings && (
                             <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
-                                For {recipe.servings} servings
+                                For {plural(recipe.servings, "serving")}
                             </p>
                         )}
-                        <ul className="mt-5 space-y-1">
+                        <ul className="mt-5 divide-y divide-neutral-100 dark:divide-neutral-800">
                             {ingredients.map((item, i) => {
                                 const checked = checkedIngredients.has(i);
                                 return (
                                     <li key={i}>
-                                        <label className="-mx-2 flex cursor-pointer items-start gap-3 rounded-lg px-2 py-2 text-sm leading-6 hover:bg-neutral-50 dark:hover:bg-neutral-800/60">
+                                        <label className="flex cursor-pointer items-start gap-3 py-2.5 text-sm leading-6">
                                             <input
                                                 type="checkbox"
                                                 className="checkbox mt-1 print:hidden"
@@ -529,126 +536,194 @@ export const RecipeDetails = () => {
                     </div>
                 </section>
 
-                <section aria-labelledby="directions-title">
-                    <div className="flex items-baseline justify-between gap-4">
-                        <h2 id="directions-title" className="section-title">
-                            Directions
-                        </h2>
-                        <span className="text-xs text-neutral-500 dark:text-neutral-400 print:hidden">
-                            {doneSteps.size}/{steps.length} done
-                        </span>
-                    </div>
-                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
-                        Tap a step to mark it as done.
-                    </p>
-                    <ol className="mt-6 space-y-3">
-                        {steps.map((step, i) => {
-                            const done = doneSteps.has(i);
-                            return (
-                                <li key={i}>
-                                    <button
-                                        type="button"
-                                        onClick={() =>
-                                            toggleInSet(setDoneSteps, i)
-                                        }
-                                        aria-pressed={done}
-                                        className={`flex w-full gap-4 rounded-2xl border p-4 text-left transition-colors sm:p-5 ${
-                                            done
-                                                ? "border-emerald-200 bg-emerald-50/60 dark:border-emerald-900/50 dark:bg-emerald-950/20"
-                                                : "border-neutral-200 bg-white hover:border-neutral-300 dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700"
-                                        }`}
-                                    >
-                                        <span
-                                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold ${
-                                                done
-                                                    ? "bg-emerald-600 text-white"
-                                                    : "bg-brand-600 text-white"
+                <div className="min-w-0 space-y-16">
+                    <section aria-labelledby="directions-title">
+                        <div className="flex items-center justify-between gap-4">
+                            <h2 id="directions-title" className="section-title">
+                                Directions
+                            </h2>
+                            <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 print:hidden">
+                                {doneSteps.size} of{" "}
+                                {plural(steps.length, "step")} done
+                            </span>
+                        </div>
+                        <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+                            Tap a step to mark it as done.
+                        </p>
+
+                        <ol className="mt-6">
+                            {steps.map((step, i) => {
+                                const done = doneSteps.has(i);
+                                const last = i === steps.length - 1;
+                                return (
+                                    <li key={i} className="relative">
+                                        {/* Timeline connector */}
+                                        {!last && (
+                                            <span
+                                                aria-hidden="true"
+                                                className={`absolute bottom-0 left-4 top-11 w-px ${
+                                                    done
+                                                        ? "bg-emerald-300 dark:bg-emerald-800"
+                                                        : "bg-neutral-200 dark:bg-neutral-800"
+                                                }`}
+                                            />
+                                        )}
+                                        <button
+                                            type="button"
+                                            onClick={() =>
+                                                toggleInSet(setDoneSteps, i)
+                                            }
+                                            aria-pressed={done}
+                                            aria-label={`Step ${i + 1}${done ? " (done)" : ""}`}
+                                            className={`group flex w-full gap-4 rounded-xl text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 ${
+                                                last ? "" : "pb-8"
                                             }`}
                                         >
-                                            {done ? (
-                                                <Check className="h-4 w-4" />
-                                            ) : (
-                                                i + 1
-                                            )}
-                                        </span>
-                                        <span className="min-w-0">
-                                            <span className="block text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-                                                Step {i + 1}
+                                            <span
+                                                className={`relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold ring-4 ring-neutral-50 transition-colors dark:ring-neutral-950 ${
+                                                    done
+                                                        ? "bg-emerald-600 text-white"
+                                                        : "bg-brand-600 text-white group-hover:bg-brand-700"
+                                                }`}
+                                            >
+                                                {done ? (
+                                                    <Check className="h-4 w-4" />
+                                                ) : (
+                                                    i + 1
+                                                )}
                                             </span>
                                             <span
-                                                className={`mt-1 block leading-7 first-letter:uppercase ${
+                                                className={`pt-0.5 leading-7 transition-colors first-letter:uppercase ${
                                                     done
-                                                        ? "text-neutral-500 dark:text-neutral-500"
-                                                        : "text-neutral-800 dark:text-neutral-200"
+                                                        ? "text-neutral-400 line-through decoration-neutral-300 dark:text-neutral-500 dark:decoration-neutral-700"
+                                                        : "text-neutral-800 group-hover:text-neutral-950 dark:text-neutral-200 dark:group-hover:text-white"
                                                 }`}
                                             >
                                                 {step}
                                             </span>
-                                        </span>
-                                    </button>
-                                </li>
-                            );
-                        })}
-                    </ol>
+                                        </button>
+                                    </li>
+                                );
+                            })}
+                        </ol>
 
-                    {Array.isArray(recipe.tips) && recipe.tips.length > 0 && (
-                        <div className="mt-8 rounded-2xl border border-brand-200 bg-brand-50 p-6 dark:border-brand-500/20 dark:bg-brand-500/5">
-                            <h3 className="flex items-center gap-2 font-semibold">
-                                <ChefHat
-                                    className="h-5 w-5 text-brand-600"
-                                    aria-hidden="true"
-                                />{" "}
-                                Tips
-                            </h3>
-                            <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm">
-                                {recipe.tips.map((tip, i) => (
-                                    <li key={i}>{tip}</li>
-                                ))}
-                            </ul>
+                        {Array.isArray(recipe.tips) &&
+                            recipe.tips.length > 0 && (
+                                <div className="mt-10 rounded-2xl border border-brand-200 bg-brand-50 p-6 dark:border-brand-500/20 dark:bg-brand-500/5">
+                                    <h3 className="flex items-center gap-2 font-semibold">
+                                        <ChefHat
+                                            className="h-5 w-5 text-brand-600"
+                                            aria-hidden="true"
+                                        />
+                                        Tips
+                                    </h3>
+                                    <ul className="mt-3 list-disc space-y-1.5 pl-5 text-sm">
+                                        {recipe.tips.map((tip, i) => (
+                                            <li key={i}>{tip}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            )}
+                    </section>
+
+                    {/* Reviews: rating summary, your rating, comments */}
+                    <section
+                        ref={ratingSectionRef}
+                        aria-labelledby="reviews-title"
+                        className="print:hidden"
+                    >
+                        <h2 id="reviews-title" className="section-title">
+                            Reviews
+                        </h2>
+
+                        <div className="card mt-6 divide-y divide-neutral-200 dark:divide-neutral-800">
+                            <div className="grid gap-6 p-6 sm:grid-cols-[auto_minmax(0,1fr)] sm:items-center sm:gap-10">
+                                <div className="text-center sm:text-left">
+                                    <p className="text-5xl font-bold tracking-tight text-neutral-900 dark:text-white">
+                                        {ratingCount
+                                            ? averageRating.toFixed(1)
+                                            : "–"}
+                                    </p>
+                                    <div className="mt-2">
+                                        <StarRating value={averageRating} />
+                                    </div>
+                                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">
+                                        {ratingCount
+                                            ? plural(ratingCount, "rating")
+                                            : "No ratings yet"}
+                                    </p>
+                                </div>
+                                <ul
+                                    className="space-y-1.5"
+                                    aria-label="Rating breakdown"
+                                >
+                                    {[5, 4, 3, 2, 1].map((stars) => {
+                                        const count = ratingBreakdown[stars];
+                                        const percent = ratingCount
+                                            ? (count / ratingCount) * 100
+                                            : 0;
+                                        return (
+                                            <li
+                                                key={stars}
+                                                className="flex items-center gap-3 text-xs text-neutral-500 dark:text-neutral-400"
+                                            >
+                                                <span className="w-3 text-right">
+                                                    {stars}
+                                                </span>
+                                                <span className="h-2 flex-1 overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
+                                                    <span
+                                                        className="block h-full rounded-full bg-amber-400"
+                                                        style={{
+                                                            width: `${percent}%`,
+                                                        }}
+                                                    />
+                                                </span>
+                                                <span className="w-6 tabular-nums">
+                                                    {count}
+                                                </span>
+                                            </li>
+                                        );
+                                    })}
+                                </ul>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-3 p-6 text-center sm:flex-row sm:justify-between sm:text-left">
+                                <div>
+                                    <p className="font-semibold text-neutral-900 dark:text-neutral-100">
+                                        {userRating
+                                            ? "Your rating"
+                                            : "Made this recipe?"}
+                                    </p>
+                                    <p className="mt-0.5 text-sm text-neutral-500 dark:text-neutral-400">
+                                        {!currentUser
+                                            ? "Sign in to rate it and help other cooks."
+                                            : userRating
+                                              ? "Tap a star to change it."
+                                              : "Let others know how it turned out."}
+                                    </p>
+                                </div>
+                                {currentUser ? (
+                                    <StarInput
+                                        value={userRating}
+                                        onChange={handleRate}
+                                    />
+                                ) : (
+                                    <Link
+                                        to="/auth/sign-in"
+                                        state={{
+                                            from: `/recipes/details/${recipeId}`,
+                                        }}
+                                        className="btn-secondary"
+                                    >
+                                        Sign in to rate
+                                    </Link>
+                                )}
+                            </div>
                         </div>
-                    )}
-                </section>
-            </div>
 
-            {/* Rating & comments */}
-            <div className="mx-auto mt-16 max-w-3xl space-y-12 border-t border-neutral-200 pt-12 dark:border-neutral-800 print:hidden">
-                <section
-                    ref={ratingSectionRef}
-                    aria-labelledby="rate-title"
-                    className="card flex flex-col items-center gap-3 p-8 text-center"
-                >
-                    <h2 id="rate-title" className="section-title">
-                        {userRating
-                            ? "Thanks for rating!"
-                            : "Made this recipe?"}
-                    </h2>
-                    {currentUser ? (
-                        <>
-                            <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                                {userRating
-                                    ? `You gave it ${userRating} out of 5. Tap a star to change your rating.`
-                                    : "Let others know how it turned out."}
-                            </p>
-                            <StarInput
-                                value={userRating}
-                                onChange={handleRate}
-                            />
-                        </>
-                    ) : (
-                        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-                            <Link
-                                to="/auth/sign-in"
-                                state={{ from: `/recipes/details/${recipeId}` }}
-                                className="link"
-                            >
-                                Sign in
-                            </Link>{" "}
-                            to rate it and help other cooks.
-                        </p>
-                    )}
-                </section>
-
-                <RecipeComments recipeId={recipeId} />
+                        <RecipeComments recipeId={recipeId} />
+                    </section>
+                </div>
             </div>
 
             {/* Similar recipes */}

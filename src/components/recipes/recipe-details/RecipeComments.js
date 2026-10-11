@@ -91,26 +91,27 @@ export const RecipeComments = ({ recipeId }) => {
     };
 
     return (
-        <section aria-labelledby="comments-title">
-            <h2
+        <section aria-labelledby="comments-title" className="mt-10">
+            <h3
                 id="comments-title"
-                className="section-title flex items-center gap-2"
+                className="flex items-center gap-2 text-lg font-semibold"
             >
                 Comments
-                <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                <span className="badge bg-neutral-100 font-sans text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
                     {sorted.length}
                 </span>
-            </h2>
+            </h3>
 
             {currentUser ? (
-                <form onSubmit={onSubmit} className="mt-6 flex gap-3">
+                <form onSubmit={onSubmit} className="mt-5 flex gap-3">
                     <Avatar
                         src={myPhoto}
                         name={currentUser.displayName || currentUser.email}
                         size="sm"
                         className="mt-1 hidden sm:inline-flex"
                     />
-                    <div className="flex-1">
+                    {/* Textarea and actions share one bordered box */}
+                    <div className="flex-1 rounded-xl border border-neutral-300 bg-white shadow-sm transition-colors focus-within:border-brand-500 focus-within:ring-1 focus-within:ring-brand-500 dark:border-neutral-700 dark:bg-neutral-900">
                         <label htmlFor="comment" className="sr-only">
                             {editingId
                                 ? "Edit your comment"
@@ -118,34 +119,39 @@ export const RecipeComments = ({ recipeId }) => {
                         </label>
                         <textarea
                             id="comment"
-                            rows={3}
-                            className="input resize-y bg-white dark:bg-neutral-900"
+                            rows={2}
+                            className="block w-full resize-none border-0 bg-transparent px-4 pt-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:ring-0 dark:text-neutral-100 dark:placeholder:text-neutral-500"
                             placeholder="Made it? Share how it went, or a tip for others..."
                             value={text}
                             onChange={(e) => setText(e.target.value)}
                         />
-                        <div className="mt-3 flex items-center justify-end gap-2">
-                            {editingId && (
+                        <div className="flex items-center justify-between gap-2 px-3 pb-3">
+                            <span className="pl-1 text-xs text-neutral-400">
+                                {editingId ? "Editing your comment" : ""}
+                            </span>
+                            <span className="flex gap-2">
+                                {editingId && (
+                                    <button
+                                        type="button"
+                                        onClick={reset}
+                                        className="btn-ghost px-3 py-1.5"
+                                    >
+                                        Cancel
+                                    </button>
+                                )}
                                 <button
-                                    type="button"
-                                    onClick={reset}
-                                    className="btn-ghost"
+                                    type="submit"
+                                    className="btn-primary px-3 py-1.5 disabled:bg-neutral-200 disabled:text-neutral-500 disabled:opacity-100 disabled:shadow-none dark:disabled:bg-neutral-800 dark:disabled:text-neutral-500"
+                                    disabled={!text.trim() || isSaving}
                                 >
-                                    Cancel
+                                    {editingId ? "Update" : "Post"}
                                 </button>
-                            )}
-                            <button
-                                type="submit"
-                                className="btn-primary"
-                                disabled={!text.trim() || isSaving}
-                            >
-                                {editingId ? "Update comment" : "Post comment"}
-                            </button>
+                            </span>
                         </div>
                     </div>
                 </form>
             ) : (
-                <p className="mt-4 rounded-xl bg-neutral-100 px-4 py-3 text-sm text-neutral-600 dark:bg-neutral-900 dark:text-neutral-400">
+                <p className="mt-4 text-sm text-neutral-600 dark:text-neutral-400">
                     <Link
                         to="/auth/sign-in"
                         state={{ from: `/recipes/details/${recipeId}` }}
@@ -160,17 +166,12 @@ export const RecipeComments = ({ recipeId }) => {
             {error && <p className="alert-error mt-4">{error}</p>}
 
             {sorted.length === 0 ? (
-                <div className="mt-8 flex flex-col items-center rounded-2xl border border-dashed border-neutral-300 px-6 py-10 text-center dark:border-neutral-700">
-                    <MessageCircle
-                        className="h-6 w-6 text-neutral-400"
-                        aria-hidden="true"
-                    />
-                    <p className="mt-2 text-sm text-neutral-500 dark:text-neutral-400">
-                        No comments yet — be the first to share your thoughts!
-                    </p>
-                </div>
+                <p className="mt-6 flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400">
+                    <MessageCircle className="h-4 w-4" aria-hidden="true" />
+                    No comments yet — be the first to share your thoughts.
+                </p>
             ) : (
-                <ul className="mt-8 divide-y divide-neutral-200 dark:divide-neutral-800">
+                <ul className="mt-6 divide-y divide-neutral-200 dark:divide-neutral-800">
                     {sorted.map(([key, comment]) => (
                         <li
                             key={key}
