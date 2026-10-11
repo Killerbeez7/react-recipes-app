@@ -108,6 +108,17 @@
         @apply h-4 w-4 rounded border-neutral-300 text-brand-600 focus:ring-brand-500 dark:border-neutral-600 dark:bg-neutral-800;
     }
 
+    /* Hide the browser's number steppers (we render our own controls) */
+    .no-spinner {
+        -moz-appearance: textfield;
+    }
+
+    .no-spinner::-webkit-inner-spin-button,
+    .no-spinner::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
     .hint {
         @apply mt-1.5 text-xs text-neutral-500 dark:text-neutral-400;
     }

@@ -10,13 +10,17 @@ const difficultyStyles = {
     hard: "bg-red-600",
 };
 
-export const RecipeItem = ({ recipe }) => {
+// `preview` renders a non-interactive card (used by the recipe form)
+export const RecipeItem = ({ recipe, preview = false }) => {
     const difficulty = recipe.difficulty || "Easy";
     const rating = recipe.averageRating ?? getAverageRating(recipe.ratings);
 
+    const Wrapper = preview ? "div" : Link;
+    const wrapperProps = preview ? {} : { to: `/recipes/details/${recipe.id}` };
+
     return (
-        <Link
-            to={`/recipes/details/${recipe.id}`}
+        <Wrapper
+            {...wrapperProps}
             className="card group flex h-full flex-col overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-card-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500"
         >
             <div className="relative aspect-[4/3] overflow-hidden">
@@ -65,6 +69,6 @@ export const RecipeItem = ({ recipe }) => {
                     </span>
                 </div>
             </div>
-        </Link>
+        </Wrapper>
     );
 };

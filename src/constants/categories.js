@@ -37,3 +37,21 @@ export const NEWS = [
 ];
 
 export const DIFFICULTIES = ["Easy", "Medium", "Hard"];
+
+export const CUISINES = [
+    "American",
+    "Bulgarian",
+    "Chinese",
+    "French",
+    "Greek",
+    "Indian",
+    "Italian",
+    "Japanese",
+    "Korean",
+    "Mediterranean",
+    "Mexican",
+    "Middle Eastern",
+    "Spanish",
+    "Thai",
+    "Vietnamese",
+];

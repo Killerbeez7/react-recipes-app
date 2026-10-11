@@ -74,7 +74,7 @@ export const RecipeEdit = () => {
     }
 
     return (
-        <div className="page max-w-4xl">
+        <div className="page max-w-6xl">
             <div className="mb-8">
                 <h1 className="page-title">Edit recipe</h1>
                 <p className="page-subtitle">{recipe.title}</p>

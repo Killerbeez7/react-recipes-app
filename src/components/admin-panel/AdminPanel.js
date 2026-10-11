@@ -21,7 +21,7 @@ export const AdminPanel = () => {
     };
 
     return (
-        <div className="page max-w-4xl">
+        <div className="page max-w-6xl">
             <div className="mb-8 flex items-start gap-4">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-700 dark:bg-brand-500/15 dark:text-brand-300">
                     <ShieldCheck className="h-6 w-6" />

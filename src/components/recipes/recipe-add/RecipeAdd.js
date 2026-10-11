@@ -20,14 +20,18 @@ export const RecipeAdd = () => {
     };
 
     return (
-        <div className="page max-w-4xl">
+        <div className="page max-w-6xl">
             <div className="mb-8">
                 <h1 className="page-title">Add a recipe</h1>
                 <p className="page-subtitle">
                     Share a dish you love with the community.
                 </p>
             </div>
-            <RecipeForm onSubmit={onSubmit} submitLabel="Publish recipe" />
+            <RecipeForm
+                onSubmit={onSubmit}
+                submitLabel="Publish recipe"
+                draftKey={`recipe-draft-${currentUser.uid}`}
+            />
         </div>
     );
 };
