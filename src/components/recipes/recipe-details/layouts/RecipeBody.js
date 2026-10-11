@@ -1,14 +1,12 @@
 import { ClassicLayout } from "./ClassicLayout";
 import { CookModeLayout } from "./CookModeLayout";
-import { PrepBoardLayout } from "./PrepBoardLayout";
 
 const layouts = {
     classic: ClassicLayout,
     cook: CookModeLayout,
-    board: PrepBoardLayout,
 };
 
-// Ingredients + steps, rendered in the chosen layout
+// Ingredients + steps: the classic view, or cook mode on desktop
 export const RecipeBody = ({ layout, ...props }) => {
     const Layout = layouts[layout] || ClassicLayout;
     return <Layout {...props} />;

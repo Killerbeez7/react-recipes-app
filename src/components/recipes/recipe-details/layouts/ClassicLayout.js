@@ -1,9 +1,9 @@
-import { Check, Users } from "lucide-react";
+import { Check, Play, Users } from "lucide-react";
 import { plural } from "./recipeParts";
 import { RecipeTips } from "./RecipeTips";
 
-// The default layout: ingredients grid above a numbered timeline.
-// Also the only layout used on phones.
+// The normal recipe view: ingredients grid above a numbered timeline.
+// On desktop, "Start cooking" (onStartCooking) switches to cook mode.
 export const ClassicLayout = ({
     recipe,
     ingredients,
@@ -13,6 +13,7 @@ export const ClassicLayout = ({
     onClearIngredients,
     doneSteps,
     onToggleStep,
+    onStartCooking,
 }) => (
     <div className="mx-auto max-w-3xl space-y-16">
         <section aria-labelledby="ingredients-title">
@@ -86,9 +87,23 @@ export const ClassicLayout = ({
                 <h2 id="directions-title" className="section-title">
                     Directions
                 </h2>
-                <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300 print:hidden">
-                    {doneSteps.size} of {plural(steps.length, "step")} done
-                </span>
+                <div className="flex items-center gap-3 print:hidden">
+                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                        {doneSteps.size} of {plural(steps.length, "step")} done
+                    </span>
+                    {onStartCooking && steps.length > 0 && (
+                        <button
+                            type="button"
+                            onClick={onStartCooking}
+                            className="btn-primary px-4 py-2"
+                        >
+                            <Play className="h-4 w-4 fill-current" />
+                            {doneSteps.size > 0 && doneSteps.size < steps.length
+                                ? "Continue cooking"
+                                : "Start cooking"}
+                        </button>
+                    )}
+                </div>
             </div>
             <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
                 Tap a step to mark it as done.

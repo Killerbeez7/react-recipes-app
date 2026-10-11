@@ -3,8 +3,10 @@ import {
     ArrowLeft,
     ArrowRight,
     Check,
+    ChefHat,
     PartyPopper,
     RotateCcw,
+    X,
 } from "lucide-react";
 import { ingredientsInStep, plural, splitIngredient } from "./recipeParts";
 import { RecipeTips } from "./RecipeTips";
@@ -22,6 +24,7 @@ export const CookModeLayout = ({
     onToggleIngredient,
     doneSteps,
     onSetDoneSteps,
+    onExitCooking,
 }) => {
     const total = steps.length;
     const rootRef = useRef(null);
@@ -74,7 +77,9 @@ export const CookModeLayout = ({
             ) {
                 return;
             }
-            if (e.key === "ArrowRight") {
+            if (e.key === "Escape") {
+                onExitCooking?.();
+            } else if (e.key === "ArrowRight") {
                 e.preventDefault();
                 goTo(currentRef.current + 1);
             } else if (e.key === "ArrowLeft") {
@@ -84,7 +89,7 @@ export const CookModeLayout = ({
         };
         window.addEventListener("keydown", onKeyDown);
         return () => window.removeEventListener("keydown", onKeyDown);
-    }, [inView, goTo]);
+    }, [inView, goTo, onExitCooking]);
 
     if (!total) {
         return (
@@ -102,6 +107,22 @@ export const CookModeLayout = ({
 
     return (
         <div ref={rootRef} className="mx-auto max-w-3xl">
+            {/* Cook mode header */}
+            <div className="mb-6 flex items-center justify-between gap-4">
+                <p className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-brand-600 dark:text-brand-400">
+                    <ChefHat className="h-4 w-4" aria-hidden="true" />
+                    Cook mode
+                </p>
+                <button
+                    type="button"
+                    onClick={onExitCooking}
+                    className="btn-ghost px-3 py-1.5"
+                    title="Back to the full recipe (Esc)"
+                >
+                    <X className="h-4 w-4" /> Exit cook mode
+                </button>
+            </div>
+
             {/* Ingredient tray */}
             <section aria-labelledby="ingredients-title" className="card p-5">
                 <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
@@ -287,7 +308,7 @@ export const CookModeLayout = ({
                 </div>
 
                 <p className="mt-3 text-center text-xs text-neutral-400">
-                    Tip: use the ← → arrow keys to move between steps
+                    Tip: use ← → to move between steps, Esc to exit
                 </p>
 
                 <RecipeTips tips={recipe.tips} />

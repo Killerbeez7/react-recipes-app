@@ -37,7 +37,6 @@ import { RecipeGrid } from "../recipe-grid/RecipeGrid";
 import { RecipeComments } from "./RecipeComments";
 import { RecipeBody } from "./layouts/RecipeBody";
 import { plural } from "./layouts/recipeParts";
-import { LayoutSwitcher, useRecipeLayout } from "./layouts/LayoutSwitcher";
 import { useMediaQuery } from "../../../hooks/useMediaQuery";
 
 const difficultyStyles = {
@@ -70,9 +69,10 @@ export const RecipeDetails = () => {
 
     const [checkedIngredients, setCheckedIngredients] = useState(new Set());
     const [doneSteps, setDoneSteps] = useState(new Set());
-    // Desktop-only layout experiment; phones always get the classic layout
+    // Cook mode is a desktop feature; phones always get the classic view
     const isDesktop = useMediaQuery("(min-width: 1024px)");
-    const [layout, setLayout] = useRecipeLayout();
+    const [cookMode, setCookMode] = useState(false);
+    const bodyRef = useRef(null);
     const [actionError, setActionError] = useState("");
     const [linkCopied, setLinkCopied] = useState(false);
     const ratingSectionRef = useRef(null);
@@ -84,6 +84,7 @@ export const RecipeDetails = () => {
     useEffect(() => {
         setCheckedIngredients(new Set());
         setDoneSteps(new Set());
+        setCookMode(false);
         setActionError("");
     }, [recipeId]);
 
@@ -138,6 +139,17 @@ export const RecipeDetails = () => {
     const createdAt = getRecipeDate(recipe);
     const authorName = recipe.authorName || author?.username || "A home cook";
     const difficulty = recipe.difficulty || "Easy";
+
+    // Switch between the normal view and cook mode, keeping it in view
+    const toggleCookMode = (on) => {
+        setCookMode(on);
+        requestAnimationFrame(() =>
+            bodyRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+            })
+        );
+    };
 
     const toggleInSet = (setter, value) =>
         setter((prev) => {
@@ -469,27 +481,32 @@ export const RecipeDetails = () => {
                 </div>
             </header>
 
-            {/* Ingredients & steps (layout experiment on desktop), then reviews */}
+            {/* Ingredients & steps (or cook mode), then reviews */}
             <div className="mt-16 border-t border-neutral-200 pt-12 dark:border-neutral-800">
-                {isDesktop && (
-                    <LayoutSwitcher value={layout} onChange={setLayout} />
-                )}
-                <RecipeBody
-                    // Fresh step position/progress for every recipe
-                    key={recipeId}
-                    layout={isDesktop ? layout : "classic"}
-                    recipe={recipe}
-                    ingredients={ingredients}
-                    steps={steps}
-                    checkedIngredients={checkedIngredients}
-                    onToggleIngredient={(i) =>
-                        toggleInSet(setCheckedIngredients, i)
-                    }
-                    onClearIngredients={() => setCheckedIngredients(new Set())}
-                    doneSteps={doneSteps}
-                    onToggleStep={(i) => toggleInSet(setDoneSteps, i)}
-                    onSetDoneSteps={setDoneSteps}
-                />
+                <div ref={bodyRef} className="scroll-mt-24">
+                    <RecipeBody
+                        // Fresh step position/progress for every recipe
+                        key={recipeId}
+                        layout={isDesktop && cookMode ? "cook" : "classic"}
+                        onStartCooking={
+                            isDesktop ? () => toggleCookMode(true) : undefined
+                        }
+                        onExitCooking={() => toggleCookMode(false)}
+                        recipe={recipe}
+                        ingredients={ingredients}
+                        steps={steps}
+                        checkedIngredients={checkedIngredients}
+                        onToggleIngredient={(i) =>
+                            toggleInSet(setCheckedIngredients, i)
+                        }
+                        onClearIngredients={() =>
+                            setCheckedIngredients(new Set())
+                        }
+                        doneSteps={doneSteps}
+                        onToggleStep={(i) => toggleInSet(setDoneSteps, i)}
+                        onSetDoneSteps={setDoneSteps}
+                    />
+                </div>
 
                 <div className="mx-auto mt-16 max-w-3xl">
                     {/* Reviews: rating summary, your rating, comments */}
