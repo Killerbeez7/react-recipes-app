@@ -83,14 +83,21 @@ export const ClassicLayout = ({
         </section>
 
         <section aria-labelledby="directions-title">
-            <div className="flex items-center justify-between gap-4">
-                <h2 id="directions-title" className="section-title">
-                    Directions
-                </h2>
-                <div className="flex items-center gap-3 print:hidden">
-                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
-                        {doneSteps.size} of {plural(steps.length, "step")} done
-                    </span>
+            <div className="flex items-start justify-between gap-4">
+                <div>
+                    <h2 id="directions-title" className="section-title">
+                        Directions
+                    </h2>
+                    <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
+                        Tap a step to mark it as done.
+                    </p>
+                </div>
+                {/* "Start cooking" (desktop) with the progress underneath */}
+                <div
+                    className={`flex shrink-0 flex-col gap-2 print:hidden ${
+                        onStartCooking ? "items-center" : "items-end"
+                    }`}
+                >
                     {onStartCooking && steps.length > 0 && (
                         <button
                             type="button"
@@ -103,11 +110,11 @@ export const ClassicLayout = ({
                                 : "Start cooking"}
                         </button>
                     )}
+                    <span className="badge bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-300">
+                        {doneSteps.size} of {plural(steps.length, "step")} done
+                    </span>
                 </div>
             </div>
-            <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400 print:hidden">
-                Tap a step to mark it as done.
-            </p>
 
             <ol className="mt-6">
                 {steps.map((step, i) => {
