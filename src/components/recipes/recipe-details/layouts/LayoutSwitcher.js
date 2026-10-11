@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { BookOpen, LayoutGrid, LayoutList, PlayCircle } from "lucide-react";
+import { LayoutGrid, LayoutList, PlayCircle } from "lucide-react";
 
 export const LAYOUTS = [
     { id: "classic", label: "Classic", icon: LayoutList },
     { id: "cook", label: "Cook mode", icon: PlayCircle },
-    { id: "cookbook", label: "Cookbook", icon: BookOpen },
     { id: "board", label: "Prep board", icon: LayoutGrid },
 ];
 

@@ -1,12 +1,10 @@
 import { ClassicLayout } from "./ClassicLayout";
 import { CookModeLayout } from "./CookModeLayout";
-import { CookbookLayout } from "./CookbookLayout";
 import { PrepBoardLayout } from "./PrepBoardLayout";
 
 const layouts = {
     classic: ClassicLayout,
     cook: CookModeLayout,
-    cookbook: CookbookLayout,
     board: PrepBoardLayout,
 };
 
