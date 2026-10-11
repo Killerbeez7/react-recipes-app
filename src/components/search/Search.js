@@ -115,7 +115,7 @@ export const Search = () => {
                     className="h-10 w-44 rounded-full border-transparent bg-neutral-100 pl-9 pr-4 text-sm text-neutral-900 placeholder:text-neutral-500 focus:border-brand-500 focus:bg-white focus:ring-brand-500 dark:bg-neutral-900 dark:text-neutral-100 dark:placeholder:text-neutral-400 dark:focus:bg-neutral-950 xl:w-64"
                 />
                 {showResults && term && (
-                    <div className="card absolute right-0 top-full z-50 mt-2 w-96 overflow-hidden">
+                    <div className="card absolute left-0 top-full z-50 mt-2 w-full min-w-[18rem] overflow-hidden xl:min-w-0">
                         <Results
                             results={results}
                             term={term}
